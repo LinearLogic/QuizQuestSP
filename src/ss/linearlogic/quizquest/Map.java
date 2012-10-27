@@ -10,7 +10,12 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+import ss.linearlogic.quizquest.entity.Door;
+import ss.linearlogic.quizquest.entity.Enemy;
 import ss.linearlogic.quizquest.entity.Entity;
+import ss.linearlogic.quizquest.entity.Floor;
+import ss.linearlogic.quizquest.entity.Grass;
+import ss.linearlogic.quizquest.entity.Wall;
 
 public class Map {
 	private static int map[][];
@@ -144,16 +149,41 @@ public class Map {
 		tileSize = textReader.nextInt();
 		
 		map = new int[width][height];
+		entityMap = new Entity[width][height];
 		
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
-				map[x][y] = textReader.nextInt();
+				int typeID = textReader.nextInt();
+				switch(typeID) {
+					default:
+					case 0: //Grass
+						addEntity(new Grass(x, y));
+						break;
+					case 1: //Door
+						addEntity(new Floor(x, y));
+						break;
+					case 2: //Wall
+						addEntity(new Wall(x, y));
+						break;
+					case 3: //Door
+						addEntity(new Door(1, x, y));
+						break;
+					case 4: //Enemy
+						addEntity(new Enemy(4, 20, x, y));
+						break;
+				}
 			}
 		}
 		
 		textReader.close();
 	}
 	
+	public static void addEntity(Entity entity) {
+		int x = entity.getX();
+		int y = entity.getY();
+		map[x][y] = entity.getTypeID();
+		entityMap[x][y] = entity;
+	}
 	public static void removeEntity(int x, int y) {
 		if (map[x][y] != 0)
 			map[x][y] = 0;
@@ -161,21 +191,7 @@ public class Map {
 			entityMap[x][y] = null;
 	}
 	
-	//Use method to parse the file and get the objects out, so you know where the objects are
-	private static void createObjects() {
-		for (int x = 0; x < width; ++x) {
-			for (int y = 0; y < height; ++y) {
-				switch (map[x][y]) {
-				case 0:
-					break;
-				case 1: //This is a door object
-					break;
-				case 2: //This is a wall object
-					break;
-				case 3: //This is a roof object (not really needed)
-					break;
-				}
-			}
-		}
+	public static Entity getEntity(int x, int y) {
+		return entityMap[x][y];
 	}
 }

@@ -32,9 +32,11 @@ public class Enemy extends Entity {
 	 * Simple constructor: calls the complete constructor using the supplied damage and maxHealth, and with a null Item subclass.
 	 * @param damage The enemy's {@link #damage} value
 	 * @param maxHealth The enemy's {@link #maxHealth} value
+	 * @param x The x-coord of the entity
+	 * @param y The y-coord of the entity
 	 */
-	public Enemy(int damage, int maxHealth) {
-		this(damage, maxHealth, null);
+	public Enemy(int damage, int maxHealth, int x, int y) {
+		this(damage, maxHealth, null, x, y);
 	}
 	
 	/**
@@ -44,9 +46,11 @@ public class Enemy extends Entity {
 	 * @param damage The enemy's {@link #damage} value
 	 * @param maxHealth The enemy's {@link #maxHealth} value
 	 * @param itemToDrop The item the enemy will drop on death (see {@link #itemToDrop}
+	 * @param x The x-coord of the entity
+	 * @param y The y-coord of the entity
 	 */
-	public Enemy(int damage, int maxHealth, Item itemToDrop) {
-		super(4);
+	public Enemy(int damage, int maxHealth, Item itemToDrop, int x, int y) {
+		super(4, x, y);
 		this.damage = damage;
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;

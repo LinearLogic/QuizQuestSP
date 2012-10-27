@@ -51,11 +51,11 @@ public class QuizQuest {
 	public void mainLoop() {
 	
 		Map.initialize("map.txt");
-		Map.addTexture("Door.png", 1);
 		Map.addTexture("Grass.png", 0);
-		Map.addTexture("Wall.png", 3);
-		Map.addTexture("Roof.png", 2);
-		
+		Map.addTexture("Floor.png", 1);
+		Map.addTexture("Wall.png", 2);
+		Map.addTexture("Door.png", 3);
+
 		Player.initialize(100, 100, "Door.png");
 		
 		Textbox.initializeWithSystemFont();

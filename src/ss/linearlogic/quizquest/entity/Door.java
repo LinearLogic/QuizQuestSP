@@ -15,11 +15,13 @@ public class Door extends Entity {
 	private boolean isOpen;
 	
 	/**
-	 * Constructs the Entity superclass using the Door typeID (1), and sets the door's lockID to the supplied value.
+	 * Constructs the Entity superclass using the Door typeID (3), and sets the door's lockID to the supplied value.
 	 * @param lockID The door's lockID (see {@link #lockID})
+	 * @param x The x-coord of the entity
+	 * @param y The y-coord of the entity
 	 */
-	public Door(int lockID) {
-		super(1);
+	public Door(int lockID, int x, int y) {
+		super(3, x, y);
 		this.lockID = lockID;
 	}
 
@@ -52,4 +54,15 @@ public class Door extends Entity {
 	public void setOpen(boolean isOpen) {
 		this.isOpen = isOpen;
 	}
+	
+	/**
+	 * @return The door's {@link #lockID} value
+	 */
+	public int getLockID() { return this.lockID; }
+	
+	/**
+	 * Set the door's {@link #lockID} to the supplied value 
+	 * @param lockID
+	 */
+	public void setLockID(int lockID) { this.lockID = lockID; }
 }
