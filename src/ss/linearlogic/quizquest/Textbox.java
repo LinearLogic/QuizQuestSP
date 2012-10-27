@@ -57,10 +57,10 @@ public class Textbox {
 		
 		if (font == null) System.out.println("Font is null");
 		
-		x = 0;
-		y = 380;
+		x = 0; // x-coord for the top righthand corner of the text box
+		y = 380; // y-coord for the top righthand corner of the text box
 		
-		width = 480;
+		width = 480; // dimensions of the textbox
 		height = 100;
 	}
 	
@@ -187,11 +187,11 @@ public class Textbox {
 		}
 				
 		//Render the selection rectangle
-		Renderer.renderTransparentRectangle((20 + (current_selection * 100)) - 5, 445, (font.getWidth(letters.charAt(current_selection) + ": " + answers.get(current_selection))) + 10, font.getHeight() + 10);
+		Renderer.renderTransparentRectangle((x + 20 + (current_selection * 100)) - 5, y + 65, (font.getWidth(letters.charAt(current_selection) + ": " + answers.get(current_selection))) + 10, font.getHeight() + 10);
 		
 		//Render all of the answers
-		for (int i = 0; i < 4; ++i) {
-			Renderer.renderString(letters.charAt(i) + ": " + answers.get(i), 20 + (i * 100), 450, font);
+		for (int i = 0; i < answers.size(); ++i) {
+			Renderer.renderString(letters.charAt(i) + ": " + answers.get(i), x + 20 + (i * 100), y + 70, font);
 		}
 	}
 }
