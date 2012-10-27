@@ -59,9 +59,7 @@ public class Player {
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Textbox.isActive()) speed_y = speed_constant;
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Textbox.isActive()) speed_x = -speed_constant;
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Textbox.isActive()) speed_x = speed_constant;
-		
-		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) Textbox.toggleActive();
-		
+				
 		//Handle if the player goes to another quadrant
 		handleOffscreen();
 		

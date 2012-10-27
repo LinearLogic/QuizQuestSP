@@ -8,6 +8,7 @@ import java.io.InputStream;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class Renderer {
@@ -15,6 +16,22 @@ public class Renderer {
 	public static void RenderRectangle(double x, double y, 
 			double w, double h) {
 		RenderColoredRectangle(x, y, w, h, 1.0, 1.0, 1.0);
+	}
+	
+	public static void RenderTransparentRectangle(double x, double y, 
+			double w, double h) {
+		glDisable(GL_TEXTURE_2D);
+		
+		glColor4d(1.0, 1.0, 1.0, 0.3);
+		
+		glBegin(GL_TRIANGLE_FAN);
+			glVertex2d(x, y);
+			glVertex2d(x + w, y);
+			glVertex2d(x + w, y + h);
+			glVertex2d(x, y + h);
+		glEnd();
+		
+		glEnable(GL_TEXTURE_2D);
 	}
 	
 	//Render a colored rectangle
@@ -77,18 +94,14 @@ public class Renderer {
 	
 	//Render a string with color
 	public static void RenderString(String string, double x, double y, TrueTypeFont font, Color colr) {
-		glDisable(GL_TEXTURE_2D);
-		glEnable(GL_BLEND);
-				
-		font.drawString((int)x, (int)y, string, colr);
-		
-		glEnable(GL_TEXTURE_2D);
+		TextureImpl.bindNone();
+		font.drawString((int)x, (int)y, string, Color.yellow);
 	}
 	
 	
 	public static TrueTypeFont LoadSystemFont(String systemFont, int fontSize) {
-		Font awtFont = new Font(systemFont, Font.PLAIN, fontSize);
-		return new TrueTypeFont(awtFont, false);
+		Font awtFont = new Font(systemFont, Font.BOLD, fontSize);
+		return new TrueTypeFont(awtFont, true);
 	}
 	
 	//Load a ttf font file

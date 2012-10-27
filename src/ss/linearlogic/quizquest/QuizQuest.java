@@ -16,11 +16,7 @@ public class QuizQuest {
 	
 	private final int screen_width = 480;
 	private final int screen_height = 480;
-	
-	private long startTime = 0;
-	private long endTime = 0;
-	private long deltaTime = 0;
-	
+		
 	//Constructor for game object
 	public QuizQuest() {
 		InitializeOpenGL(screen_width, screen_height);
@@ -45,6 +41,11 @@ public class QuizQuest {
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		glDisable(GL_DEPTH_TEST);
+		glShadeModel(GL_SMOOTH);
+		
+		glClearDepth(1);
 	}
 	
 	//Create a mainloop to handle rendering and logic
@@ -59,18 +60,20 @@ public class QuizQuest {
 		Player.Initialize(100, 100, "Door.png");
 		
 		Textbox.InitializeWithSystemFont();
-		Textbox.setText("Hello world");
+		
+		Textbox.setQuestion("What is the square root of 64");
+		Textbox.addAnswer("2");
+		Textbox.addAnswer("3");
+		Textbox.addAnswer("4");
+		Textbox.addAnswer("8");
+		Textbox.setCorrectIndex(3);
 		
 		while (running) {
 			//Close application when close is requested or escape key is pressed
-			running = !Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 			running = !Display.isCloseRequested();
 			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
 				break;
-				
-			startTime = getTime();
-			deltaTime = startTime - endTime;
-			
+							
 			//Game rendering/logic area
 			glClear(GL_COLOR_BUFFER_BIT);
 			
@@ -78,13 +81,18 @@ public class QuizQuest {
 			Player.Update();
 			Player.Render();
 			
+			Textbox.Update();
+			
+			if (Textbox.isAnswerCorrect()) {
+				Textbox.toggleActive();
+				Textbox.reset();
+			}
+			
 			Textbox.render();
 			
 			//Update the display
 			Display.update();
 			Display.sync(60);
-			
-			endTime = getTime();
 		}
 	}
 	
@@ -96,10 +104,5 @@ public class QuizQuest {
 	//Main static method, entry point
 	public static void main(String[] args) {
 		new QuizQuest();
-	}
-
-	//Get the current time in millis from the system
-	private long getTime() {
-		return (long)(1000 * Sys.getTime() / Sys.getTimerResolution());
 	}
 }
