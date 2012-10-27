@@ -133,12 +133,11 @@ public class Textbox {
 	public static void Update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
-		//TODO: fix the bug in the code which is making it so key repeats are still enabled
 		if (active && Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) { current_selection -= 1; keyLifted = false; }
 		if (active && Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && keyLifted) { current_selection += 1; keyLifted = false; }
 		
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT)) keyLifted = true;
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) keyLifted = true;
+		// if all keys have been released, set keyLifted to true to re-enable scrolling through selections
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) keyLifted = true;
 		
 		//Use the numbers to correspond for answers
 		if (active && Keyboard.isKeyDown(Keyboard.KEY_1)) current_selection = 0;
