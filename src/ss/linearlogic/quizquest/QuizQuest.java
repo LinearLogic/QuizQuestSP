@@ -11,19 +11,44 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class QuizQuest {
 	
+	/**
+	 * Whether to repeat the {@link #mainLoop()}
+	 */
 	private static boolean running = true;
 	
+	/**
+	 * Whether to reset, rather than exit, after breaking out of the {@link #mainLoop()})
+	 */
+	private static boolean reset = true;
+	
+	/**
+	 * Width of the game window, in pixels
+	 */
 	private final int screen_width = 480;
+	
+	/**
+	 * Height of the game window, in pixels
+	 */
 	private final int screen_height = 480;
 		
-	//Constructor for game object
+	/**
+	 * Game object constructor - loads the game window, runs the game (see {@link #mainLoop()}),
+	 * and then destroys the OpenGL context on exit (necessary for a game reset to be possible).
+	 */
 	public QuizQuest() {
 		initializeOpenGL(screen_width, screen_height);
 		mainLoop();
 		destroyOpenGL();
+		if (reset) {
+			new QuizQuest();
+		}
 	}
 	
-	//Initialize the window along with the opengl aspects
+	/**
+	 * Initialize the window with the provided width and height (in pixels), and loads the OpenGL context.
+	 * @param width Window width (pixels)
+	 * @param height Window height (pixels)
+	 */
 	public void initializeOpenGL(int width, int height) {
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
@@ -47,20 +72,24 @@ public class QuizQuest {
 		glClearDepth(1);
 	}
 	
-	//Create a mainloop to handle rendering and logic
+	/**
+	 * Master loop to handle rendering and logic. Updates the game every frame, with a frame rate of 60 fps.
+	 */
 	public void mainLoop() {
 	
-		Map.initialize("map.txt");
+		Map.initialize("map.txt"/*, "entity.txt"*/);
 		Map.addTexture("Grass.png", 0);
 		Map.addTexture("Floor.png", 1);
 		Map.addTexture("Wall.png", 2);
 		Map.addTexture("Door.png", 3);
 
-		Player.initialize(100, 100, "Door.png");
+		Player.initialize(200, 200, "Pedobear.png");
 		
 		Textbox.initializeWithSystemFont();
-		
-		Textbox.setQuestion("What is the square root of 64,\nyou must answer this question to start the game!");
+		Textbox.reset();
+		if (!Textbox.isActive())
+			Textbox.toggleActive();
+		Textbox.setQuestion("What is the square root of 64?\nyou must answer this question to start the game!");
 		Textbox.addAnswer("2");
 		Textbox.addAnswer("3");
 		Textbox.addAnswer("4");
@@ -68,10 +97,16 @@ public class QuizQuest {
 		Textbox.setCorrectIndex(3);
 		
 		while (running) {
-			//Close application when close is requested or escape key is pressed
-			running = !Display.isCloseRequested();
-			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+			if (Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+				if (reset)
+					reset = false;
 				break;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_F5)) {
+				if (!reset)
+					reset = true;
+				break;
+			}
 							
 			//Game rendering/logic area
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -102,16 +137,21 @@ public class QuizQuest {
 			
 			//Update the display
 			Display.update();
-			Display.sync(60);
+			Display.sync(60); //The value n in sync(n) is the frame rate
 		}
 	}
 	
-	//Destroy the opengl context
+	/**
+	 * Destroys the OpenGL context. Called on quit and reset.
+	 */
 	public void destroyOpenGL() {
 		Display.destroy();
 	}
 	
-	//Main static method, entry point
+	/**
+	 * Entry point - loads the game object.
+	 * @param args Ignore this...
+	 */
 	public static void main(String[] args) {
 		new QuizQuest();
 	}
