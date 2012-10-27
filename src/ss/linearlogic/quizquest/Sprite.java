@@ -40,8 +40,8 @@ public class Sprite {
 	}
 	
 	//Render the sprite
-	public void Draw() {		
-		Renderer.RenderTexturedRectangle(x, y, w, h, texture, texX, texY, texW, texH);
+	public void draw() {		
+		Renderer.renderTexturedRectangle(x, y, w, h, texture, texX, texY, texW, texH);
 	}
 	
 	//Collision checking with another sprite

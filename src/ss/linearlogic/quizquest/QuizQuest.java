@@ -1,7 +1,6 @@
 package ss.linearlogic.quizquest;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -19,13 +18,13 @@ public class QuizQuest {
 		
 	//Constructor for game object
 	public QuizQuest() {
-		InitializeOpenGL(screen_width, screen_height);
-		MainLoop();
-		DestroyOpenGL();
+		initializeOpenGL(screen_width, screen_height);
+		mainLoop();
+		destroyOpenGL();
 	}
 	
 	//Initialize the window along with the opengl aspects
-	public void InitializeOpenGL(int width, int height) {
+	public void initializeOpenGL(int width, int height) {
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.setVSyncEnabled(true);
@@ -49,17 +48,17 @@ public class QuizQuest {
 	}
 	
 	//Create a mainloop to handle rendering and logic
-	public void MainLoop() {
+	public void mainLoop() {
 	
-		Map.Initialize("map.txt");
-		Map.AddTexture("Door.png", 1);
-		Map.AddTexture("Grass.png", 0);
-		Map.AddTexture("Wall.png", 3);
-		Map.AddTexture("Roof.png", 2);
+		Map.initialize("map.txt");
+		Map.addTexture("Door.png", 1);
+		Map.addTexture("Grass.png", 0);
+		Map.addTexture("Wall.png", 3);
+		Map.addTexture("Roof.png", 2);
 		
-		Player.Initialize(100, 100, "Door.png");
+		Player.initialize(100, 100, "Door.png");
 		
-		Textbox.InitializeWithSystemFont();
+		Textbox.initializeWithSystemFont();
 		
 		Textbox.setQuestion("What is the square root of 64,\nyou must answer this question to start the game!");
 		Textbox.addAnswer("2");
@@ -77,11 +76,11 @@ public class QuizQuest {
 			//Game rendering/logic area
 			glClear(GL_COLOR_BUFFER_BIT);
 			
-			Map.Render();
-			Player.Update();
-			Player.Render();
+			Map.render();
+			Player.update();
+			Player.render();
 			
-			Textbox.Update();
+			Textbox.update();
 			
 			if (Textbox.isAnswerCorrect()) {
 				Textbox.toggleActive();
@@ -99,7 +98,7 @@ public class QuizQuest {
 	}
 	
 	//Destroy the opengl context
-	public void DestroyOpenGL() {
+	public void destroyOpenGL() {
 		Display.destroy();
 	}
 	

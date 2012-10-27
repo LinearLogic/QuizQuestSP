@@ -13,12 +13,12 @@ import org.newdawn.slick.util.ResourceLoader;
 
 public class Renderer {
 	//Render a white rectangle
-	public static void RenderRectangle(double x, double y, 
+	public static void renderRectangle(double x, double y, 
 			double w, double h) {
-		RenderColoredRectangle(x, y, w, h, 1.0, 1.0, 1.0);
+		renderColoredRectangle(x, y, w, h, 1.0, 1.0, 1.0);
 	}
 	
-	public static void RenderTransparentRectangle(double x, double y, 
+	public static void renderTransparentRectangle(double x, double y, 
 			double w, double h) {
 		glDisable(GL_TEXTURE_2D);
 		
@@ -35,7 +35,7 @@ public class Renderer {
 	}
 	
 	//Render a colored rectangle
-	public static void RenderColoredRectangle(double x, double y, 
+	public static void renderColoredRectangle(double x, double y, 
 			double w, double h, 
 			double r, double g, 
 			double b) {
@@ -54,15 +54,15 @@ public class Renderer {
 	}
 	
 	//Render a rectangle with a texture object
-	public static void RenderTexturedRectangle(double x, double y,
+	public static void renderTexturedRectangle(double x, double y,
 			double w, double h, 
 			Texture texture) {
-		RenderTexturedRectangle(x, y, w, h, texture, 0.0, 0.0, 1.0, 1.0);
+		renderTexturedRectangle(x, y, w, h, texture, 0.0, 0.0, 1.0, 1.0);
 	}
 	
 	//Draw a textured rectangle with a texture object
 	//along with texture coordinates on the texture.
-	public static void RenderTexturedRectangle(double x, double y,
+	public static void renderTexturedRectangle(double x, double y,
 			double w, double h,
 			Texture texture,
 			double texX, double texY, 
@@ -88,24 +88,24 @@ public class Renderer {
 	}
 	
 	//Render a string in white
-	public static void RenderString(String string, double x, double y, TrueTypeFont font) {		
-		RenderString(string, x, y, font, Color.black);
+	public static void renderString(String string, double x, double y, TrueTypeFont font) {		
+		renderString(string, x, y, font, Color.black);
 	}
 	
 	//Render a string with color
-	public static void RenderString(String string, double x, double y, TrueTypeFont font, Color colr) {
+	public static void renderString(String string, double x, double y, TrueTypeFont font, Color colr) {
 		TextureImpl.bindNone();
 		font.drawString((int)x, (int)y, string, Color.yellow);
 	}
 	
 	
-	public static TrueTypeFont LoadSystemFont(String systemFont, int fontSize) {
+	public static TrueTypeFont loadSystemFont(String systemFont, int fontSize) {
 		Font awtFont = new Font(systemFont, Font.BOLD, fontSize);
 		return new TrueTypeFont(awtFont, true);
 	}
 	
 	//Load a ttf font file
-	public static TrueTypeFont LoadFont(String fontFile, int fontSize) { 
+	public static TrueTypeFont loadFont(String fontFile, int fontSize) { 
 		Font fnt = null;
 		
 		try {

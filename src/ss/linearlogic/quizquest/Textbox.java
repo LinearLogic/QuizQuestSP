@@ -41,8 +41,8 @@ public class Textbox {
 	public Textbox() {}
 	
 	//Initialize with using a custom font
-	public static void Initialize(String fontFile) {
-		font = Renderer.LoadFont(fontFile, 24);
+	public static void initialize(String fontFile) {
+		font = Renderer.loadFont(fontFile, 24);
 		
 		x = 0;
 		y = 380;
@@ -52,8 +52,8 @@ public class Textbox {
 	}
 	
 	//Initialize without using a custom font
-	public static void InitializeWithSystemFont() {
-		font = Renderer.LoadSystemFont("SansSerif", 10);
+	public static void initializeWithSystemFont() {
+		font = Renderer.loadSystemFont("SansSerif", 10);
 		
 		if (font == null) System.out.println("Font is null");
 		
@@ -130,7 +130,7 @@ public class Textbox {
 		current_selection = sel;
 	}
 	
-	public static void Update() {
+	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
 		if (active && Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) { current_selection -= 1; keyLifted = false; }
@@ -180,18 +180,18 @@ public class Textbox {
 		if (!active) return;
 			
 		//Render the rectangle with the question
-		Renderer.RenderColoredRectangle(x, y, width, height, 0.0f, 0.0f, 0.7f);		
+		Renderer.renderColoredRectangle(x, y, width, height, 0.0f, 0.0f, 0.7f);		
 		
 		for (int i = 0; i < questionLines.size(); ++i) {
-			Renderer.RenderString(questionLines.get(i), x + 10, y + (font.getHeight() * i), font);
+			Renderer.renderString(questionLines.get(i), x + 10, y + (font.getHeight() * i), font);
 		}
 				
 		//Render the selection rectangle
-		Renderer.RenderTransparentRectangle((20 + (current_selection * 100)) - 5, 445, (font.getWidth(letters.charAt(current_selection) + ": " + answers.get(current_selection))) + 10, font.getHeight() + 10);
+		Renderer.renderTransparentRectangle((20 + (current_selection * 100)) - 5, 445, (font.getWidth(letters.charAt(current_selection) + ": " + answers.get(current_selection))) + 10, font.getHeight() + 10);
 		
 		//Render all of the answers
 		for (int i = 0; i < 4; ++i) {
-			Renderer.RenderString(letters.charAt(i) + ": " + answers.get(i), 20 + (i * 100), 450, font);
+			Renderer.renderString(letters.charAt(i) + ": " + answers.get(i), 20 + (i * 100), 450, font);
 		}
 	}
 }

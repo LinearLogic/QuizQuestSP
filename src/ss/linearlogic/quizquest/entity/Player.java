@@ -42,14 +42,14 @@ public class Player {
 	
 	private static Sprite sprite;
 
-	public static void Initialize(int start_x, int start_y, String player_image) {
+	public static void initialize(int start_x, int start_y, String player_image) {
 		sprite = new Sprite(player_image, start_x, start_y);
 		
 		world_coordinates_x = start_x;
 		world_coordinates_y = start_y;
 	}
 	
-	public static void Update() {
+	public static void update() {
 		//Reset after each frame
 		speed_x = 0;
 		speed_y = 0;
@@ -137,8 +137,8 @@ public class Player {
 	}
 	
 	//Draw the player
-	public static void Render() {
-		sprite.Draw();
+	public static void render() {
+		sprite.draw();
 	}
 	
 	// --- // Non-graphical methods // --- //

@@ -10,8 +10,6 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import ss.linearlogic.quizquest.entity.Player;
-
 public class Map {
 	private static int map[][];
 	
@@ -30,12 +28,12 @@ public class Map {
 	public Map(String filename) {}
 	
 	//Initialize the map class
-	public static void Initialize(String filename) {
-		LoadMapFile(filename);
+	public static void initialize(String filename) {
+		loadMapFile(filename);
 	}
 	
 	//Render the current map
-	public static void Render() {
+	public static void render() {
 		//Get the players position
 		int start_coordinate_x = getCurrentQuadrantX() * 15;
 		int start_coordinate_y = getCurrentQuadrantY() * 15;
@@ -44,16 +42,16 @@ public class Map {
 		int coordinate_shift_x = getCoordinateShiftX();
 		int coordinate_shift_y = getCoordinateShiftY();
 				
-		for (int x = start_coordinate_x; x < (start_coordinate_x + (15)); ++x) {
-			for (int y = start_coordinate_y; y < (start_coordinate_y + (15)); ++y) {
+		for (int x = start_coordinate_x; x < (start_coordinate_x + 15); ++x) {
+			for (int y = start_coordinate_y; y < (start_coordinate_y + 15); ++y) {
 				//2 Layers of rendering, the base layer being the grass and the top layer being the objects like doors and walls, etc.
-				Renderer.RenderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(0));
+				Renderer.renderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(0));
 				
 				if (map[x][y] == 0)
 					continue;
 				
 				//Render the top layer such as walls and doors
-				Renderer.RenderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(map[x][y]));
+				Renderer.renderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(map[x][y]));
 			}
 		}
 	}
@@ -75,17 +73,14 @@ public class Map {
 		int current_temp = current_quadrant_y;
 		current_quadrant_y = quad;
 		
-		if (getCurrentQuadrantY() > getQuadrantWidth()) {
-			current_quadrant_y = current_temp;
-			return;
-		} else if (getCurrentQuadrantY() < 0) {
+		if ((getCurrentQuadrantY() < 0) || getCurrentQuadrantY() > getQuadrantWidth()) {
 			current_quadrant_y = current_temp;
 			return;
 		}
 	}
 	
 	//Get the current quadrant in the x index
-	public static int getCurrentQuadrantX() {		
+	public static int getCurrentQuadrantX() {
 		return (int) current_quadrant_x;
 	}
 	
@@ -110,7 +105,7 @@ public class Map {
 	}
 	
 	//Add a texture to the textures hashmap
-	public static void AddTexture(String filename, int GID) {
+	public static void addTexture(String filename, int GID) {
 		Texture texture = null;
 		
 		//Read the texture object from the string
@@ -126,7 +121,7 @@ public class Map {
 	}
 	
 	//Load map file
-	private static void LoadMapFile(String filename) { 
+	private static void loadMapFile(String filename) { 
 		Scanner textReader = null;
 		
 		//Read the file from the filesystem
@@ -157,7 +152,7 @@ public class Map {
 	}
 	
 	//Use method to parse the file and get the objects out, so you know where the objects are
-	private static void CreateObjects() {
+	private static void createObjects() {
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
 				switch (map[x][y]) {
