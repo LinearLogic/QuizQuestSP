@@ -54,11 +54,27 @@ public class Player {
 		speed_x = 0;
 		speed_y = 0;
 		
-		//Check the keys that are being pressed which determine the player movement
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP) && !Textbox.isActive()) speed_y = -speed_constant;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Textbox.isActive()) speed_y = speed_constant;
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Textbox.isActive()) speed_x = -speed_constant;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Textbox.isActive()) speed_x = speed_constant;
+		/*
+		 * Check the keys that are being pressed which determine the player movement
+		 * 
+		 * NOTE: the new system operates by adding to or subtracting from the current x or y speed,
+		 * and then evaluating the resulting speeds. If there is a speed in both the x and y direction,
+		 * the speeds are divided by the square root of 2, to prevent a speed increase when moving diagonally.
+		 */
+		if (!Textbox.isActive()) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				speed_y -= speed_constant;
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+				speed_y += speed_constant;
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+				speed_x -= speed_constant;
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+				speed_x += speed_constant;
+			if ((speed_x != 0) && (speed_y != 0)) { // player is moving too quickly - adjust speeds
+				speed_x *= (1/Math.sqrt(2.0));
+				speed_y *= (1/Math.sqrt(2.0));
+			}
+		}
 				
 		//Handle if the player goes to another quadrant
 		handleOffscreen();
