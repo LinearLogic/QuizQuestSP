@@ -35,10 +35,16 @@ public class Player {
 	
 	private final static double speed_constant = 5.0;
 	
+	private static int world_coordinates_x = 0;
+	private static int world_coordinates_y = 0;
+	
 	private static Sprite sprite;
 
 	public static void Initialize(int start_x, int start_y, String player_image) {
 		sprite = new Sprite(player_image, start_x, start_y);
+		
+		world_coordinates_x = start_x;
+		world_coordinates_y = start_y;
 	}
 	
 	public static void Update() {
@@ -56,14 +62,36 @@ public class Player {
 		handleOffscreen();
 		
 		//Set the position of the sprite(Player)
-		sprite.setPosition((int)(sprite.getX() + speed_x), (int)(sprite.getY() + speed_y));
+		setPosition((int)(world_coordinates_x + speed_x), (int)(world_coordinates_y + speed_y));
+		sprite.setPosition(world_coordinates_x - (Map.getCoordinateShiftX()), world_coordinates_y - (Map.getCoordinateShiftY()));
+		
+		System.out.println(world_coordinates_x + ", " + world_coordinates_y);
 	}
 	
-	private static void handleOffscreen() {
-		if (sprite.getX() > 480 + (Map.getCurrentQuadrant() * 20 * 32)) Map.setCurrentQuadrant(Map.getCurrentQuadrant() + 1);
-		if (sprite.getY() > 480 + (Map.getCurrentQuadrant() * 20 * 32)) Map.setCurrentQuadrant(Map.getCurrentQuadrant() + Map.getQuadrantWidth());
-		if (sprite.getX() < 0 + (Map.getCurrentQuadrant() * 19 * 32)) Map.setCurrentQuadrant(Map.getCurrentQuadrant() - 1);
-		if (sprite.getY() < 0 + (Map.getCurrentQuadrant() * 19 * 32)) Map.setCurrentQuadrant(Map.getCurrentQuadrant() - Map.getQuadrantWidth());
+	public static void setPosition(int x, int y) {
+		world_coordinates_x = x;
+		world_coordinates_y = y;
+	}
+	
+	public static int getWorldX() {
+		return world_coordinates_x;
+	}
+	
+	public static int getWorldY() {
+		return world_coordinates_y;
+	}
+	
+	private static void handleOffscreen() {		
+		if (getWorldX() < 0) { speed_x = 5; return; }
+		if (getWorldY() < 0) { speed_y = 5; return; }
+		
+		if (getWorldX() + getWidth() > (480 * Map.getQuadrantWidth())) { speed_x = -speed_constant; return; }
+		if (getWorldY() + getHeight() > (480 * Map.getQuadrantWidth())) { speed_y = -speed_constant; return; }
+		
+		if (getWorldX() > (480 * (Map.getCurrentQuadrantX() + 1))) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() + 1);
+		if (getWorldY() > (480 * (Map.getCurrentQuadrantY() + 1))) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() + 1);
+		if (getWorldX() < (480 * Map.getCurrentQuadrantX())) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() - 1);
+		if (getWorldY() < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
 	}
 	
 	public static int getX() {

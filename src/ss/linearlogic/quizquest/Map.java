@@ -19,10 +19,11 @@ public class Map {
 	private static int width;
 	private static int height;
 	
-	private static final int quadrant_count_width = 3;
-	private static int current_quadrant = 0;
+	private static final int quadrant_count_width = 2;
+	private static int current_quadrant_x = 0;
+	private static int current_quadrant_y = 0;
 	
-	private static HashMap<Integer, Texture> textures = new HashMap(); //Hashmap of all the textures
+	private static HashMap<Integer, Texture> textures = new HashMap<Integer, Texture>(); //Hashmap of all the textures
 	
 	private static int tileSize; // Size of the tile
 	
@@ -36,49 +37,90 @@ public class Map {
 	//Render the current map
 	public static void Render() {
 		//Get the players position
+		int start_coordinate_x = getCurrentQuadrantX() * 15;
+		int start_coordinate_y = getCurrentQuadrantY() * 15;
 		
-		//System.out.println("Quadrant string: " + (current_quadrant) );
-		
-		int start_coordinate_x = ((int)(current_quadrant % quadrant_count_width) * 20);
-		int start_coordinate_y = ((int)(current_quadrant / quadrant_count_width) * 20);
-		
-		//System.out.println(start_coordinate_x + ", " + start_coordinate_y);
-		
-		for (int x = start_coordinate_x; x < (start_coordinate_x + (19)); ++x) {
-			for (int y = start_coordinate_y; y < (start_coordinate_y + (19)); ++y) {
-				//2 Layers of rendering, the base layer being the grass and the top layer being the objects like doors and walls, etc.
+		//Get the coordinate shift to keep rendering inside the camera
+		int coordinate_shift_x = getCoordinateShiftX();
+		int coordinate_shift_y = getCoordinateShiftY();
 				
-				Renderer.RenderTexturedRectangle(x * tileSize, y * tileSize, tileSize, tileSize, textures.get(0));
+		for (int x = start_coordinate_x; x < (start_coordinate_x + (15)); ++x) {
+			for (int y = start_coordinate_y; y < (start_coordinate_y + (15)); ++y) {
+				//2 Layers of rendering, the base layer being the grass and the top layer being the objects like doors and walls, etc.
+				Renderer.RenderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(0));
+				
 				if (map[x][y] == 0)
 					continue;
 				
-				Renderer.RenderTexturedRectangle(x * tileSize, y * tileSize, tileSize, tileSize, textures.get(map[x][y]));
+				//Render the top layer such as walls and doors
+				Renderer.RenderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(map[x][y]));
 			}
 		}
 	}
 	
-	public static void setCurrentQuadrant(int quad) {		
-		current_quadrant = quad;
+	public static void setCurrentQuadrantX(int quad) {
+		int current_temp = current_quadrant_x;
+		current_quadrant_x = quad;
+		
+		if (getCurrentQuadrantX() > getQuadrantWidth()) {
+			current_quadrant_x = current_temp;
+			return;
+		} else if (getCurrentQuadrantX() < 0) {
+			current_quadrant_x = current_temp;
+			return;
+		}
 	}
 	
-	public static int getCurrentQuadrant() {
-		return current_quadrant;
+	public static void setCurrentQuadrantY(int quad) {
+		int current_temp = current_quadrant_y;
+		current_quadrant_y = quad;
+		
+		if (getCurrentQuadrantY() > getQuadrantWidth()) {
+			current_quadrant_y = current_temp;
+			return;
+		} else if (getCurrentQuadrantY() < 0) {
+			current_quadrant_y = current_temp;
+			return;
+		}
 	}
 	
+	//Get the current quadrant in the x index
+	public static int getCurrentQuadrantX() {		
+		return (int) current_quadrant_x;
+	}
+	
+	//Get the current quadrant in the y index
+	public static int getCurrentQuadrantY() {
+		return (int) current_quadrant_y;
+	}
+	
+	//Get the quadrant width
 	public static int getQuadrantWidth() {
 		return quadrant_count_width;
+	}
+	
+	//Get the coordinate shift to the X
+	public static int getCoordinateShiftX() {
+		return (int)(getCurrentQuadrantX() * 480);
+	}
+	
+	//Get the coordinate shift to the Y
+	public static int getCoordinateShiftY() {
+		return (int)(getCurrentQuadrantY() * 480);
 	}
 	
 	//Add a texture to the textures hashmap
 	public static void AddTexture(String filename, int GID) {
 		Texture texture = null;
 		
+		//Read the texture object from the string
 		try {
 			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(filename));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		//Put the tile into the textures HashMap
 		if (texture != null) textures.put(GID, texture);
 		else System.out.println("Texture is null, unable to add to array");
 	}
@@ -86,6 +128,8 @@ public class Map {
 	//Load map file
 	private static void LoadMapFile(String filename) { 
 		Scanner textReader = null;
+		
+		//Read the file from the filesystem
 		try {
 			textReader = new Scanner(new File(filename));
 		} catch (FileNotFoundException e) {
@@ -94,6 +138,8 @@ public class Map {
 		
 		width = textReader.nextInt();
 		height = textReader.nextInt();
+		
+		System.out.println(width + ", " + height);
 		
 		tileSize = textReader.nextInt();
 		

@@ -40,7 +40,7 @@ public class Sprite {
 	}
 	
 	//Render the sprite
-	public void Draw() {
+	public void Draw() {		
 		Renderer.RenderTexturedRectangle(x, y, w, h, texture, texX, texY, texW, texH);
 	}
 	
