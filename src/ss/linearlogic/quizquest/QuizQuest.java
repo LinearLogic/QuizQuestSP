@@ -48,6 +48,12 @@ public class QuizQuest {
 	//Create a mainloop to handle rendering and logic
 	public void MainLoop() {
 	
+		Map.Initialize("map.txt");
+		Map.AddTexture("Door.png", 1);
+		Map.AddTexture("Grass.png", 0);
+		Map.AddTexture("Wall.png", 2);
+		Map.AddTexture("Roof.png", 3);
+		
 		while (running) {
 			//Close application when close is requested or escape key is pressed
 			running = !Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
@@ -58,7 +64,7 @@ public class QuizQuest {
 			//Game rendering/logic area
 			glClear(GL_COLOR_BUFFER_BIT);
 			
-			Renderer.RenderRectangle(0, 0, 32, 32);
+			Map.Render();
 			
 			//Update the display
 			Display.update();

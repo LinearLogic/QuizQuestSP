@@ -29,6 +29,10 @@ public class Map {
 	public static void Render() {
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
+				Renderer.RenderTexturedRectangle(x * tileSize, y * tileSize, tileSize, tileSize, textures.get(0));
+				if (map[x][y] == 0)
+					continue;
+				
 				Renderer.RenderTexturedRectangle(x * tileSize, y * tileSize, tileSize, tileSize, textures.get(map[x][y]));
 			}
 		}
