@@ -19,7 +19,7 @@ public class Map {
 	private static int width;
 	private static int height;
 	
-	private static final int quadrant_count_width = 2;
+	private static int quadrant_count_width = 3;
 	private static int current_quadrant_x = 0;
 	private static int current_quadrant_y = 0;
 	
@@ -139,8 +139,10 @@ public class Map {
 		width = textReader.nextInt();
 		height = textReader.nextInt();
 		
-		System.out.println(width + ", " + height);
-		
+		//The next two ints are only required by the map editor
+		quadrant_count_width = textReader.nextInt();
+		textReader.nextInt();
+				
 		tileSize = textReader.nextInt();
 		
 		map = new int[width][height];

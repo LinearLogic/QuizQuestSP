@@ -54,8 +54,8 @@ public class QuizQuest {
 		Map.Initialize("map.txt");
 		Map.AddTexture("Door.png", 1);
 		Map.AddTexture("Grass.png", 0);
-		Map.AddTexture("Wall.png", 2);
-		Map.AddTexture("Roof.png", 3);
+		Map.AddTexture("Wall.png", 3);
+		Map.AddTexture("Roof.png", 2);
 		
 		Player.Initialize(100, 100, "Door.png");
 		
