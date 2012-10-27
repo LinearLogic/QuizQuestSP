@@ -3,9 +3,8 @@ package ss.linearlogic.quizquest.item;
 import ss.linearlogic.quizquest.entity.Door;
 
 /**
- * Represents a Key item
- * <p />
- * Each Key item corresponds with a unique Door entity, which the key unlocks when used.
+ * Represents a Key item. When used, the key attempts to unlock the supplied Door entity.
+ * It only succeeds if the key and door share the same lockID.
  */
 public class Key extends Item {
 	
@@ -41,20 +40,20 @@ public class Key extends Item {
 	}
 	
 	/**
-	 * Attempts to unlock a door and reduces the key count by one if successful.
+	 * Attempts to unlock the specified door and reduces the key count by one if successful.
 	 * <p />
-	 * Attempts to open the door the player is nearest to (facing, eventually) by calling the Door.open(int) method ({@link Door#open(int)})
+	 * Attempts to open the door the supplied Door entity by calling the {@link Door#open(int)} method
 	 * with the key's lockID as input. If the method returns true, they key count is reduced by 1.
+	 * 
+	 * @param door The door to attempt to open using the key
 	 */
-	public void use() {
-		Door d = new Door(); // TODO: replace this line with code to get the appropriate (nearest? facing?) door
-		if (d.open(this.lockID)) { // door was successfully unlocked and opened, decrease the key count
+	public void use(Door door) {
+		if (door.open(this.lockID)) { // door was successfully unlocked and opened, decrease the key count
 			setCount(getCount() - 1);
 			// inform player that door was successfully opened
 			return;
 		}
 		// inform player that the door could not be opened
-		
 	}
 	
 	/**

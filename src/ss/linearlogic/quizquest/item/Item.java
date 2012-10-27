@@ -1,11 +1,9 @@
 package ss.linearlogic.quizquest.item;
 
 /**
- * Item superclass
- * <p />
- * Represents an item that can be stored in the player's inventory and then used
+ * Item superclass - represents an item that can be stored in the player's inventory and used to achieve various effects.
  */
-public abstract class Item {
+public class Item {
 
 	/**
 	 * Name of the type of item (eg. "Key", "Spell")
@@ -54,14 +52,6 @@ public abstract class Item {
 	}
 	
 	/**
-	 * Executes the run method defined in each Item subclass.
-	 * <p />
-	 * This abstract method is defined in full in each Item subclass, as each operates in a unique manner.
-	 * All forms of the use() method will, however, decrease the item's count by 1.
-	 */
-	public abstract void use();
-	
-	/**
 	 * Returns the item type
 	 * 
 	 * @return Item type (a string)
@@ -69,16 +59,16 @@ public abstract class Item {
 	public String getType() { return this.type; }
 	
 	/**
-	 * Returns the item typeID
+	 * Returns the item's typeID
 	 * 
-	 * @return Item typeID (an integer, 1-3)
+	 * @return typeID The item's typeID (an integer, 1-3)
 	 */
 	public int getTypeID() { return this.typeID; }
 	
 	/**
 	 * Returns the number of times the specific item can be used
 	 * 
-	 * @return Item count (an integer)
+	 * @return count Item count (an integer)
 	 */
 	public int getCount() { return this.count; }
 	
