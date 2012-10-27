@@ -60,7 +60,7 @@ public class QuizQuest {
 		
 		while (running) {
 			//Close application when close is requested or escape key is pressed
-			running = !Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
+			running = !Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 				
 			startTime = getTime();
 			deltaTime = startTime - endTime;
