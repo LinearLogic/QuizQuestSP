@@ -10,8 +10,11 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+import ss.linearlogic.quizquest.entity.Entity;
+
 public class Map {
 	private static int map[][];
+	private static Entity entityMap[][];
 	
 	//Dimensions of the map
 	private static int width;
@@ -149,6 +152,13 @@ public class Map {
 		}
 		
 		textReader.close();
+	}
+	
+	public static void removeEntity(int x, int y) {
+		if (map[x][y] != 0)
+			map[x][y] = 0;
+		if (entityMap[x][y] != null)
+			entityMap[x][y] = null;
 	}
 	
 	//Use method to parse the file and get the objects out, so you know where the objects are
