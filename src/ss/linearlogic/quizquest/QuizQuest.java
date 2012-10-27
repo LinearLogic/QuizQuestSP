@@ -61,7 +61,7 @@ public class QuizQuest {
 		
 		Textbox.InitializeWithSystemFont();
 		
-		Textbox.setQuestion("What is the square root of 64");
+		Textbox.setQuestion("What is the square root of 64,\nyou must answer this question to start the game!");
 		Textbox.addAnswer("2");
 		Textbox.addAnswer("3");
 		Textbox.addAnswer("4");
@@ -86,6 +86,8 @@ public class QuizQuest {
 			if (Textbox.isAnswerCorrect()) {
 				Textbox.toggleActive();
 				Textbox.reset();
+				
+				System.out.println("Answer is correct!!");
 			}
 			
 			Textbox.render();

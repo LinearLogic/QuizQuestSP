@@ -1,13 +1,16 @@
 package ss.linearlogic.quizquest;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.TrueTypeFont;
 
 public class Textbox {
 	//The question string along with the font
-	private static String string;
+	private static ArrayList<String>questionLines = new ArrayList<String>();
+	private static final int max_line_count = 4;
+	
 	private static TrueTypeFont font;
 	
 	//The position of the textbox
@@ -50,7 +53,7 @@ public class Textbox {
 	
 	//Initialize without using a custom font
 	public static void InitializeWithSystemFont() {
-		font = Renderer.LoadSystemFont("Times New Roman", 12);
+		font = Renderer.LoadSystemFont("SansSerif", 10);
 		
 		if (font == null) System.out.println("Font is null");
 		
@@ -104,7 +107,17 @@ public class Textbox {
 	
 	//Set the current question
 	public static void setQuestion(String question) {
-		string = question;
+		StringTokenizer tokenizer = new StringTokenizer(question, "\n");
+		int counter = 0;
+		
+		while (tokenizer.hasMoreTokens()) {
+			if (counter > max_line_count) 
+				break;
+			
+			questionLines.add(tokenizer.nextToken());
+			
+			counter++;
+		}
 	}
 	
 	//Get the current selection of the cursor
@@ -160,7 +173,7 @@ public class Textbox {
 		
 		active = false;
 		answers.clear();
-		string = "";
+		questionLines.clear();
 	}
 	
 	//Render the text box
@@ -169,8 +182,11 @@ public class Textbox {
 			
 		//Render the rectangle with the question
 		Renderer.RenderColoredRectangle(x, y, width, height, 0.0f, 0.0f, 0.7f);		
-		Renderer.RenderString(string, x, y, font);
 		
+		for (int i = 0; i < questionLines.size(); ++i) {
+			Renderer.RenderString(questionLines.get(i), x + 10, y + (font.getHeight() * i), font);
+		}
+				
 		//Render the selection rectangle
 		Renderer.RenderTransparentRectangle((20 + (current_selection * 100)) - 5, 445, (font.getWidth(letters.charAt(current_selection) + ": " + answers.get(current_selection))) + 10, font.getHeight() + 10);
 		
