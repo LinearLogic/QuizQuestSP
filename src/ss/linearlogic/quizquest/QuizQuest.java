@@ -12,7 +12,7 @@ public class QuizQuest {
 	
 	private static boolean running = true;
 	
-	private final int screen_width = 640;
+	private final int screen_width = 480;
 	private final int screen_height = 480;
 	
 	private long startTime = 0;
@@ -57,6 +57,8 @@ public class QuizQuest {
 			
 			//Game rendering/logic area
 			glClear(GL_COLOR_BUFFER_BIT);
+			
+			Renderer.RenderRectangle(0, 0, 32, 32);
 			
 			//Update the display
 			Display.update();
