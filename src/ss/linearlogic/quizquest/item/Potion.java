@@ -47,17 +47,6 @@ public class Potion extends Item {
 	}
 	
 	/**
-	 * Increases the player's health by the healthToRestore value ({@link #healthToRestore}) of the potion, and decrements the potion item count.
-	 * This constructor version will enable multiplayer handling. Currently written to work with single-player only.
-	 * 
-	 * @param player The player whose health to restore using the potion
-	 */
-	public void use(Player player) {
-		player.setHealth(Player.getHealth() + this.healthToRestore);
-		setCount(getCount() - 1);
-	}
-	
-	/**
 	 * Returns the amount of health the potion restores on use.
 	 * 
 	 * @return The healthToRestore value ({@link #healthToRestore}) of the potion
