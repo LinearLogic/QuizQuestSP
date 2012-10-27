@@ -6,7 +6,7 @@ import ss.linearlogic.quizquest.entity.Entity;
 public class Enemy extends Entity {
 
 	public Enemy() {
-		super(2);
+		super(4);
 	}
 
 }

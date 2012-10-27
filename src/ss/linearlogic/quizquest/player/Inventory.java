@@ -1,4 +1,4 @@
-package ss.linearlogic.quizquest.etc;
+package ss.linearlogic.quizquest.player;
 
 import ss.linearlogic.quizquest.item.Item;
 

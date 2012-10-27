@@ -1,6 +1,6 @@
 package ss.linearlogic.quizquest.item;
 
-import ss.linearlogic.quizquest.entity.Player;
+import ss.linearlogic.quizquest.player.Player;
 
 /**
  * Represents a potion item. When used, potions restore a set amount of health to the player.

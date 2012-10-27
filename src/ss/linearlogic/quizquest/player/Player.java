@@ -1,4 +1,4 @@
-package ss.linearlogic.quizquest.entity;
+package ss.linearlogic.quizquest.player;
 
 import org.lwjgl.input.Keyboard;
 

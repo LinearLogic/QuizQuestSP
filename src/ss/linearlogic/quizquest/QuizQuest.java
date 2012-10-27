@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import ss.linearlogic.quizquest.entity.Player;
+import ss.linearlogic.quizquest.player.Player;
 
 import static org.lwjgl.opengl.GL11.*;
 
