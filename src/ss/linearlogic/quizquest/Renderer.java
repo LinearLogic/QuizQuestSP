@@ -12,12 +12,26 @@ import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class Renderer {
-	//Render a white rectangle
+	
+	/**
+	 * Render a white rectangle of the supplied dimensions at the supplied location
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param w Width of the rectangle, in pixels
+	 * @param h Height of the rectangle, in pixels
+	 */
 	public static void renderRectangle(double x, double y, 
 			double w, double h) {
 		renderColoredRectangle(x, y, w, h, 1.0, 1.0, 1.0);
 	}
 	
+	/**
+	 * Render a transparent rectangle of the supplied dimensions at the supplied location
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param w Width of the rectangle, in pixels
+	 * @param h Height of the rectangle, in pixels
+	 */
 	public static void renderTransparentRectangle(double x, double y, 
 			double w, double h) {
 		glDisable(GL_TEXTURE_2D);
@@ -34,7 +48,16 @@ public class Renderer {
 		glEnable(GL_TEXTURE_2D);
 	}
 	
-	//Render a colored rectangle
+	/**
+	 * Render a colored rectangle of the supplied dimensions and color at the supplied location
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param w Width of the rectangle, in pixels
+	 * @param h Height of the rectangle, in pixels
+	 * @param r Red intensity
+	 * @param g Green intensity
+	 * @param b Blue intensity
+	 */
 	public static void renderColoredRectangle(double x, double y, 
 			double w, double h, 
 			double r, double g, 
@@ -53,15 +76,32 @@ public class Renderer {
 		glEnable(GL_TEXTURE_2D);
 	}
 	
-	//Render a rectangle with a texture object
+	/**
+	 * Render a rectangle with a texture object
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param w Width of the rectangle, in pixels
+	 * @param h Height of the rectangle, in pixels
+	 * @param texture The texture object with which to fill the rectangle
+	 */
 	public static void renderTexturedRectangle(double x, double y,
 			double w, double h, 
 			Texture texture) {
 		renderTexturedRectangle(x, y, w, h, texture, 0.0, 0.0, 1.0, 1.0);
 	}
 	
-	//Draw a textured rectangle with a texture object
-	//along with texture coordinates on the texture.
+	/**
+	 * Render a rectangle with a texture object and the location and dimensions of the texture
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param w Width of the rectangle, in pixels
+	 * @param h Height of the rectangle, in pixels
+	 * @param texture The texture object with which to fill the rectangle
+	 * @param texX X-coordinate of the top lefthand corner of the texture (pixel location)
+	 * @param texY Y-coordinate of the top lefthand corner of the texture (pixel location)
+	 * @param texW Width of the texture, in pixels
+	 * @param texH Height of the texture, in pixels
+	 */
 	public static void renderTexturedRectangle(double x, double y,
 			double w, double h,
 			Texture texture,
@@ -87,24 +127,47 @@ public class Renderer {
 		glDisable(GL_TEXTURE_2D);
 	}
 	
-	//Render a string in white
+	/**
+	 * Render a string in black
+	 * @param string The contents of the string
+	 * @param x X-coordinate of the top lefthand corner of the string (pixel location)
+	 * @param y Y-coordinate of the top lefthand corner of the string (pixel location)
+	 * @param font Font type of the string
+	 */
 	public static void renderString(String string, double x, double y, TrueTypeFont font) {		
 		renderString(string, x, y, font, Color.black);
 	}
 	
-	//Render a string with color
-	public static void renderString(String string, double x, double y, TrueTypeFont font, Color colr) {
+	/**
+	 * Render a string in the color supplied
+	 * @param string The contents of the string
+	 * @param x X-coordinate of the top lefthand corner of the string (pixel location)
+	 * @param y Y-coordinate of the top lefthand corner of the string (pixel location)
+	 * @param font Font type of the string
+	 * @param color The color in which to display the string
+	 */
+	public static void renderString(String string, double x, double y, TrueTypeFont font, Color color) {
 		TextureImpl.bindNone();
 		font.drawString((int)x, (int)y, string, Color.yellow);
 	}
 	
-	
+	/**
+	 * Load a TrueType system font with provided font type and size
+	 * @param systemFont
+	 * @param fontSize
+	 * @return The TrueTypeFont loaded
+	 */
 	public static TrueTypeFont loadSystemFont(String systemFont, int fontSize) {
 		Font awtFont = new Font(systemFont, Font.BOLD, fontSize);
 		return new TrueTypeFont(awtFont, true);
 	}
 	
-	//Load a ttf font file
+	/**
+	 * Load a TrueType font from a .ttf file
+	 * @param fontFile The name of the .ttf file
+	 * @param fontSize The size of the font
+	 * @return The TrueTypeFont loaded
+	 */
 	public static TrueTypeFont loadFont(String fontFile, int fontSize) { 
 		Font fnt = null;
 		
