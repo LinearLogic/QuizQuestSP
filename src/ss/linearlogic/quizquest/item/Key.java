@@ -30,9 +30,9 @@ public class Key extends Item {
 	 * Complete constructor
 	 * <p />
 	 * Constructs the Item superclass with the typeID of the Key item (1) and the supplied item count value.
-	 * Also sets the lockID ({@link #lockID}) to the supplied value.
+	 * Also sets the lockID to the supplied value.
 	 * 
-	 * @param lockID
+	 * @param lockID The key's lockID ({@link #lockID})
 	 * @param count
 	 */
 	public Key(int lockID, int count) {

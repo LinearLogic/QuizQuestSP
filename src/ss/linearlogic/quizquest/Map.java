@@ -19,7 +19,7 @@ public class Map {
 	private static int width;
 	private static int height;
 	
-	private static final int quadrant_count = 9;
+	private static final int quadrant_count_width = 3;
 	private static int current_quadrant = 0;
 	
 	private static HashMap<Integer, Texture> textures = new HashMap(); //Hashmap of all the textures
@@ -37,10 +37,12 @@ public class Map {
 	public static void Render() {
 		//Get the players position
 		
-		int start_coordinate_x = (int)((current_quadrant % Math.sqrt(quadrant_count)) * 20);
-		int start_coordinate_y = ((int)(current_quadrant / Math.sqrt(quadrant_count)) * 20);
+		//System.out.println("Quadrant string: " + (current_quadrant) );
 		
-		System.out.println(start_coordinate_x + ", " + start_coordinate_y);
+		int start_coordinate_x = ((int)(current_quadrant % quadrant_count_width) * 20);
+		int start_coordinate_y = ((int)(current_quadrant / quadrant_count_width) * 20);
+		
+		//System.out.println(start_coordinate_x + ", " + start_coordinate_y);
 		
 		for (int x = start_coordinate_x; x < (start_coordinate_x + (19)); ++x) {
 			for (int y = start_coordinate_y; y < (start_coordinate_y + (19)); ++y) {
@@ -55,9 +57,7 @@ public class Map {
 		}
 	}
 	
-	public static void setCurrentQuadrant(int quad) {
-		System.out.println(quad);
-		
+	public static void setCurrentQuadrant(int quad) {		
 		current_quadrant = quad;
 	}
 	
@@ -66,7 +66,7 @@ public class Map {
 	}
 	
 	public static int getQuadrantWidth() {
-		return (int)Math.sqrt(quadrant_count);
+		return quadrant_count_width;
 	}
 	
 	//Add a texture to the textures hashmap
