@@ -56,11 +56,17 @@ public class QuizQuest {
 		Map.AddTexture("Wall.png", 2);
 		Map.AddTexture("Roof.png", 3);
 		
-		Player.Initialize(0, 0, "Door.png");
+		Player.Initialize(100, 100, "Door.png");
+		
+		Textbox.InitializeWithSystemFont();
+		Textbox.setText("Hello world");
 		
 		while (running) {
 			//Close application when close is requested or escape key is pressed
 			running = !Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
+			running = !Display.isCloseRequested();
+			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+				break;
 				
 			startTime = getTime();
 			deltaTime = startTime - endTime;
@@ -71,6 +77,8 @@ public class QuizQuest {
 			Map.Render();
 			Player.Update();
 			Player.Render();
+			
+			Textbox.render();
 			
 			//Update the display
 			Display.update();

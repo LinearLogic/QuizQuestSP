@@ -14,14 +14,7 @@ public class Renderer {
 	//Render a white rectangle
 	public static void RenderRectangle(double x, double y, 
 			double w, double h) {
-		glColor3f(1.0f, 1.0f, 1.0f);
-		
-		glBegin(GL_TRIANGLE_FAN);
-			glVertex2d(x, y);
-			glVertex2d(x + w, y);
-			glVertex2d(x + w, y + h);
-			glVertex2d(x, y + h);
-		glEnd();
+		RenderColoredRectangle(x, y, w, h, 1.0, 1.0, 1.0);
 	}
 	
 	//Render a colored rectangle
@@ -29,6 +22,8 @@ public class Renderer {
 			double w, double h, 
 			double r, double g, 
 			double b) {
+		glDisable(GL_TEXTURE_2D);
+		
 		glColor3d(r, g, b);
 		
 		glBegin(GL_TRIANGLE_FAN);
@@ -37,6 +32,8 @@ public class Renderer {
 			glVertex2d(x + w, y + h);
 			glVertex2d(x, y + h);
 		glEnd();
+		
+		glEnable(GL_TEXTURE_2D);
 	}
 	
 	//Render a rectangle with a texture object
@@ -54,6 +51,9 @@ public class Renderer {
 			double texX, double texY, 
 			double texW, double texH) {
 		glEnable(GL_TEXTURE_2D);
+		
+		glColor3d(1.0, 1.0, 1.0);
+		
 		glBindTexture(GL_TEXTURE_2D, texture.getTextureID());
 		
 		glBegin(GL_TRIANGLE_STRIP);
@@ -71,13 +71,24 @@ public class Renderer {
 	}
 	
 	//Render a string in white
-	public static void RenderString(String string, double x, double y, TrueTypeFont font) {
-		RenderString(string, x, y, font, Color.white);
+	public static void RenderString(String string, double x, double y, TrueTypeFont font) {		
+		RenderString(string, x, y, font, Color.black);
 	}
 	
 	//Render a string with color
 	public static void RenderString(String string, double x, double y, TrueTypeFont font, Color colr) {
+		glDisable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+				
 		font.drawString((int)x, (int)y, string, colr);
+		
+		glEnable(GL_TEXTURE_2D);
+	}
+	
+	
+	public static TrueTypeFont LoadSystemFont(String systemFont, int fontSize) {
+		Font awtFont = new Font(systemFont, Font.PLAIN, fontSize);
+		return new TrueTypeFont(awtFont, false);
 	}
 	
 	//Load a ttf font file
@@ -91,6 +102,8 @@ public class Renderer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		if (fnt == null) System.out.println("Unable to load font");
 		
 		return new TrueTypeFont(fnt, false);
 	}

@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import ss.linearlogic.quizquest.Map;
 import ss.linearlogic.quizquest.Sprite;
+import ss.linearlogic.quizquest.Textbox;
 
 public class Player {
 	
@@ -35,6 +36,7 @@ public class Player {
 	
 	private final static double speed_constant = 5.0;
 	
+	//Coordinates of the player in the world, not for rendering
 	private static int world_coordinates_x = 0;
 	private static int world_coordinates_y = 0;
 	
@@ -53,10 +55,12 @@ public class Player {
 		speed_y = 0;
 		
 		//Check the keys that are being pressed which determine the player movement
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) speed_y = -speed_constant;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) speed_y = speed_constant;
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) speed_x = -speed_constant;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) speed_x = speed_constant;
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP) && !Textbox.isActive()) speed_y = -speed_constant;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Textbox.isActive()) speed_y = speed_constant;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Textbox.isActive()) speed_x = -speed_constant;
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Textbox.isActive()) speed_x = speed_constant;
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) Textbox.toggleActive();
 		
 		//Handle if the player goes to another quadrant
 		handleOffscreen();
@@ -64,52 +68,61 @@ public class Player {
 		//Set the position of the sprite(Player)
 		setPosition((int)(world_coordinates_x + speed_x), (int)(world_coordinates_y + speed_y));
 		sprite.setPosition(world_coordinates_x - (Map.getCoordinateShiftX()), world_coordinates_y - (Map.getCoordinateShiftY()));
-		
-		System.out.println(world_coordinates_x + ", " + world_coordinates_y);
 	}
 	
+	//Set the world coordinates
 	public static void setPosition(int x, int y) {
 		world_coordinates_x = x;
 		world_coordinates_y = y;
 	}
 	
+	//Get the world coordinates
 	public static int getWorldX() {
 		return world_coordinates_x;
 	}
 	
+	//Get the world coordinates
 	public static int getWorldY() {
 		return world_coordinates_y;
 	}
 	
-	private static void handleOffscreen() {		
+	private static void handleOffscreen() {	
+		//Check if player is out of the world on the left
 		if (getWorldX() < 0) { speed_x = 5; return; }
 		if (getWorldY() < 0) { speed_y = 5; return; }
 		
+		//Check if player is out of the world on the right
 		if (getWorldX() + getWidth() > (480 * Map.getQuadrantWidth())) { speed_x = -speed_constant; return; }
 		if (getWorldY() + getHeight() > (480 * Map.getQuadrantWidth())) { speed_y = -speed_constant; return; }
 		
+		//Check if the player can move to another quadrant
 		if (getWorldX() > (480 * (Map.getCurrentQuadrantX() + 1))) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() + 1);
 		if (getWorldY() > (480 * (Map.getCurrentQuadrantY() + 1))) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() + 1);
 		if (getWorldX() < (480 * Map.getCurrentQuadrantX())) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() - 1);
 		if (getWorldY() < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
 	}
 	
+	//Get the player's rendering position X
 	public static int getX() {
 		return sprite.getX();
 	}
 	
+	//Get the player's rendering position Y
 	public static int getY() {
 		return sprite.getY();
 	}
 	
+	//Get the player's width
 	public static int getWidth() {
 		return sprite.getTextureWidth();
 	}
 	
+	//Get the players height
 	public static int getHeight() {
 		return sprite.getTextureHeight();
 	}
 	
+	//Draw the player
 	public static void Render() {
 		sprite.Draw();
 	}
