@@ -82,11 +82,20 @@ public class QuizQuest {
 			
 			Textbox.update();
 			
-			if (Textbox.isAnswerCorrect()) {
-				Textbox.toggleActive();
-				Textbox.reset();
+			switch(Textbox.isAnswerCorrect()) {
+				case 0: // incorrect answer has been provided
+					Textbox.setAnswerCorrect(-1); // reset the question's status to unanswered so the player can try again. Will be removed if player is only permitted one answer.
+					System.out.println("WRONG!");
+					// additional handling here
+					break;
+				case 1: // correct answer has been provided
+					Textbox.toggleActive();
+					Textbox.reset();
+					System.out.println("Answer is correct!!");
+					// additional handling here	
+				default: // no answer has been provided
+					break;
 				
-				System.out.println("Answer is correct!!");
 			}
 			
 			Textbox.render();

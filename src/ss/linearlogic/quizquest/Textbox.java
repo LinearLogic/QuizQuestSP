@@ -34,7 +34,7 @@ public class Textbox {
 	//The correct answer index
 	private static int correctIndex = -1;
 	
-	private static boolean answerCorrect = false;
+	private static int answerCorrect = -1;
 	
 	private static boolean keyLifted = true;
 	
@@ -101,8 +101,14 @@ public class Textbox {
 	}
 	
 	//Checks the flag to see if the answer is correct
-	public static boolean isAnswerCorrect() {
+	public static int isAnswerCorrect() {
 		return answerCorrect;
+	}
+	
+	//Sets the value of answerCorrect to the supplied variable.
+	//Used to reset the question's status to "unanswered" (by setting answerCorrect to an int value other than 1 or 0)
+	public static void setAnswerCorrect(int correct) {
+		answerCorrect = correct;
 	}
 	
 	//Set the current question
@@ -133,30 +139,38 @@ public class Textbox {
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) { current_selection -= 1; keyLifted = false; }
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && keyLifted) { current_selection += 1; keyLifted = false; }
-		
-		// if all keys have been released, set keyLifted to true to re-enable scrolling through selections
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) keyLifted = true;
-		
-		//Use the numbers to correspond for answers
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_1)) current_selection = 0;
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_2)) current_selection = 1;
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_3)) current_selection = 2;
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_4)) current_selection = 3;
-		
-		//Use the letters to correspond for answers
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_A)) current_selection = 0;
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_B)) current_selection = 1;
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_C)) current_selection = 2;
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_D)) current_selection = 3;
-		
-		//When user pressed the enter key, checks to see if the user is correct
-		if (active && Keyboard.isKeyDown(Keyboard.KEY_RETURN)) if (checkIfCorrect()) answerCorrect = true;
-				
-		//Provide wrap around
-		if (current_selection > 3) current_selection = 0;
-		if (current_selection < 0) current_selection = 3;
+		if (active) {
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) keyLifted = true;
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) { current_selection -= 1; keyLifted = false; }
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && keyLifted) { current_selection += 1; keyLifted = false; }
+			
+			// if all keys have been released, set keyLifted to true to re-enable scrolling through selections
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) keyLifted = true;
+			
+			//Use the numbers to correspond for answers
+			if (Keyboard.isKeyDown(Keyboard.KEY_1)) current_selection = 0;
+			if (Keyboard.isKeyDown(Keyboard.KEY_2)) current_selection = 1;
+			if (Keyboard.isKeyDown(Keyboard.KEY_3)) current_selection = 2;
+			if (Keyboard.isKeyDown(Keyboard.KEY_4)) current_selection = 3;
+			
+			//Use the letters to correspond for answers
+			if (Keyboard.isKeyDown(Keyboard.KEY_A)) current_selection = 0;
+			if (Keyboard.isKeyDown(Keyboard.KEY_B)) current_selection = 1;
+			if (Keyboard.isKeyDown(Keyboard.KEY_C)) current_selection = 2;
+			if (Keyboard.isKeyDown(Keyboard.KEY_D)) current_selection = 3;
+			
+			//When user pressed the enter key, checks to see if the user is correct
+			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
+				keyLifted = false;
+				if (checkIfCorrect()) answerCorrect = 1;
+				else answerCorrect = 0;
+			}
+					
+			//Provide wrap around
+			if (current_selection > 3) current_selection = 0;
+			if (current_selection < 0) current_selection = 3;
+		}
 	}
 	
 	//Checks to see if the current selection is equal to the correct index
@@ -168,7 +182,7 @@ public class Textbox {
 	public static void reset() {
 		current_selection = 0;
 		correctIndex = -1;
-		answerCorrect = false;
+		answerCorrect = -1;
 		
 		active = false;
 		answers.clear();
