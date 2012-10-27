@@ -19,12 +19,14 @@ public class QuizQuest {
 	private long endTime = 0;
 	private long deltaTime = 0;
 	
+	//Constructor for game object
 	public QuizQuest() {
 		InitializeOpenGL(screen_width, screen_height);
 		MainLoop();
 		DestroyOpenGL();
 	}
 	
+	//Initialize the window along with the opengl aspects
 	public void InitializeOpenGL(int width, int height) {
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
@@ -38,10 +40,16 @@ public class QuizQuest {
 		glLoadIdentity();
 		glOrtho(0, width, height, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
+		
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
+	//Create a mainloop to handle rendering and logic
 	public void MainLoop() {
+	
 		while (running) {
+			//Close application when close is requested or escape key is pressed
 			running = !Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 				
 			startTime = getTime();
@@ -49,8 +57,8 @@ public class QuizQuest {
 			
 			//Game rendering/logic area
 			glClear(GL_COLOR_BUFFER_BIT);
-			Renderer.RenderRectangle(10, 10, 20, 20);
 			
+			//Update the display
 			Display.update();
 			Display.sync(60);
 			
@@ -58,14 +66,17 @@ public class QuizQuest {
 		}
 	}
 	
+	//Destroy the opengl context
 	public void DestroyOpenGL() {
 		Display.destroy();
 	}
 	
+	//Main static method, entry point
 	public static void main(String[] args) {
 		new QuizQuest();
 	}
 
+	//Get the current time in millis from the system
 	private long getTime() {
 		return (long)(1000 * Sys.getTime() / Sys.getTimerResolution());
 	}
