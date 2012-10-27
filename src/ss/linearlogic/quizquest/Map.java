@@ -10,12 +10,17 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+import ss.linearlogic.quizquest.entity.Player;
+
 public class Map {
 	private static int map[][];
 	
 	//Dimensions of the map
 	private static int width;
 	private static int height;
+	
+	private static final int quadrant_count = 9;
+	private static int current_quadrant = 0;
 	
 	private static HashMap<Integer, Texture> textures = new HashMap(); //Hashmap of all the textures
 	
@@ -30,8 +35,15 @@ public class Map {
 	
 	//Render the current map
 	public static void Render() {
-		for (int x = 0; x < width; ++x) {
-			for (int y = 0; y < height; ++y) {
+		//Get the players position
+		
+		int start_coordinate_x = (int)((current_quadrant % Math.sqrt(quadrant_count)) * 20);
+		int start_coordinate_y = ((int)(current_quadrant / Math.sqrt(quadrant_count)) * 20);
+		
+		System.out.println(start_coordinate_x + ", " + start_coordinate_y);
+		
+		for (int x = start_coordinate_x; x < (start_coordinate_x + (19)); ++x) {
+			for (int y = start_coordinate_y; y < (start_coordinate_y + (19)); ++y) {
 				//2 Layers of rendering, the base layer being the grass and the top layer being the objects like doors and walls, etc.
 				
 				Renderer.RenderTexturedRectangle(x * tileSize, y * tileSize, tileSize, tileSize, textures.get(0));
@@ -41,6 +53,20 @@ public class Map {
 				Renderer.RenderTexturedRectangle(x * tileSize, y * tileSize, tileSize, tileSize, textures.get(map[x][y]));
 			}
 		}
+	}
+	
+	public static void setCurrentQuadrant(int quad) {
+		System.out.println(quad);
+		
+		current_quadrant = quad;
+	}
+	
+	public static int getCurrentQuadrant() {
+		return current_quadrant;
+	}
+	
+	public static int getQuadrantWidth() {
+		return (int)Math.sqrt(quadrant_count);
 	}
 	
 	//Add a texture to the textures hashmap

@@ -6,6 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import ss.linearlogic.quizquest.entity.Player;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class QuizQuest {
@@ -54,6 +56,8 @@ public class QuizQuest {
 		Map.AddTexture("Wall.png", 2);
 		Map.AddTexture("Roof.png", 3);
 		
+		Player.Initialize(0, 0, "Door.png");
+		
 		while (running) {
 			//Close application when close is requested or escape key is pressed
 			running = !Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
@@ -65,6 +69,8 @@ public class QuizQuest {
 			glClear(GL_COLOR_BUFFER_BIT);
 			
 			Map.Render();
+			Player.Update();
+			Player.Render();
 			
 			//Update the display
 			Display.update();
