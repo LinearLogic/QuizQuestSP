@@ -16,6 +16,7 @@ import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.entity.Floor;
 import ss.linearlogic.quizquest.entity.Grass;
 import ss.linearlogic.quizquest.entity.Wall;
+import ss.linearlogic.quizquest.item.Item;
 
 public class Map {
 	private static int map[][];
@@ -36,9 +37,11 @@ public class Map {
 	public Map(String filename) {}
 	
 	//Initialize the map class
-	public static void initialize(String filename) {
-		loadMapFile(filename);
+	public static void initialize(String filename/*, String entityFilename*/) {
+ 		loadMapFile(filename);
+// 		loadEnemyEntityFile(entityFilename);
 	}
+
 	
 	//Render the current map
 	public static void render() {
@@ -64,14 +67,14 @@ public class Map {
 		}
 	}
 	
+	public static int getWidth() { return width; }
+	
+	public static int getHeight() { return height; }
 	public static void setCurrentQuadrantX(int quad) {
 		int current_temp = current_quadrant_x;
 		current_quadrant_x = quad;
 		
-		if (getCurrentQuadrantX() > getQuadrantWidth()) {
-			current_quadrant_x = current_temp;
-			return;
-		} else if (getCurrentQuadrantX() < 0) {
+		if ((getCurrentQuadrantX() < 0) || (getCurrentQuadrantX() > getQuadrantWidth())) {
 			current_quadrant_x = current_temp;
 			return;
 		}
@@ -111,6 +114,9 @@ public class Map {
 	public static int getCoordinateShiftY() {
 		return (int)(getCurrentQuadrantY() * 480);
 	}
+	
+	//Returns the tilesize (in pixels)
+	public static int getTileSize() { return tileSize; }
 	
 	//Add a texture to the textures hashmap
 	public static void addTexture(String filename, int GID) {
@@ -174,7 +180,6 @@ public class Map {
 				}
 			}
 		}
-		
 		textReader.close();
 	}
 	
@@ -194,4 +199,33 @@ public class Map {
 	public static Entity getEntity(int x, int y) {
 		return entityMap[x][y];
 	}
+	
+	//Do not touch this for the time being
+	/*
+	private static void loadEnemyEntityFile(String filename) {
+		Scanner textReader = null;
+		
+		try {
+			textReader = new Scanner(new File(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		int enemyEntityCount = textReader.nextInt();
+		System.out.println(enemyEntityCount);
+		for (int i = 0; i < enemyEntityCount; ++i) {
+			int maxHealth = textReader.nextInt();
+			int damage = textReader.nextInt();
+			int itemToDrop = textReader.nextInt();
+			Item item = null;
+			if (itemToDrop != 0)
+				item = new Item(itemToDrop, 1);
+			int x = textReader.nextInt();
+			int y = textReader.nextInt();
+			addEntity(new Enemy(maxHealth, damage, item, x, y));
+		}
+		
+		textReader.close();
+	}*/
+
 }
