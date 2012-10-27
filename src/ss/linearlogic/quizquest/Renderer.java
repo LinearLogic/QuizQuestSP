@@ -2,7 +2,13 @@ package ss.linearlogic.quizquest;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Font;
+import java.io.InputStream;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class Renderer {
 	//Render a white rectangle
@@ -62,5 +68,30 @@ public class Renderer {
 		glEnd();
 		
 		glDisable(GL_TEXTURE_2D);
+	}
+	
+	//Render a string in white
+	public static void RenderString(String string, double x, double y, TrueTypeFont font) {
+		RenderString(string, x, y, font, Color.white);
+	}
+	
+	//Render a string with color
+	public static void RenderString(String string, double x, double y, TrueTypeFont font, Color colr) {
+		font.drawString((int)x, (int)y, string, colr);
+	}
+	
+	//Load a ttf font file
+	public static TrueTypeFont LoadFont(String fontFile, int fontSize) { 
+		Font fnt = null;
+		
+		try {
+			InputStream inputStream = ResourceLoader.getResourceAsStream(fontFile);
+			fnt = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+			fnt.deriveFont((float)fontSize);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new TrueTypeFont(fnt, false);
 	}
 }
