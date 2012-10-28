@@ -77,7 +77,7 @@ public class Player {
 		}
 				
 		//Handle if the player goes to another quadrant
-		handleOffscreen();
+		handleOffScreen();
 		
 		//Set the position of the sprite(Player)
 		setPosition((int)(world_coordinates_x + speed_x), (int)(world_coordinates_y + speed_y));
@@ -91,55 +91,55 @@ public class Player {
 	}
 	
 	//Get the world coordinates
-	public static int getWorldX() {
-		return world_coordinates_x;
-	}
+	public static int getWorldX() { return world_coordinates_x; }
 	
 	//Get the world coordinates
-	public static int getWorldY() {
-		return world_coordinates_y;
-	}
+	public static int getWorldY() { return world_coordinates_y; }
 	
-	private static void handleOffscreen() {	
+	private static void handleOffScreen() {	
 		//Check if player is out of the world on the left
-		if (getWorldX() < 0) { speed_x = 5; return; }
-		if (getWorldY() < 0) { speed_y = 5; return; }
+		if (world_coordinates_x - 5 < 0)
+			if (speed_x < 0)
+				speed_x = 0;
+		if (world_coordinates_y - 5 < 0)
+			if (speed_y < 0)
+				speed_y = 0;
 		
 		//Check if player is out of the world on the right
-		if (getWorldX() + getWidth() > (480 * Map.getQuadrantWidth())) { speed_x = -speed_constant; return; }
-		if (getWorldY() + getHeight() > (480 * Map.getQuadrantWidth())) { speed_y = -speed_constant; return; }
+		if (world_coordinates_x + getSpriteWidth() > (480 * Map.getQuadrantWidth()))
+			if (speed_x > 0)
+				speed_x = 0;
+		if (world_coordinates_y + getSpriteHeight() > (480 * Map.getQuadrantWidth()))
+			if (speed_y > 0)
+				speed_y = 0;
 		
 		//Check if the player can move to another quadrant
-		if (getWorldX() > (480 * (Map.getCurrentQuadrantX() + 1))) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() + 1);
-		if (getWorldY() > (480 * (Map.getCurrentQuadrantY() + 1))) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() + 1);
-		if (getWorldX() < (480 * Map.getCurrentQuadrantX())) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() - 1);
-		if (getWorldY() < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
+		if (world_coordinates_x > (480 * (Map.getCurrentQuadrantX() + 1))) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() + 1);
+		if (world_coordinates_y > (480 * (Map.getCurrentQuadrantY() + 1))) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() + 1);
+		if (world_coordinates_x < (480 * Map.getCurrentQuadrantX())) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() - 1);
+		if (world_coordinates_y < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
 	}
 	
 	//Get the player's rendering position X
-	public static int getX() {
-		return sprite.getX();
-	}
+	public static int getSpriteX() { return sprite.getX(); }
 	
 	//Get the player's rendering position Y
-	public static int getY() {
-		return sprite.getY();
-	}
+	public static int getSpriteY() { return sprite.getY(); }
 	
 	//Get the player's width
-	public static int getWidth() {
-		return sprite.getTextureWidth();
-	}
+	public static int getSpriteWidth() { return sprite.getTextureWidth(); }
 	
 	//Get the players height
-	public static int getHeight() {
-		return sprite.getTextureHeight();
-	}
+	public static int getSpriteHeight() { return sprite.getTextureHeight(); }
+	
+	//Returns the entityMap x-coord of the top lefthand corner of the player's sprite
+	public static int getMapX() { return world_coordinates_x/Map.getTileSize(); }
+	
+	//Returns the entityMap y-coord of the top lefthand corner of the player's sprite
+	public static int getMapY() { return world_coordinates_y/Map.getTileSize(); }
 	
 	//Draw the player
-	public static void render() {
-		sprite.draw();
-	}
+	public static void render() { sprite.draw(); }
 	
 	// --- // Non-graphical methods // --- //
 	/**
@@ -172,6 +172,8 @@ public class Player {
 		health = newHealth;
 		if (health > maxHealth)
 			health = maxHealth;
+		if (health < 0)
+			health = 0;
 	}
 	
 	/**
@@ -179,9 +181,7 @@ public class Player {
 	 * 
 	 * @return The maximum health a player can have ({@link #maxHealth})
 	 */
-	public static int getMaxHealth() {
-		return maxHealth;
-	}
+	public static int getMaxHealth() { return maxHealth; }
 	
 	/**
 	 * Sets te player's health cap to the supplied value
@@ -189,6 +189,10 @@ public class Player {
 	 * @param newMaxHealth The value to set the player's maxHealth value to
 	 */
 	public static void setMaxHealth(int newMaxHealth) {
+		if (newMaxHealth <= 0) {
+			System.err.println("Failed to change maxHealth of the Player - new maxHealth value must be greater than zero.");
+			return;
+		}
 		maxHealth = newMaxHealth;
 	}
 	
@@ -197,16 +201,12 @@ public class Player {
 	 * 
 	 * @return the number of lives the Player has remaining ({@link #lives})
 	 */
-	public static int getLives() {
-		return lives;
-	}
+	public static int getLives() { return lives; }
 	
 	/**
 	 * Sets the player's life count to the supplied value
 	 * 
 	 * @param newHealth The value to set the player's life count to
 	 */
-	public static void setLives(int newLives) {
-		lives = newLives;
-	}
+	public static void setLives(int newLives) { lives = newLives; }
 }
