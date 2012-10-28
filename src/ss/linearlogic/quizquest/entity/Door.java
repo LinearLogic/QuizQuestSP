@@ -1,5 +1,6 @@
 package ss.linearlogic.quizquest.entity;
 
+import ss.linearlogic.quizquest.Map;
 import ss.linearlogic.quizquest.entity.Entity;
 
 public class Door extends Entity {
@@ -8,11 +9,6 @@ public class Door extends Entity {
 	 * The value shared by a corresponding key and door.  Any key can open any door that shares its lockID value.
 	 */
 	private int lockID;
-	
-	/**
-	 * Whether the door is open and can be passed through
-	 */
-	private boolean isOpen;
 	
 	/**
 	 * Constructs the Entity superclass using the Door typeID (3), and sets the door's lockID to the supplied value.
@@ -33,17 +29,10 @@ public class Door extends Entity {
 	 */
 	public boolean open(int lockID) {
 		if (this.lockID == lockID) {
-			this.isOpen = true;
+			this.forceOpen();
 			return true;
 		}
 		return false;
-	}
-	
-	/**
-	 * @return Whether the door is open
-	 */
-	public boolean isOpen() {
-		return this.isOpen;
 	}
 	
 	/**
@@ -51,8 +40,8 @@ public class Door extends Entity {
 	 * 
 	 * @param isOpen The boolean state to set {@link #isOpen} to.
 	 */
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
+	public void forceOpen() {
+		Map.addEntity(new Floor(this.getX(), this.getY()));
 	}
 	
 	/**
