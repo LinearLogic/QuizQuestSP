@@ -5,6 +5,8 @@ import org.lwjgl.input.Keyboard;
 import ss.linearlogic.quizquest.Map;
 import ss.linearlogic.quizquest.Sprite;
 import ss.linearlogic.quizquest.Textbox;
+import ss.linearlogic.quizquest.entity.Door;
+import ss.linearlogic.quizquest.entity.Entity;
 
 public class Player {
 	
@@ -79,6 +81,9 @@ public class Player {
 		//Handle if the player goes to another quadrant
 		handleOffScreen();
 		
+		//Handle collisions with objects through which the player cannot pass
+handleCollision();
+		
 		//Set the position of the sprite(Player)
 		setPosition((int)(world_coordinates_x + speed_x), (int)(world_coordinates_y + speed_y));
 		sprite.setPosition(world_coordinates_x - (Map.getCoordinateShiftX()), world_coordinates_y - (Map.getCoordinateShiftY()));
@@ -118,6 +123,84 @@ public class Player {
 		if (world_coordinates_y > (480 * (Map.getCurrentQuadrantY() + 1))) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() + 1);
 		if (world_coordinates_x < (480 * Map.getCurrentQuadrantX())) Map.setCurrentQuadrantX(Map.getCurrentQuadrantX() - 1);
 		if (world_coordinates_y < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
+	}
+	
+	/**
+	 * Makes sure the player cannot move into barrier entities (walls, doors, enemies).
+	 * To sum up what's going on in this method, a virtual rectangle is constructed around the player and the vertices of that
+	 * rectangle are checked for collisions. This fixes a critical movement glitch caused by the previous collision handling system.
+	 */
+	private static void handleCollision() {
+		int mapX = getMapX();
+		int mapY = getMapY();
+		//Check the top lefthand corner of the virtual rectangle around the player sprite
+		if ((mapX > 0) && (mapY > 0)) {
+			int newWorldX = world_coordinates_x - 5;
+			int newWorldY = world_coordinates_y - 5;
+			//Handle the entity to the left
+			Entity e = Map.getEntity(newWorldX/Map.getTileSize(), world_coordinates_y/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_x < 0)
+					speed_x = 0;
+			}
+			//Handle the entity above
+			e = Map.getEntity(world_coordinates_x/Map.getTileSize(), newWorldY/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_y < 0)
+					speed_y = 0;
+			}
+		}
+		//Check the top righthand corner of the virtual rectangle
+		if ((mapX < Map.getWidth() - 2) && (mapY > 0)) {
+			int newWorldX = world_coordinates_x + sprite.getTextureWidth() + 5;
+			int newWorldY = world_coordinates_y - 5;
+			//Handle the entity to the right
+			Entity e = Map.getEntity(newWorldX/Map.getTileSize(), world_coordinates_y/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_x > 0)
+					speed_x = 0;
+			}
+			//Handle the entity above
+			e = Map.getEntity((world_coordinates_x + sprite.getTextureWidth())/Map.getTileSize(), newWorldY/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_y < 0)
+					speed_y = 0;
+			}
+		}
+		//Check the bottom lefthand corner of the virtual rectangle
+		if ((mapX > 0) && (mapY < Map.getHeight() - 2)) {
+			int newWorldX = world_coordinates_x - 5;
+			int newWorldY = world_coordinates_y + sprite.getTextureHeight() + 5;
+			//Handle the entity to the right
+			Entity e = Map.getEntity(newWorldX/Map.getTileSize(), (world_coordinates_y + sprite.getTextureHeight())/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_x < 0)
+					speed_x = 0;
+			}
+			//Handle the entity above
+			e = Map.getEntity(world_coordinates_x/Map.getTileSize(), newWorldY/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_y > 0)
+					speed_y = 0;
+			}
+		}
+		//Check the bottom righthand corner of the virtual rectangle
+		if ((mapX < Map.getWidth() - 2) && (mapY < Map.getHeight() - 2)) {
+			int newWorldX = world_coordinates_x + sprite.getTextureWidth() + 5;
+			int newWorldY = world_coordinates_y + sprite.getTextureHeight() + 5;
+			//Handle the entity to the right
+			Entity e = Map.getEntity(newWorldX/Map.getTileSize(), (world_coordinates_y + sprite.getTextureHeight())/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_x > 0)
+					speed_x = 0;
+			}
+			//Handle the entity above
+			e = Map.getEntity((world_coordinates_x + sprite.getTextureWidth())/Map.getTileSize(), newWorldY/Map.getTileSize());
+			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				if (speed_y > 0)
+					speed_y = 0;
+			}
+		}
 	}
 	
 	//Get the player's rendering position X
@@ -208,5 +291,11 @@ public class Player {
 	 * 
 	 * @param newHealth The value to set the player's life count to
 	 */
-	public static void setLives(int newLives) { lives = newLives; }
+	public static void setLives(int newLives) {
+		if (newLives < 1) {
+			System.err.println("Error while setting player's remaining life count: count must be greater than zero.");
+			return;
+		}
+		lives = newLives;
+	}
 }
