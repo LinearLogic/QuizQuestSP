@@ -82,7 +82,7 @@ public class Player {
 		handleOffScreen();
 		
 		//Handle collisions with objects through which the player cannot pass
-handleCollision();
+		handleCollision();
 		
 		//Set the position of the sprite(Player)
 		setPosition((int)(world_coordinates_x + speed_x), (int)(world_coordinates_y + speed_y));
@@ -142,12 +142,26 @@ handleCollision();
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x < 0)
 					speed_x = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 			//Handle the entity above
 			e = Map.getEntity(world_coordinates_x/Map.getTileSize(), newWorldY/Map.getTileSize());
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y < 0)
 					speed_y = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 		}
 		//Check the top righthand corner of the virtual rectangle
@@ -159,12 +173,26 @@ handleCollision();
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x > 0)
 					speed_x = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 			//Handle the entity above
 			e = Map.getEntity((world_coordinates_x + sprite.getTextureWidth())/Map.getTileSize(), newWorldY/Map.getTileSize());
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y < 0)
 					speed_y = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 		}
 		//Check the bottom lefthand corner of the virtual rectangle
@@ -176,12 +204,26 @@ handleCollision();
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x < 0)
 					speed_x = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 			//Handle the entity above
 			e = Map.getEntity(world_coordinates_x/Map.getTileSize(), newWorldY/Map.getTileSize());
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y > 0)
 					speed_y = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 		}
 		//Check the bottom righthand corner of the virtual rectangle
@@ -193,12 +235,26 @@ handleCollision();
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x > 0)
 					speed_x = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 			//Handle the entity above
 			e = Map.getEntity((world_coordinates_x + sprite.getTextureWidth())/Map.getTileSize(), newWorldY/Map.getTileSize());
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y > 0)
 					speed_y = 0;
+				if (e.getTypeID() == 3) { //Door
+					((Door) e).forceOpen();
+					System.out.println("Door unlocked!");
+				}
+				else if (e.getTypeID() == 4) { //Enemy
+					//Handle combat
+				}
 			}
 		}
 	}
