@@ -116,7 +116,6 @@ public class QuizQuest {
 			Player.render();
 			
 			Textbox.update();
-			
 			switch(Textbox.isAnswerCorrect()) {
 				case 0: // incorrect answer has been provided
 					Textbox.setAnswerCorrect(-1); // reset the question's status to unanswered so the player can try again. Will be removed if player is only permitted one answer.
@@ -130,12 +129,9 @@ public class QuizQuest {
 					// additional handling here	
 				default: // no answer has been provided
 					break;
-				
 			}
-			
 			Textbox.render();
 			
-			//Update the display
 			Display.update();
 			Display.sync(60); //The value n in sync(n) is the frame rate
 		}

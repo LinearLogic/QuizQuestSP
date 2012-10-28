@@ -19,31 +19,72 @@ import ss.linearlogic.quizquest.entity.Wall;
 import ss.linearlogic.quizquest.item.Item;
 
 public class Map {
+	
+	/**
+	 * 2D array containing the type ID of the entity at each tile location in the map
+	 */
 	private static int map[][];
+	
+	/**
+	 * 2D array containing the Entity subclass object of the entity at each tile location in the map
+	 */
 	private static Entity entityMap[][];
 	
-	//Dimensions of the map
+	/**
+	 * The width, in tiles, of the full map
+	 */
 	private static int width;
+	
+	/**
+	 * Height, in tiles, of the full map
+	 */
 	private static int height;
 	
+	/**
+	 * Width and height, in quadrants, of the full map
+	 */
 	private static int quadrant_count_width = 3;
+	
+	/**
+	 * X-coordinate of the quadrant the player and camera view are currently in
+	 */
 	private static int current_quadrant_x = 0;
+	
+	/**
+	 * Y-coordinate of the quadrant the player and camera view are currently in
+	 */
 	private static int current_quadrant_y = 0;
 	
-	private static HashMap<Integer, Texture> textures = new HashMap<Integer, Texture>(); //Hashmap of all the textures
+	/**
+	 * HashMap containing corresponding Texture ID and object
+	 */
+	private static HashMap<Integer, Texture> textures = new HashMap<Integer, Texture>();
 	
+	/**
+	 * Size, in pixels, of a map tile
+	 */
 	private static int tileSize; // Size of the tile
 	
+	/**
+	 * Unused for the time being (stub of a constructor that enables multiple maps)
+	 * 
+	 * @param filename The .txt file from which to load Map specifications and entities
+	 */
 	public Map(String filename) {}
 	
-	//Initialize the map class
+	/**
+	 * Loads the loads the Map with the specifications and entity types and locations provided in the Map file provided
+	 * @param filename The .txt file from which to load Map specifications and entities
+	 */
 	public static void initialize(String filename/*, String entityFilename*/) {
  		loadMapFile(filename);
 // 		loadEnemyEntityFile(entityFilename);
 	}
 
 	
-	//Render the current map
+	/**
+	 * Renders the current map segment (renders all tiles as textured rectangles), adjusting the camera view as necessary
+	 */
 	public static void render() {
 		//Get the players position
 		int start_coordinate_x = getCurrentQuadrantX() * 15;
@@ -67,12 +108,23 @@ public class Map {
 		}
 	}
 	
+	/**
+	 * @return The width, in tiles, of the full map
+	 */
 	public static int getWidth() { return width; }
 	
+	/**
+	 * @return The height, in tiles, of the full map
+	 */
 	public static int getHeight() { return height; }
-	public static void setCurrentQuadrantX(int quad) {
+	
+	/**
+	 * Sets x-coordinate ({@link #current_quadrant_x}) of current quadrant of the camera
+	 * @param quadrantX
+	 */
+	public static void setCurrentQuadrantX(int quadrantX) {
 		int current_temp = current_quadrant_x;
-		current_quadrant_x = quad;
+		current_quadrant_x = quadrantX;
 		
 		if ((getCurrentQuadrantX() < 0) || (getCurrentQuadrantX() > getQuadrantWidth())) {
 			current_quadrant_x = current_temp;
@@ -80,9 +132,13 @@ public class Map {
 		}
 	}
 	
-	public static void setCurrentQuadrantY(int quad) {
+	/**
+	 * Sets y-coordinate ({@link #current_quadrant_y}) of current quadrant of the camera
+	 * @param quadrantY
+	 */
+	public static void setCurrentQuadrantY(int quadrantY) {
 		int current_temp = current_quadrant_y;
-		current_quadrant_y = quad;
+		current_quadrant_y = quadrantY;
 		
 		if ((getCurrentQuadrantY() < 0) || getCurrentQuadrantY() > getQuadrantWidth()) {
 			current_quadrant_y = current_temp;
@@ -90,35 +146,52 @@ public class Map {
 		}
 	}
 	
-	//Get the current quadrant in the x index
+	/**
+	 * @return The x-coordinate ({@link #current_quadrant_x}) of current quadrant of the camera
+	 */
 	public static int getCurrentQuadrantX() {
 		return (int) current_quadrant_x;
 	}
 	
-	//Get the current quadrant in the y index
+	/**
+	 * @return The y-coordinate ({@link #current_quadrant_y}) of current quadrant of the camera
+	 */
 	public static int getCurrentQuadrantY() {
 		return (int) current_quadrant_y;
 	}
 	
-	//Get the quadrant width
+	/**
+	 * @return The width and height, in quadrants, of the full map
+	 */
 	public static int getQuadrantWidth() {
 		return quadrant_count_width;
 	}
 	
-	//Get the coordinate shift to the X
+	/**
+	 * @return The horizontal camera shift to the right, in pixels
+	 */
 	public static int getCoordinateShiftX() {
 		return (int)(getCurrentQuadrantX() * 480);
 	}
 	
-	//Get the coordinate shift to the Y
+	/**
+	 * @return The vertical camera shift downward, in pixels
+	 */
 	public static int getCoordinateShiftY() {
 		return (int)(getCurrentQuadrantY() * 480);
 	}
 	
-	//Returns the tilesize (in pixels)
+	/**
+	 * @return The size, in tiles, of the map
+	 */
 	public static int getTileSize() { return tileSize; }
 	
-	//Add a texture to the textures hashmap
+	/**
+	 * Add a corresponding Texture object and ID to the {@link #textures} HashMap
+	 * 
+	 * @param filename
+	 * @param GID
+	 */
 	public static void addTexture(String filename, int GID) {
 		Texture texture = null;
 		
@@ -134,7 +207,10 @@ public class Map {
 		else System.out.println("Texture is null, unable to add to array");
 	}
 	
-	//Load map file
+	/**
+	 * Load the Map specifications and initializes the maplill and entityMap 2D arrays using the entity IDs in the provided map .txt file
+	 * @param filename The .txt file from which to load Map specifications and entities
+	 */
 	private static void loadMapFile(String filename) { 
 		Scanner textReader = null;
 		
@@ -183,19 +259,35 @@ public class Map {
 		textReader.close();
 	}
 	
+	/**
+	 * Adds the supplied Entity subclass to the {@link #entityMap} 2D array (and its type ID to the {@link #map} 2D array).
+	 * @param entity
+	 */
 	public static void addEntity(Entity entity) {
 		int x = entity.getX();
 		int y = entity.getY();
 		map[x][y] = entity.getTypeID();
 		entityMap[x][y] = entity;
 	}
+	
+	/**
+	 * Remove the Entity subclass at the specified location
+	 * @param x
+	 * @param y
+	 */
 	public static void removeEntity(int x, int y) {
 		if (map[x][y] != 0)
 			map[x][y] = 0;
 		if (entityMap[x][y] != null)
-			entityMap[x][y] = null;
+			entityMap[x][y] = new Grass(x, y);
 	}
 	
+	/**
+	 * Gets an entity in the map
+	 * @param x The x-coordinate of the Entity
+	 * @param y The y-coordinate of the Entity
+	 * @return The Entity subclass at the supplied location
+	 */
 	public static Entity getEntity(int x, int y) {
 		return entityMap[x][y];
 	}
@@ -227,5 +319,4 @@ public class Map {
 		
 		textReader.close();
 	}*/
-
 }
