@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.TrueTypeFont;
 
+import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.question.Question;
 
 public class Textbox {
@@ -241,7 +242,7 @@ public class Textbox {
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
-		if (active) {
+		if (active && !Inventory.isActive()) {
 			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) keyLifted = true;
 			
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) { current_selection -= 1; keyLifted = false; }

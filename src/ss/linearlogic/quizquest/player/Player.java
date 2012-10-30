@@ -43,6 +43,11 @@ public class Player {
 	private static int world_coordinates_y = 0;
 	
 	private static Sprite sprite;
+	
+	/**
+	 * Whether or not a key is depressed (used to prevent repeat event spam)
+	 */
+	public static boolean keyLifted = true;
 
 	public static void initialize(int start_x, int start_y, String player_image) {
 		sprite = new Sprite(player_image, start_x, start_y);
@@ -57,12 +62,18 @@ public class Player {
 		speed_y = 0;
 		
 		/*
-		 * Check the keys that are being pressed which determine the player movement
+		 * Check the keys that are being pressed which determine the player movement. Toggle the inventory window if 'I' is pressed.
 		 * 
 		 * NOTE: the new system operates by adding to or subtracting from the current x or y speed,
 		 * and then evaluating the resulting speeds. If there is a speed in both the x and y direction,
 		 * the speeds are divided by the square root of 2, to prevent a speed increase when moving diagonally.
 		 */
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_I))
+			keyLifted = true;
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_I)) { //Toggles the inventory window
+			Inventory.toggleActive();
+			keyLifted = false;
+		}
 		if (!Textbox.isActive() && !Inventory.isActive()) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 				speed_y -= speed_constant;

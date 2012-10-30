@@ -81,7 +81,7 @@ public class Inventory {
 	/**
 	 * Whether a key is currently depressed
 	 */
-	private static boolean keyLifted;
+	private static boolean keyLifted = true;
 	
 	/**
 	 * Loads the inventory window with the supplied specifications. Note: this method does not actually open
@@ -114,11 +114,6 @@ public class Inventory {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
 		if (active) { // make sure the inventory menu is currently in use
-			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
-				keyLifted = true;
-			if (Keyboard.isKeyDown(Keyboard.KEY_I) && keyLifted) { //Toggles the inventory window
-				active = !active;
-			}
 			
 			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 				keyLifted = true;
@@ -252,4 +247,9 @@ public class Inventory {
 	 * @return Whether the inventory window is in use
 	 */
 	public static boolean isActive() { return active; }
+	
+	/**
+	 * Toggle whether the inventory window is open and in use
+	 */
+	public static void toggleActive() { active = !active; }
 }
