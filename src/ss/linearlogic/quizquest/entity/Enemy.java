@@ -1,10 +1,10 @@
 package ss.linearlogic.quizquest.entity;
 
-import ss.linearlogic.quizquest.Textbox;
 import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.item.Item;
-import ss.linearlogic.quizquest.question.Question;
-import ss.linearlogic.quizquest.question.QuestionManager;
+import ss.linearlogic.quizquest.textbox.Textbox;
+import ss.linearlogic.quizquest.textbox.question.Question;
+import ss.linearlogic.quizquest.textbox.question.QuestionManager;
 
 /**
  * Represents an enemy entity. The player engages in question-based combat with the enemy upon coming into contact with the enemy.

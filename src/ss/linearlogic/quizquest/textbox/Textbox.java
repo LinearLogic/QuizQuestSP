@@ -1,4 +1,4 @@
-package ss.linearlogic.quizquest;
+package ss.linearlogic.quizquest.textbox;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -6,8 +6,9 @@ import java.util.StringTokenizer;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.TrueTypeFont;
 
+import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.player.Inventory;
-import ss.linearlogic.quizquest.question.Question;
+import ss.linearlogic.quizquest.textbox.question.Question;
 
 public class Textbox {
 	

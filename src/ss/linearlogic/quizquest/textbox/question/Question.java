@@ -1,4 +1,4 @@
-package ss.linearlogic.quizquest.question;
+package ss.linearlogic.quizquest.textbox.question;
 
 public class Question {
 	private int questionID;

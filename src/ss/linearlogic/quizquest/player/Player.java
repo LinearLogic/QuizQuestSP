@@ -7,14 +7,14 @@ import org.lwjgl.input.Keyboard;
 import ss.linearlogic.quizquest.Map;
 import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.Sprite;
-import ss.linearlogic.quizquest.Textbox;
 import ss.linearlogic.quizquest.entity.Door;
 import ss.linearlogic.quizquest.entity.Enemy;
 import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.entity.Grass;
 import ss.linearlogic.quizquest.item.Item;
 import ss.linearlogic.quizquest.item.Key;
-import ss.linearlogic.quizquest.question.Question;
+import ss.linearlogic.quizquest.textbox.Textbox;
+import ss.linearlogic.quizquest.textbox.question.Question;
 
 /**
  * Represents the Player and includes handling of the player sprite, HUD, and movement/collision

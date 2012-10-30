@@ -10,8 +10,9 @@ import ss.linearlogic.quizquest.item.Potion;
 import ss.linearlogic.quizquest.item.Spell;
 import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.player.Player;
-import ss.linearlogic.quizquest.question.Question;
-import ss.linearlogic.quizquest.question.QuestionManager;
+import ss.linearlogic.quizquest.textbox.Textbox;
+import ss.linearlogic.quizquest.textbox.question.Question;
+import ss.linearlogic.quizquest.textbox.question.QuestionManager;
 
 import static org.lwjgl.opengl.GL11.*;
 
