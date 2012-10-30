@@ -12,6 +12,9 @@ import ss.linearlogic.quizquest.entity.Door;
 import ss.linearlogic.quizquest.entity.Enemy;
 import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.entity.Grass;
+import ss.linearlogic.quizquest.item.Item;
+import ss.linearlogic.quizquest.item.Key;
+import ss.linearlogic.quizquest.question.Question;
 
 /**
  * Represents the Player and includes handling of the player sprite, HUD, and movement/collision
@@ -40,7 +43,12 @@ public class Player {
 	private static int lives;
 	
 	/**
-	 * The current enemy the player is fighting or null representing that the player is not battling at the moment
+	 * The door the player is currently trying to open (null if the player is not at a door at the moment)
+	 */
+	private static Door currentDoor;
+	
+	/**
+	 * The enemy the player is currently fighting (null if the player is not battling at the moment)
 	 */
 	private static Enemy battleFoe;
 	
@@ -107,8 +115,11 @@ public class Player {
 	/**
 	 * Updates the player, checking for various conditions such as battle or typed keys. Notably handles movement.
 	 */
-	public static void update() {		
-		if (battleFoe != null) {
+	public static void update() {	
+		if (currentDoor != null) { //Player is at a door - handle the player's response (if any) to the door opening prompt
+			
+		}
+		if (battleFoe != null) { //Player is in battle - handle the combat quiz answer
 			switch (Textbox.isAnswerCorrect()) {
 			case 0: //Not correct - damage player
 				setHealth(getHealth() - battleFoe.getDamage());
@@ -229,11 +240,6 @@ public class Player {
 		if (world_coordinates_y < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
 	}
 	
-	private static void fightFoe(Enemy foe) {
-		battleFoe = foe;
-		foe.triggerQuestion();
-	}
-	
 	/**
 	 * Makes sure the player cannot move into barrier entities (walls, doors, enemies).
 	 * To sum up what's going on in this method, a virtual rectangle is constructed around the player and the vertices of that
@@ -242,6 +248,7 @@ public class Player {
 	private static void handleCollision() {
 		int mapX = getMapX();
 		int mapY = getMapY();
+		int doorsEncountered = 0;
 		//Check the top lefthand corner of the virtual rectangle around the player sprite
 		if ((mapX > 0) && (mapY > 0)) {
 			int newWorldX = world_coordinates_x - 5;
@@ -251,11 +258,12 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x < 0)
 					speed_x = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					doorsEncountered++;
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					//Handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
@@ -268,12 +276,12 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y < 0)
 					speed_y = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					doorsEncountered++;
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
-					//Handle combat
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
@@ -290,12 +298,12 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x > 0)
 					speed_x = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					doorsEncountered++;
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
-					//Handle combat
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
@@ -307,12 +315,12 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y < 0)
 					speed_y = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					doorsEncountered++;
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
-					//Handle combat
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
@@ -327,14 +335,14 @@ public class Player {
 			//Handle the entity to the right
 			Entity e = Map.getEntity(newWorldX/Map.getTileSize(), (world_coordinates_y + sprite.getTextureHeight())/Map.getTileSize());
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
+				doorsEncountered++;
 				if (speed_x < 0)
 					speed_x = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
-					//Handle combat
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
@@ -346,12 +354,12 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y > 0)
 					speed_y = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					doorsEncountered++;
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
-					//Handle combat
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
@@ -368,12 +376,12 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x > 0)
 					speed_x = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					doorsEncountered++;
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
-					//Handle combat
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
@@ -385,18 +393,50 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y > 0)
 					speed_y = 0;
-				if (e.getTypeID() == 3) { //Door
-					((Door) e).forceOpen();
-					System.out.println("Door unlocked!");
+				if (e.getTypeID() == 3) { //Door - handle opening
+					doorsEncountered++;
+					Door d = (Door) e;
+					openDoorPrompt(d);
 				}
-				else if (e.getTypeID() == 4) { //Enemy
-					//Handle combat
+				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					return;
 				}
 			}
 		}
+		if (doorsEncountered <= 0) //The player is not standing by any doors
+			currentDoor = null;
+	}
+	
+	/**
+	 * Open a text window asking the player whether to to open the door if the player has the right key.
+	 * If the player does not have the right key, a notification is sent to console. 
+	 * 
+	 * @param The door the player is currently in contact with
+	 */
+	private static void openDoorPrompt(Door door) {
+		if ((currentDoor != null) || (battleFoe != null)) //A door or battle prompt is already open, as the player is already near a door
+			return;
+		currentDoor = door;
+		for (Item item : Inventory.getitems()) {
+			if (item instanceof Key) {
+				if (((Key) item).getlockID() == door.getLockID()) { //The player has the matching key and can open the door - open prompt
+					return;
+				}
+			}
+		}
+		//Only reached if the player does not have the key needed to unlock the door - dispatch notification to console
+		System.out.println("You don't have the right key to unlock this door. Keep exploring!");
+	}
+	
+	/**
+	 * Engage the supplied Enemy in battle
+	 * @param foe
+	 */
+	private static void fightFoe(Enemy foe) {
+		battleFoe = foe;
+		foe.triggerQuestion();
 	}
 	
 	/**
