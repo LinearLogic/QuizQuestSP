@@ -34,8 +34,10 @@ public class Textbox {
 	//The correct answer index
 	private static int correctIndex = -1;
 	
+	//A state variable determining whether the answer is correct or not
 	private static int answerCorrect = -1;
 	
+	//Check to make sure keyrepeat is not enabled
 	private static boolean keyLifted = true;
 	
 	public Textbox() {}
