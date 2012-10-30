@@ -142,9 +142,9 @@ public class Player {
 		 * and then evaluating the resulting speeds. If there is a speed in both the x and y direction,
 		 * the speeds are divided by the square root of 2, to prevent a speed increase when moving diagonally.
 		 */
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_I) && !Keyboard.isKeyDown(Keyboard.KEY_H))
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_E) && !Keyboard.isKeyDown(Keyboard.KEY_H))
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_I)) { //Toggles the inventory window
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_E)) { //Toggles the inventory window
 			Inventory.toggleActive();
 			keyLifted = false;
 		}
