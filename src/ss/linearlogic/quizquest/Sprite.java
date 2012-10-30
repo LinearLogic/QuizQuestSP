@@ -100,18 +100,6 @@ public class Sprite {
 		return false;
 	}
 	
-	/*
-	 * Getters and setter for the following class members
-	 * x -> x position
-	 * y -> y position
-	 * w -> width
-	 * h -> height
-	 * texX -> start of texture frame X
-	 * texY -> start of texture frame Y
-	 * texW -> width of texture frame
-	 * texH -> height of texture frame
-	 */
-	
 	/**
 	 * @return The sprite's {@link #texX} value
 	 */

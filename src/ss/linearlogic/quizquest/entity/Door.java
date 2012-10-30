@@ -3,6 +3,9 @@ package ss.linearlogic.quizquest.entity;
 import ss.linearlogic.quizquest.Map;
 import ss.linearlogic.quizquest.entity.Entity;
 
+/**
+ * Represents a door entity in the world
+ */
 public class Door extends Entity {
 
 	/**
