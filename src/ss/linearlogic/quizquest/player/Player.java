@@ -98,8 +98,6 @@ public class Player {
 			}
 		}
 		
-		if (Textbox.isActive() || Inventory.isActive()) return;
-		
 		//Reset after each frame
 		speed_x = 0;
 		speed_y = 0;
@@ -111,32 +109,33 @@ public class Player {
 		 * and then evaluating the resulting speeds. If there is a speed in both the x and y direction,
 		 * the speeds are divided by the square root of 2, to prevent a speed increase when moving diagonally.
 		 */
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_I))
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_I) && !Keyboard.isKeyDown(Keyboard.KEY_H))
 			keyLifted = true;
 		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_I)) { //Toggles the inventory window
 			Inventory.toggleActive();
 			keyLifted = false;
 		}
 		
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)) 
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)  && !Keyboard.isKeyDown(Keyboard.KEY_I)) 
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H)) 
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H)) {
 			HUDActive = !HUDActive;
+			keyLifted = false;
+		}
 			
+		if (Textbox.isActive() || Inventory.isActive()) return;
 		
-		if (!Textbox.isActive() && !Inventory.isActive()) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-				speed_y -= speed_constant;
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-				speed_y += speed_constant;
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-				speed_x -= speed_constant;
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-				speed_x += speed_constant;
-			if ((speed_x != 0) && (speed_y != 0)) { // player is moving too quickly - adjust speeds
-				speed_x *= (1/Math.sqrt(2.0));
-				speed_y *= (1/Math.sqrt(2.0));
-			}
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			speed_y -= speed_constant;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+			speed_y += speed_constant;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+			speed_x -= speed_constant;
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+			speed_x += speed_constant;
+		if ((speed_x != 0) && (speed_y != 0)) { // player is moving too quickly - adjust speeds
+			speed_x *= (1/Math.sqrt(2.0));
+			speed_y *= (1/Math.sqrt(2.0));
 		}
 				
 		//Handle if the player goes to another quadrant
