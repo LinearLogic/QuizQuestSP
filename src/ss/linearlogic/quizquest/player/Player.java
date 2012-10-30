@@ -90,6 +90,8 @@ public class Player {
 			case 1:
 				Map.removeEnemy(battleFoe);
 				Map.addEntity(new Grass(battleFoe.getX(), battleFoe.getY()));
+				
+				Inventory.addItem(Inventory.getItemCount(), battleFoe.getItemToDrop());
 				Textbox.reset();
 			default: // No answer yet
 				break;

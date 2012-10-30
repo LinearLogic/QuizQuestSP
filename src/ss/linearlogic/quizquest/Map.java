@@ -332,7 +332,7 @@ public class Map {
 			int y = textReader.nextInt();
 			
 			int qID = textReader.nextInt();
-						
+									
 			Enemy enemy = new Enemy(damage, maxHP, item, x, y, qID);
 			addEntity(enemy);
 			

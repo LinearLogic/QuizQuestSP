@@ -39,8 +39,16 @@ public class QuestionManager {
 		int questionCount = scanner.nextInt();
 				
 		for (int i = 0; i < questionCount; ++i) {
-			Question question = new Question(scanner.nextInt(), scanner.nextInt());
-
+			int questionID = -1;
+			int correctIndex = -1;
+			
+			if (scanner.hasNextInt()) questionID = scanner.nextInt();
+			else System.out.println("Error Reading Question ID: " + scanner.nextLine());
+						
+			if (scanner.hasNextInt()) correctIndex = scanner.nextInt();
+			else System.out.println("Error Reading The Answer Index: " + scanner.nextLine());
+									
+			Question question = new Question(questionID, correctIndex);
 			scanner.nextLine();
 			
 			String questionString = scanner.nextLine();			

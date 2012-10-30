@@ -33,6 +33,11 @@ public class Inventory {
 	 */
 	private static HashMap<Integer, Texture> itemTextures = new HashMap<Integer, Texture>();
 	/**
+	 * Integer which contains the current count of items in the inventory
+	 */
+	private static int inventoryCount;
+	
+	/**
 	 * The width of the inventory 2D array in slots (tiles)
 	 */
 	private static int slotDimensionX;
@@ -142,6 +147,8 @@ public class Inventory {
 		items = new Item[widthInSlots][heightInSlots];
 		if (active)
 			active = false;
+		
+		inventoryCount = 0;
 	}
 	
 	public static void update() {
@@ -306,6 +313,8 @@ public class Inventory {
 		}
 		items[index/slotDimensionY][index%slotDimensionY] = null;
 		itemIDs[index/slotDimensionY][index%slotDimensionY] = 0;
+		
+		inventoryCount--;
 	}
 	
 	/**
@@ -321,6 +330,8 @@ public class Inventory {
 		}
 		items[index/slotDimensionY][index%slotDimensionY] = item;
 		itemIDs[index/slotDimensionY][index%slotDimensionY] = item.getTypeID();
+		
+		inventoryCount++;
 	}
 	
 	/**
@@ -371,4 +382,6 @@ public class Inventory {
 	 * Toggle whether the inventory window is open and in use
 	 */
 	public static void toggleActive() { active = !active; }
+	
+	public static int getItemCount() { return inventoryCount; }
 }
