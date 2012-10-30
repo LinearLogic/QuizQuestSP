@@ -3,6 +3,7 @@ package ss.linearlogic.quizquest.player;
 import org.lwjgl.input.Keyboard;
 
 import ss.linearlogic.quizquest.Map;
+import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.Sprite;
 import ss.linearlogic.quizquest.Textbox;
 import ss.linearlogic.quizquest.entity.Door;
@@ -39,6 +40,11 @@ public class Player {
 	 */
 	private static Enemy battleFoe;
 	
+	/**
+	 * A flag which holds whether the HUD is visible or not
+	 */
+	private static boolean HUDActive;
+	
 	// Graphical
 	private static double speed_x;
 	private static double speed_y;
@@ -61,16 +67,21 @@ public class Player {
 		
 		world_coordinates_x = start_x;
 		world_coordinates_y = start_y;
+		
+		HUDActive = true;
 	}
 	
 	public static void update() {
+		if (getHealth() <= 0) respawn();
+		
 		if (battleFoe != null) {
 			switch (Textbox.isAnswerCorrect()) {
 			case 0: //Not correct
 				//Respond appropriately
+				setHealth(getHealth() - battleFoe.getDamage());
+				
 				break;
 			case 1:
-				System.out.println("Answer provided");
 				Map.removeEnemy(battleFoe);
 				Map.addEntity(new Grass(battleFoe.getX(), battleFoe.getY()));
 				Textbox.reset();
@@ -98,6 +109,13 @@ public class Player {
 			Inventory.toggleActive();
 			keyLifted = false;
 		}
+		
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)) 
+			keyLifted = true;
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H)) 
+			HUDActive = !HUDActive;
+			
+		
 		if (!Textbox.isActive() && !Inventory.isActive()) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 				speed_y -= speed_constant;
@@ -350,7 +368,23 @@ public class Player {
 	public static int getMapY() { return world_coordinates_y/Map.getTileSize(); }
 	
 	//Draw the player
-	public static void render() { sprite.draw(); }
+	public static void render() { 
+		if (HUDActive) {
+			Renderer.renderColoredRectangle(0, 0, 480, 20, 0.7, 0.7, 0.7);
+			double r = 1.0;
+			double g = 1.0;
+		
+			if (getHealth()/getMaxHealth() > 0.5)
+				r = 0.0;
+			else
+				g = 0.0;
+			
+			Renderer.renderColoredRectangle(20, 5, 100 * (getHealth()/getMaxHealth()), 10, r, g, 0.0);
+			Renderer.renderLinedRectangle(20, 5, 100, 10, 0.0, 0.0, 0.0);
+		}
+		
+		sprite.draw(); 
+	}
 	
 	// --- // Non-graphical methods // --- //
 	/**

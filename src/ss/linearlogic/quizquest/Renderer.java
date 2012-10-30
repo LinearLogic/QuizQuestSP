@@ -25,6 +25,21 @@ public class Renderer {
 		renderColoredRectangle(x, y, w, h, 1.0, 1.0, 1.0);
 	}
 	
+	public static void renderLinedRectangle(double x, double y, double w, double h, double r, double g, double b) {
+		glDisable(GL_TEXTURE_2D);
+		
+		glColor4d(r, g, b, 1.0);
+		
+		glBegin(GL_LINE_LOOP);
+			glVertex2d(x, y);
+			glVertex2d(x + w, y);
+			glVertex2d(x + w, y + h);
+			glVertex2d(x, y + h);
+		glEnd();
+		
+		glEnable(GL_TEXTURE_2D);
+	}
+	
 	/**
 	 * Render a transparent rectangle of the supplied dimensions at the supplied location
 	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)

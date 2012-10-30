@@ -92,6 +92,9 @@ public class QuizQuest {
 		Map.addTexture("enemy.png", 4);
 
 		Player.initialize(200, 200, "Pedobear.png");
+		Player.setMaxHealth(100);
+		Player.setHealth(100);
+		Player.setLives(5);
 		
 		Inventory.initialize(380, 0, 100, 370, 10, 10, 35, 10, 2, 8);
 		Inventory.addTexture("Key.png", 1);
