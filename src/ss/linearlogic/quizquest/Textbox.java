@@ -113,6 +113,8 @@ public class Textbox {
 		
 		width = 480; // dimensions of the textbox
 		height = 100;
+		
+		active = false;
 	}
 	
 	/**

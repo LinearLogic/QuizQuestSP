@@ -3,6 +3,7 @@ package ss.linearlogic.quizquest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -29,6 +30,11 @@ public class Map {
 	 * 2D array containing the Entity subclass object of the entity at each tile location in the map
 	 */
 	private static Entity entityMap[][];
+	
+	/**
+	 * An array list which holds all of the enemies
+	 */
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	
 	/**
 	 * The width, in tiles, of the full map
@@ -76,9 +82,9 @@ public class Map {
 	 * Loads the loads the Map with the specifications and entity types and locations provided in the Map file provided
 	 * @param filename The .txt file from which to load Map specifications and entities
 	 */
-	public static void initialize(String filename/*, String entityFilename*/) {
+	public static void initialize(String filename, String entityFilename) {
  		loadMapFile(filename);
-// 		loadEnemyEntityFile(entityFilename);
+ 		loadEnemyEntityFile(entityFilename);
 	}
 
 	
@@ -105,6 +111,10 @@ public class Map {
 				//Render the top layer such as walls and doors
 				Renderer.renderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(map[x][y]));
 			}
+		}
+		
+		for (Enemy enemy: enemies) {
+			Renderer.renderColoredRectangle((enemy.getX() * 32) - coordinate_shift_x, (enemy.getY() * 32) - coordinate_shift_y, 32, 32, 1.0, 0.0, 0.0);
 		}
 	}
 	
@@ -282,6 +292,11 @@ public class Map {
 			entityMap[x][y] = new Grass(x, y);
 	}
 	
+	public static void removeEnemy(Enemy enemy) {
+		removeEntity(enemy.getX(), enemy.getY());
+		enemies.remove(enemy);
+	}
+	
 	/**
 	 * Gets an entity in the map
 	 * @param x The x-coordinate of the Entity
@@ -317,8 +332,11 @@ public class Map {
 			int y = textReader.nextInt();
 			
 			int qID = textReader.nextInt();
+						
+			Enemy enemy = new Enemy(damage, maxHP, item, x, y, qID);
+			addEntity(enemy);
 			
-			//Entity entity = new Entity(damage, maxHP, item, x, y, qID);
+			enemies.add(enemy);
 		}
 		
 		textReader.close();

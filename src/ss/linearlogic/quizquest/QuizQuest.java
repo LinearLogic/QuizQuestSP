@@ -58,6 +58,7 @@ public class QuizQuest {
 	public void initializeOpenGL(int width, int height) {
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
+			Display.setTitle("QuizQuest");
 			Display.setVSyncEnabled(true);
 			Display.create();
 		} catch (LWJGLException ex) {
@@ -83,11 +84,12 @@ public class QuizQuest {
 	 */
 	public void mainLoop() {
 	
-		Map.initialize("map.txt"/*, "entity.txt"*/);
+		Map.initialize("map.txt", "enemies.txt");
 		Map.addTexture("Grass.png", 0);
 		Map.addTexture("Floor.png", 1);
 		Map.addTexture("Wall.png", 2);
 		Map.addTexture("Door.png", 3);
+		Map.addTexture("enemy.png", 4);
 
 		Player.initialize(200, 200, "Pedobear.png");
 		
@@ -101,10 +103,7 @@ public class QuizQuest {
 		Inventory.addItem(2, new Spell(10));
 		
 		Textbox.initializeWithSystemFont();
-		
 		QuestionManager.LoadQuestionsFile("questions.txt");
-		Question question = QuestionManager.getQuestionForQID(1);
-		Textbox.loadQuestion(question);
 		
 		while (running) {
 			if (Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -127,20 +126,6 @@ public class QuizQuest {
 			
 			
 			Textbox.update();
-			switch(Textbox.isAnswerCorrect()) {
-				case 0: // incorrect answer has been provided
-					Textbox.setAnswerCorrect(-1); // reset the question's status to unanswered so the player can try again. Will be removed if player is only permitted one answer.
-					System.out.println("WRONG!");
-					// additional handling here
-					break;
-				case 1: // correct answer has been provided
-					Textbox.toggleActive();
-					Textbox.reset();
-					System.out.println("Answer is correct!!");
-					// additional handling here
-				default: // no answer has been provided
-					break;
-			}
 			Textbox.render();
 			
 			Inventory.update();

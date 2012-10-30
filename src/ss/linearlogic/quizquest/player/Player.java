@@ -6,7 +6,9 @@ import ss.linearlogic.quizquest.Map;
 import ss.linearlogic.quizquest.Sprite;
 import ss.linearlogic.quizquest.Textbox;
 import ss.linearlogic.quizquest.entity.Door;
+import ss.linearlogic.quizquest.entity.Enemy;
 import ss.linearlogic.quizquest.entity.Entity;
+import ss.linearlogic.quizquest.entity.Grass;
 
 public class Player {
 	
@@ -31,6 +33,11 @@ public class Player {
 	 * The number of lives the player has left until Game Over.
 	 */
 	private static int lives;
+	
+	/**
+	 * The current enemy the player is fighting or null representing that the player is not battling at the moment
+	 */
+	private static Enemy battleFoe;
 	
 	// Graphical
 	private static double speed_x;
@@ -57,6 +64,23 @@ public class Player {
 	}
 	
 	public static void update() {
+		if (battleFoe != null) {
+			switch (Textbox.isAnswerCorrect()) {
+			case 0: //Not correct
+				//Respond appropriately
+				break;
+			case 1:
+				System.out.println("Answer provided");
+				Map.removeEnemy(battleFoe);
+				Map.addEntity(new Grass(battleFoe.getX(), battleFoe.getY()));
+				Textbox.reset();
+			default: // No answer yet
+				break;
+			}
+		}
+		
+		if (Textbox.isActive() || Inventory.isActive()) return;
+		
 		//Reset after each frame
 		speed_x = 0;
 		speed_y = 0;
@@ -136,6 +160,11 @@ public class Player {
 		if (world_coordinates_y < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
 	}
 	
+	private static void fightFoe(Enemy foe) {
+		battleFoe = foe;
+		foe.triggerQuestion();
+	}
+	
 	/**
 	 * Makes sure the player cannot move into barrier entities (walls, doors, enemies).
 	 * To sum up what's going on in this method, a virtual rectangle is constructed around the player and the vertices of that
@@ -159,6 +188,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 			//Handle the entity above
@@ -172,6 +205,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 		}
@@ -190,6 +227,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 			//Handle the entity above
@@ -203,6 +244,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 		}
@@ -221,6 +266,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 			//Handle the entity above
@@ -234,6 +283,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 		}
@@ -252,6 +305,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 			//Handle the entity above
@@ -265,6 +322,10 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
+					Enemy enemy = (Enemy)e;
+					fightFoe(enemy);
+					
+					return;
 				}
 			}
 		}
