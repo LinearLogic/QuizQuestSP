@@ -12,7 +12,6 @@ import ss.linearlogic.quizquest.entity.Door;
 import ss.linearlogic.quizquest.entity.Enemy;
 import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.entity.Grass;
-import ss.linearlogic.quizquest.item.Potion;
 
 /**
  * Represents the Player and includes handling of the player sprite, HUD, and movement/collision

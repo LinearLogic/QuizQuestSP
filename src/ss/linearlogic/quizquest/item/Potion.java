@@ -42,6 +42,8 @@ public class Potion extends Item {
 	 * Increases the player's health by the healthToRestore value ({@link #healthToRestore}) of the potion, and decrements the potion item count.
 	 */
 	public void use() {
+		if (Player.getHealth() >= Player.getMaxHealth()) //Ensure that potions cannot be wasted
+			return;
 		Player.setHealth(Player.getHealth() + this.healthToRestore);
 		setCount(getCount() -1);
 	}

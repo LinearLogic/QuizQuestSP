@@ -4,16 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.opengl.*;
 import org.newdawn.slick.util.ResourceLoader;
 
 import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.Textbox;
-import ss.linearlogic.quizquest.item.Item;
-import ss.linearlogic.quizquest.item.Key;
-import ss.linearlogic.quizquest.item.Potion;
-import ss.linearlogic.quizquest.item.Spell;
+import ss.linearlogic.quizquest.item.*;
 
 /**
  * Represents the player's inventory, an array of Item subclass objects
@@ -197,9 +193,11 @@ public class Inventory {
 					switch(items[currentSelectionX][currentSelectionY].getTypeID()) {
 					case 1: //Key
 						//Use key on the door the player is currently trying to unlock
+						Inventory.removeItem(currentSelectionX * 2 + currentSelectionY);
 						break;
 					case 2: //Potion
 						((Potion) items[currentSelectionX][currentSelectionY]).use();
+						Inventory.removeItem(currentSelectionX * 2 + currentSelectionY);
 						break;
 					case 3: //Spell
 						if (Player.getBattleFoe() != null) {
@@ -208,6 +206,9 @@ public class Inventory {
 							Inventory.addItem(Inventory.getItemCount(), Player.getBattleFoe().getItemToDrop());
 							Player.setBattleFoe(null);
 							Textbox.reset();
+							
+							Inventory.removeItem(currentSelectionX * 2 + currentSelectionY);
+							
 							break;
 						}
 						System.out.println("Spells can only be used in battle.");

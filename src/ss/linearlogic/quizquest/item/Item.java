@@ -77,5 +77,9 @@ public class Item {
 	 * 
 	 * @param count
 	 */
-	public void setCount(int count) { this.count = count; }
+	public void setCount(int count) {
+		if (count < 0)
+			count = 0;
+		this.count = count;
+	}
 }
