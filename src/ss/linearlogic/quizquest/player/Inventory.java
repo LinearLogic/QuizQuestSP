@@ -9,9 +9,11 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 import ss.linearlogic.quizquest.Renderer;
+import ss.linearlogic.quizquest.Textbox;
 import ss.linearlogic.quizquest.item.Item;
 import ss.linearlogic.quizquest.item.Key;
 import ss.linearlogic.quizquest.item.Potion;
+import ss.linearlogic.quizquest.item.Spell;
 
 /**
  * Represents the player's inventory, an array of Item subclass objects
@@ -191,8 +193,7 @@ public class Inventory {
 			//Checks to see if there is a valid item in the selected inventory slot, and if so, uses the item
 			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
 				keyLifted = false;
-				System.out.println(itemIDs[currentSelectionX][currentSelectionY]);
-				if (itemIDs[currentSelectionX][currentSelectionY] < 0) { //Current slot contains a valid item
+				if (itemIDs[currentSelectionX][currentSelectionY] > 0) { //Current slot contains a valid item
 					switch(items[currentSelectionX][currentSelectionY].getTypeID()) {
 					case 1: //Key
 						//Use key on the door the player is currently trying to unlock
@@ -201,7 +202,15 @@ public class Inventory {
 						((Potion) items[currentSelectionX][currentSelectionY]).use();
 						break;
 					case 3: //Spell
-						//Use spell on the enemy the player is currently in combat with
+						if (Player.getBattleFoe() != null) {
+							System.out.println("!");
+							((Spell) items[currentSelectionX][currentSelectionY]).use(Player.getBattleFoe());
+							Inventory.addItem(Inventory.getItemCount(), Player.getBattleFoe().getItemToDrop());
+							Player.setBattleFoe(null);
+							Textbox.reset();
+							break;
+						}
+						System.out.println("Spells can only be used in battle.");
 						break;
 					default:
 						break;
@@ -324,14 +333,14 @@ public class Inventory {
 	 * @param item The Item itself (an Item subclass, really, as Item is abstract)
 	 */
 	public static void addItem(int index, Item item) {
+		if (itemIDs[index/slotDimensionY][index%slotDimensionY] == 0)
+			inventoryCount++;
 		if (index >= slotDimensionX * slotDimensionY) {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return;
 		}
 		items[index/slotDimensionY][index%slotDimensionY] = item;
 		itemIDs[index/slotDimensionY][index%slotDimensionY] = item.getTypeID();
-		
-		inventoryCount++;
 	}
 	
 	/**

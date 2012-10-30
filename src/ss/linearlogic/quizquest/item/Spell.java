@@ -1,6 +1,8 @@
 package ss.linearlogic.quizquest.item;
 
+import ss.linearlogic.quizquest.Map;
 import ss.linearlogic.quizquest.entity.Enemy;
+import ss.linearlogic.quizquest.entity.Grass;
 
 /**
  * Represents a spell item.
@@ -45,7 +47,8 @@ public class Spell extends Item {
 	 * @param enemy The enemy to use the spell on
 	 */
 	public void use(Enemy enemy) {
-		// damage the enemy - to be filled in once entity repackaging has been completed.
+		Map.removeEnemy(enemy);
+		Map.addEntity(new Grass(enemy.getX(), enemy.getY()));
 		setCount(getCount() - 1);
 	}
 	

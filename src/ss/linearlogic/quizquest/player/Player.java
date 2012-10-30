@@ -12,10 +12,13 @@ import ss.linearlogic.quizquest.entity.Door;
 import ss.linearlogic.quizquest.entity.Enemy;
 import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.entity.Grass;
+import ss.linearlogic.quizquest.item.Potion;
 
+/**
+ * Represents the Player and includes handling of the player sprite, HUD, and movement/collision
+ */
 public class Player {
 	
-	// Non-graphical
 	/**
 	 * The player's health value
 	 * <p />
@@ -108,8 +111,7 @@ public class Player {
 	public static void update() {		
 		if (battleFoe != null) {
 			switch (Textbox.isAnswerCorrect()) {
-			case 0: //Not correct
-				//Respond appropriately
+			case 0: //Not correct - damage player
 				setHealth(getHealth() - battleFoe.getDamage());
 				Textbox.setAnswerCorrect(-1);
 				
@@ -122,6 +124,7 @@ public class Player {
 				Map.addEntity(new Grass(battleFoe.getX(), battleFoe.getY()));
 				
 				Inventory.addItem(Inventory.getItemCount(), battleFoe.getItemToDrop());
+				battleFoe = null;
 				Textbox.reset();
 			default: // No answer yet
 				break;
@@ -255,7 +258,7 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
 					return;
@@ -272,7 +275,7 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
 					return;
@@ -294,7 +297,7 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
 					return;
@@ -311,7 +314,7 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
 					return;
@@ -333,7 +336,7 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
 					return;
@@ -350,7 +353,7 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
 					return;
@@ -372,7 +375,7 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
 					
 					return;
@@ -389,9 +392,8 @@ public class Player {
 				}
 				else if (e.getTypeID() == 4) { //Enemy
 					//Handle combat
-					Enemy enemy = (Enemy)e;
+					Enemy enemy = (Enemy) e;
 					fightFoe(enemy);
-					
 					return;
 				}
 			}
@@ -461,6 +463,7 @@ public class Player {
 		if (getLives() > 1) setLives(getLives() - 1);
 		else if (lives == 1) {
 			// Game Over sequence here...
+			System.out.println("Game over!");
 			System.exit(0);
 		}
 		setHealth(maxHealth);
@@ -537,5 +540,19 @@ public class Player {
 		}
 		
 		lives = newLives;
+	}
+	
+	/**
+	 * @return The enemy the player is currently engaged in combat with
+	 */
+	public static Enemy getBattleFoe() { return battleFoe; }
+	
+	/**
+	 * Sets the enemy the player is currently engaged in combat with to the provided enemy.
+	 * Removes the player from combat if a null Enemy object is supplied.
+	 * @param
+	 */
+	public static void setBattleFoe(Enemy enemy) {
+		battleFoe = enemy;
 	}
 }
