@@ -293,7 +293,6 @@ public class Map {
 	}
 	
 	//Do not touch this for the time being
-	/*
 	private static void loadEnemyEntityFile(String filename) {
 		Scanner textReader = null;
 		
@@ -302,21 +301,26 @@ public class Map {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		
 		int enemyEntityCount = textReader.nextInt();
-		System.out.println(enemyEntityCount);
+		
 		for (int i = 0; i < enemyEntityCount; ++i) {
-			int maxHealth = textReader.nextInt();
+			int maxHP = textReader.nextInt();
 			int damage = textReader.nextInt();
-			int itemToDrop = textReader.nextInt();
+			int itemNo = textReader.nextInt();
+			
 			Item item = null;
-			if (itemToDrop != 0)
-				item = new Item(itemToDrop, 1);
+			if (itemNo > 0)
+				item = new Item(itemNo, 1);
+			
 			int x = textReader.nextInt();
 			int y = textReader.nextInt();
-			addEntity(new Enemy(maxHealth, damage, item, x, y));
+			
+			int qID = textReader.nextInt();
+			
+			//Entity entity = new Entity(damage, maxHP, item, x, y, qID);
 		}
 		
 		textReader.close();
-	}*/
+	}
 }

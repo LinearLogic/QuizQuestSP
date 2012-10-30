@@ -6,6 +6,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import ss.linearlogic.quizquest.player.Player;
+import ss.linearlogic.quizquest.question.Question;
+import ss.linearlogic.quizquest.question.QuestionManager;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -86,15 +88,10 @@ public class QuizQuest {
 		Player.initialize(200, 200, "Pedobear.png");
 		
 		Textbox.initializeWithSystemFont();
-		Textbox.reset();
-		if (!Textbox.isActive())
-			Textbox.toggleActive();
-		Textbox.setQuestion("What is the square root of 64?\nyou must answer this question to start the game!");
-		Textbox.addAnswer("2");
-		Textbox.addAnswer("3");
-		Textbox.addAnswer("4");
-		Textbox.addAnswer("8");
-		Textbox.setCorrectIndex(3);
+		
+		QuestionManager.LoadQuestionsFile("questions.txt");
+		Question question = QuestionManager.getQuestionForQID(1);
+		Textbox.loadQuestion(question);
 		
 		while (running) {
 			if (Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {

@@ -37,11 +37,6 @@ public class Enemy extends Entity {
 	private int questionID;
 	
 	/**
-	 * A flag which determines if this character is currently asking a question
-	 */
-	private boolean isAsking;
-	
-	/**
 	 * Simple constructor: calls the complete constructor using the supplied damage and maxHealth, and with a null Item subclass.
 	 * @param damage The enemy's {@link #damage} value
 	 * @param maxHealth The enemy's {@link #maxHealth} value
@@ -77,8 +72,6 @@ public class Enemy extends Entity {
 	public void triggerQuestion() {
 		Question question = QuestionManager.getQuestionForQID(this.questionID);
 		Textbox.loadQuestion(question);
-		
-		isAsking = true;
 	}
 	
 	/**

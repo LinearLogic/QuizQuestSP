@@ -122,15 +122,13 @@ public class Textbox {
 		//Get the question attributes and add them to the textbox
 		setCorrectIndex(question.getCorrectAnswerIndex());
 		setQuestion(question.getQuestionString());
-		
+
 		for (int i = 0; i < 4; ++i) {
 			addAnswer(question.getAnswerString(i));
 		}
 		
 		current_selection = 0;
-		
-		
-		toggleActive();
+		active = true;
 	}
 	
 	/**
