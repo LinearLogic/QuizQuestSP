@@ -97,14 +97,10 @@ public class QuizQuest {
 		Player.setHealth(100);
 		Player.setLives(5);
 		
-		Inventory.initialize(380, 0, 100, 370, 10, 10, 35, 10, 2, 8);
+		Inventory.initialize(380, 20, 100, 370, 10, 10, 35, 10, 2, 8);
 		Inventory.addTexture("Key.png", 1);
 		Inventory.addTexture("Potion.png", 2);
 		Inventory.addTexture("Spell.png", 3);
-		
-		Inventory.addItem(0, new Key(1));
-		Inventory.addItem(1, new Potion(20));
-		Inventory.addItem(2, new Spell(10));
 		
 		Textbox.initializeWithSystemFont();
 		QuestionManager.LoadQuestionsFile("questions.txt");
