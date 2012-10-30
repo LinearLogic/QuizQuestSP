@@ -47,18 +47,39 @@ public class Player {
 	 */
 	private static boolean HUDActive;
 	
-	// Graphical
+	/**
+	 * Horizontal speed of the player sprite, in pixels per second
+	 */
 	private static double speed_x;
+	
+	/**
+	 * Vertical speed of the player sprite, in pixels per second
+	 */
 	private static double speed_y;
 	
+	/**
+	 * Speed constant (in pixels per second) used to regulate speeds when moving in various directions
+	 */
 	private final static double speed_constant = 5.0;
 	
-	//Coordinates of the player in the world, not for rendering
+	/**
+	 * X-coordinate of the player's location in the full world (not confined to the current quadrant) in pixel
+	 */
 	private static int world_coordinates_x = 0;
+	
+	/**
+	 * Y-coordinate of the player's location in the full world (not confined to the current quadrant) in pixel
+	 */
 	private static int world_coordinates_y = 0;
 	
+	/**
+	 * The {@link Sprite} object of the player (manages the camera view and player texture/size)
+	 */
 	private static Sprite sprite;
 	
+	/**
+	 * ArrayList of the remaining hearts (which represent lives) of the player
+	 */
 	private static ArrayList<Sprite> hearts = new ArrayList<Sprite>();
 	
 	/**
@@ -66,6 +87,12 @@ public class Player {
 	 */
 	public static boolean keyLifted = true;
 
+	/**
+	 * Constructs the player sprite with the given pixel coordinates and image file name, and loads the Heads Up Display (HUD)
+	 * @param start_x
+	 * @param start_y
+	 * @param player_image
+	 */
 	public static void initialize(int start_x, int start_y, String player_image) {
 		sprite = new Sprite(player_image, start_x, start_y);
 		
@@ -75,6 +102,9 @@ public class Player {
 		HUDActive = true;
 	}
 	
+	/**
+	 * Updates the player, checking for various conditions such as battle or typed keys. Notably handles movement.
+	 */
 	public static void update() {		
 		if (battleFoe != null) {
 			switch (Textbox.isAnswerCorrect()) {
@@ -149,18 +179,30 @@ public class Player {
 		sprite.setPosition(world_coordinates_x - (Map.getCoordinateShiftX()), world_coordinates_y - (Map.getCoordinateShiftY()));
 	}
 	
-	//Set the world coordinates
+	/**
+	 * Set the world coordinates (not the local quadrant/camera view coordinates) to the supplied values
+	 * @param x
+	 * @param y
+	 */
 	public static void setPosition(int x, int y) {
 		world_coordinates_x = x;
 		world_coordinates_y = y;
 	}
 	
-	//Get the world coordinates
+	/**
+	 * @return The current {@link #world_coordinates_x} of the player
+	 */
 	public static int getWorldX() { return world_coordinates_x; }
 	
-	//Get the world coordinates
+	/**
+	 * @return The current {@link #world_coordinates_y} ooof the player
+	 */
 	public static int getWorldY() { return world_coordinates_y; }
 	
+	/**
+	 * Checks to see if the player is about to leave the screen.
+	 * If so, either switches the quadrant or cancels the player's movement as necessary.
+	 */
 	private static void handleOffScreen() {	
 		//Check if player is out of the world on the left
 		if (world_coordinates_x - 5 < 0)
@@ -356,25 +398,39 @@ public class Player {
 		}
 	}
 	
-	//Get the player's rendering position X
+	/**
+	 * @return The x-coordinate, in pixels, of the rendering position of the player sprite
+	 */
 	public static int getSpriteX() { return sprite.getX(); }
 	
-	//Get the player's rendering position Y
+	/**
+	 * @return The y-coordinate, in pixels, of the rendering position of the player sprite
+	 */
 	public static int getSpriteY() { return sprite.getY(); }
 	
-	//Get the player's width
+	/**
+	 * @return The width, in pixels, of the player sprite
+	 */
 	public static int getSpriteWidth() { return sprite.getTextureWidth(); }
 	
-	//Get the players height
+	/**
+	 * @return The height, in pixels, of the player sprite
+	 */
 	public static int getSpriteHeight() { return sprite.getTextureHeight(); }
 	
-	//Returns the entityMap x-coord of the top lefthand corner of the player's sprite
+	/**
+	 * @return The entityMap x-coord of the top lefthand corner of the player's sprite
+	 */
 	public static int getMapX() { return world_coordinates_x/Map.getTileSize(); }
 	
-	//Returns the entityMap y-coord of the top lefthand corner of the player's sprite
+	/**
+	 * @return The entityMap y-coord of the top lefthand corner of the player's sprite
+	 */
 	public static int getMapY() { return world_coordinates_y/Map.getTileSize(); }
 	
-	//Draw the player
+	/**
+	 * Render the HUD and player sprite
+	 */
 	public static void render() { 
 		if (HUDActive) {
 			Renderer.renderColoredRectangle(0, 0, 480, 20, 0.7, 0.7, 0.7);

@@ -44,6 +44,7 @@ public class QuizQuest {
 	public QuizQuest() {
 		initializeOpenGL(screen_width, screen_height);
 		mainLoop();
+		Textbox.reset();
 		destroyOpenGL();
 		if (reset) {
 			new QuizQuest();
