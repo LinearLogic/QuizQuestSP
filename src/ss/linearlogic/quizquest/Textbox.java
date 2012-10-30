@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.TrueTypeFont;
 
 public class Textbox {
-	//The question string along with the font
+	
 	/**
 	 * ArrayList containing the lines of the question to be displayed
 	 */

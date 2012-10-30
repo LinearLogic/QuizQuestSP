@@ -63,7 +63,7 @@ public class Map {
 	/**
 	 * Size, in pixels, of a map tile
 	 */
-	private static int tileSize; // Size of the tile
+	private static int tileSize;
 	
 	/**
 	 * Unused for the time being (stub of a constructor that enables multiple maps)
@@ -83,7 +83,7 @@ public class Map {
 
 	
 	/**
-	 * Renders the current map segment (renders all tiles as textured rectangles), adjusting the camera view as necessary
+	 * Renders the current map segment (renders all entity tiles as textured rectangles), adjusting the camera view as necessary
 	 */
 	public static void render() {
 		//Get the players position
@@ -109,12 +109,12 @@ public class Map {
 	}
 	
 	/**
-	 * @return The width, in tiles, of the full map
+	 * @return The width, in entity tiles, of the full map
 	 */
 	public static int getWidth() { return width; }
 	
 	/**
-	 * @return The height, in tiles, of the full map
+	 * @return The height, in entity tiles, of the full map
 	 */
 	public static int getHeight() { return height; }
 	
@@ -182,7 +182,7 @@ public class Map {
 	}
 	
 	/**
-	 * @return The size, in tiles, of the map
+	 * @return The width (and height, as tiles are square) of an entity tile
 	 */
 	public static int getTileSize() { return tileSize; }
 	
