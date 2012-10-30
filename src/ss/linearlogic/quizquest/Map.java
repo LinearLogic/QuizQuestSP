@@ -329,6 +329,8 @@ public class Map {
 			
 			int itemAttribute = textReader.nextInt();
 			
+			System.out.println(maxHP + ", " + damage + ", " + itemNo + ", " + itemAttribute);
+			
 			Item item = null;
 			
 			switch (itemNo) {
