@@ -149,7 +149,7 @@ public class Player {
 			keyLifted = false;
 		}
 		
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)  && !Keyboard.isKeyDown(Keyboard.KEY_I)) 
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)  && !Keyboard.isKeyDown(Keyboard.KEY_E)) 
 			keyLifted = true;
 		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H)) {
 			HUDActive = !HUDActive;
