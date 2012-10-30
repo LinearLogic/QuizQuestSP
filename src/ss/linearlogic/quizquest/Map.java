@@ -113,9 +113,9 @@ public class Map {
 			}
 		}
 		
-		for (Enemy enemy: enemies) {
+		/*for (Enemy enemy: enemies) {
 			Renderer.renderColoredRectangle((enemy.getX() * 32) - coordinate_shift_x, (enemy.getY() * 32) - coordinate_shift_y, 32, 32, 1.0, 0.0, 0.0);
-		}
+		}*/
 	}
 	
 	/**

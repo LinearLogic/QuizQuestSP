@@ -1,5 +1,7 @@
 package ss.linearlogic.quizquest.player;
 
+import java.util.ArrayList;
+
 import org.lwjgl.input.Keyboard;
 
 import ss.linearlogic.quizquest.Map;
@@ -56,6 +58,8 @@ public class Player {
 	private static int world_coordinates_y = 0;
 	
 	private static Sprite sprite;
+	
+	private static ArrayList<Sprite> hearts = new ArrayList<Sprite>();
 	
 	/**
 	 * Whether or not a key is depressed (used to prevent repeat event spam)
@@ -381,6 +385,9 @@ public class Player {
 			
 			Renderer.renderColoredRectangle(20, 5, 100 * (getHealth()/getMaxHealth()), 10, r, g, 0.0);
 			Renderer.renderLinedRectangle(20, 5, 100, 10, 0.0, 0.0, 0.0);
+			
+			for (int i = 0; i < hearts.size(); ++i) 
+				hearts.get(i).draw();
 		}
 		
 		sprite.draw(); 
@@ -458,6 +465,14 @@ public class Player {
 			System.err.println("Error while setting player's remaining life count: count must be greater than zero.");
 			return;
 		}
+		
+		hearts.clear();
+				
+		for (int i = 0; i < newLives; ++i) {
+			Sprite sprite = new Sprite("heart.png", (i * (25)) + 240, 2);
+			hearts.add(sprite);
+		}
+		
 		lives = newLives;
 	}
 }
