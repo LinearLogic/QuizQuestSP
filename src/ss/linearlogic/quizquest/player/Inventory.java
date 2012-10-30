@@ -15,17 +15,27 @@ public class Inventory {
 	/**
 	 * The typeIDs of the items in the inventory (an Array of ints)
 	 */
-	private static int[] itemIDs;
+	private static int[][] itemIDs;
 	
 	/**
 	 * The items of the inventory (an Array of Items) - each element of the inventory is an Item subclass.
 	 */
-	private static Item[] items;
+	private static Item[][] items;
+	
+	/**
+	 * The width of the inventory 2D array in slots (tiles)
+	 */
+	private static int slotDimensionX;
+	
+	/**
+	 * The height of the 2inventory 2D array in slots (tiles)
+	 */
+	private static int slotDimensionY;
 	
 	/**
 	 * The number of items the inventory can hold (10 by default)
 	 */
-	private static int capacity = 10;
+	private static int capacity = slotDimensionX * slotDimensionY;
 	
 	/**
 	 * X-coordinate of the pixel location of the top lefthand corner of the inventory window within the game window (NOT the world pixel location)
@@ -74,9 +84,14 @@ public class Inventory {
 	private static boolean active = false;
 	
 	/**
-	 * The index of the item tile currently selected (corresponds to the index of the item object itself)
+	 * The x-coordinate of the item tile currently selected within the {@link #items} 2D array (corresponds to the index of the item object itself)
 	 */
-	private static int currentSelectionIndex;
+	private static int currentSelectionX;
+	
+	/**
+	 * The y-coordinate of the item tile currently selected within the {@link #items} 2D array (corresponds to the index of the item object itself)
+	 */
+	private static int currentSelectionY;
 	
 	/**
 	 * Whether a key is currently depressed
@@ -91,10 +106,14 @@ public class Inventory {
 	 * @param y The {@link #pixelY} coordinate of the inventory window
 	 * @param width The width, in pixels, of the inventory window
 	 * @param height The height, in pixels of the inventory window
+	 * @param bufferWidth The {@link #pixelBufferWidth} of the inventory window
+	 * @param bufferHeight The {@link #pixelBufferHeight} of the inventory window
 	 * @param tileWidth The {@link #itemTileWidth}, in pixels, of item tiles in the inventory window
 	 * @param tileSpacing The {@link #itemTileSpacing} of the inventory window
+	 * @param widthInSlots The {@link #slotDimensionX} of the inventory 2D array
+	 * @param  heightInSlots The {@link #slotDimensionY} of the inventory 2D array
 	 */
-	public static void initialize(int x, int y, int width, int height, int bufferWidth, int bufferHeight, int tileWidth, int tileSpacing, int inventoryCapacity)
+	public static void initialize(int x, int y, int width, int height, int bufferWidth, int bufferHeight, int tileWidth, int tileSpacing, int widthInSlots, int heightInSlots)
 	{
 		pixelX = x;
 		pixelY = y;
@@ -104,8 +123,13 @@ public class Inventory {
 		pixelBufferHeight = bufferHeight;
 		itemTileWidth = tileWidth;
 		itemTileSpacing = tileSpacing;
-		capacity = inventoryCapacity;
-		currentSelectionIndex = 0;
+		slotDimensionX = widthInSlots;
+		slotDimensionY = heightInSlots;
+		capacity = widthInSlots * heightInSlots;
+		currentSelectionX = 0;
+		currentSelectionY = 0;
+		itemIDs = new int[widthInSlots][heightInSlots];
+		items = new Item[widthInSlots][heightInSlots];
 		if (active)
 			active = false;
 	}
@@ -114,32 +138,50 @@ public class Inventory {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
 		if (active) { // make sure the inventory menu is currently in use
-			
-			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 				keyLifted = true;
 			
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) {
+				currentSelectionX -= 1;
+				keyLifted = false;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && keyLifted) {
+				currentSelectionX += 1;
+				keyLifted = false;
+			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP) && keyLifted) {
-				currentSelectionIndex -= 1;
+				currentSelectionY -= 1;
 				keyLifted = false;
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && keyLifted) {
-				currentSelectionIndex += 1;
+				currentSelectionY += 1;
 				keyLifted = false;
 			}
 			//If all keys have been released, set keyLifted to true to re-enable scrolling through selections
-			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 				keyLifted = true;
+			
+			//Provide wrap-around scrolling through the inventory slots
+			if (currentSelectionX >= slotDimensionX)
+				currentSelectionX = 0;
+			if (currentSelectionX < 0)
+				currentSelectionX = slotDimensionX - 1;
+			if (currentSelectionY >= slotDimensionY)
+				currentSelectionY = 0;
+			if (currentSelectionY < 0)
+				currentSelectionY = slotDimensionY - 1;
 			
 			//Checks to see if there is a valid item in the selected inventory slot, and if so, uses the item
 			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
 				keyLifted = false;
-				if (itemIDs[currentSelectionIndex] < 0) { //Current slot contains a valid item
-					switch(items[currentSelectionIndex].getTypeID()) {
+				System.out.println(itemIDs[currentSelectionX][currentSelectionY]);
+				if (itemIDs[currentSelectionX][currentSelectionY] < 0) { //Current slot contains a valid item
+					switch(items[currentSelectionX][currentSelectionY].getTypeID()) {
 					case 1: //Key
 						//Use key on the door the player is currently trying to unlock
 						break;
 					case 2: //Potion
-						((Potion) items[currentSelectionIndex]).use();
+						((Potion) items[currentSelectionX][currentSelectionY]).use();
 						break;
 					case 3: //Spell
 						//Use spell on the enemy the player is currently in combat with
@@ -149,20 +191,33 @@ public class Inventory {
 					}
 				}
 			}
-					
-			//Provide wrap-around scrolling through the inventory slots
-			if (currentSelectionIndex > 10)
-				currentSelectionIndex = 0;
-			if (currentSelectionIndex < 0)
-				currentSelectionIndex = 10;
 		}
-		
 		render();
 	}
 	
 	public static void render() {
 		if (active) { //Double check whether the inventory menu is in use
-			Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.7, 0.7, 0.7);
+			//Render the inventory window
+			Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.4, 0.4, 0.4);
+			
+			//Render the box around the corrently selected slot (must be rendered before the slot rectangles or it cover them)
+			int x = pixelX + (pixelBufferWidth - 5) + currentSelectionX * (itemTileWidth + itemTileSpacing);
+			int y = pixelY + (pixelBufferHeight - 5) + currentSelectionY * (itemTileWidth + itemTileSpacing);
+			int w = itemTileWidth + 10;
+			int h = itemTileWidth + 10;
+			Renderer.renderColoredRectangle(x, y, w, h, 1.0, 0.0, 0.0);
+			
+			//Render the empty item slots, one by one, starting at the top inside the buffer
+			int startingX = pixelX + pixelBufferWidth;
+			int startingY = pixelY + pixelBufferHeight;
+			for (int i = 0; i < slotDimensionX; i++) {
+				startingY = pixelY + pixelBufferHeight; //reset the vertical displacement
+				for (int j = 0; j < slotDimensionY; j++) {
+					Renderer.renderColoredRectangle(startingX, startingY, itemTileWidth, itemTileWidth, 0.7, 0.7, 0.7);
+					startingY += itemTileWidth + itemTileSpacing;
+				}
+				startingX += itemTileWidth + itemTileSpacing;
+			}
 		}
 	}
 	
@@ -178,7 +233,7 @@ public class Inventory {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return null;
 		}
-		return items[index];
+		return items[index/slotDimensionX][index%slotDimensionY];
 	}
 	
 	/**
@@ -192,7 +247,7 @@ public class Inventory {
 			System.err.println("Error retrieving inventory itemID - invalid slot index provided.");
 			return 0;
 		}
-		return itemIDs[index];
+		return itemIDs[index/slotDimensionX][index%slotDimensionY];
 	}
 	/**
 	 * Removes the Item at the given inventory index.
@@ -204,8 +259,8 @@ public class Inventory {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return;
 		}
-		items[index] = null;
-		itemIDs[index] = 0;
+		items[index/slotDimensionX][index%slotDimensionY] = null;
+		itemIDs[index/slotDimensionX][index%slotDimensionY] = 0;
 	}
 	
 	/**
@@ -219,27 +274,46 @@ public class Inventory {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return;
 		}
-		items[index] = item;
-		itemIDs[index] = item.getTypeID();
+		items[index/slotDimensionX][index%slotDimensionY] = item;
+		itemIDs[index/slotDimensionX][index%slotDimensionY] = item.getTypeID();
 	}
 	
 	/**
 	 * @return The contents of the inventory as an array of Items
 	 */
-	public static Item[] getitems() { return items; }
+	public static Item[] getitems() {
+		Item[] output = new Item[capacity];
+		int index = 0;
+		for (int i = 0; i < slotDimensionX; i++)
+			for (int j = 0; j < slotDimensionY; j++) {
+				output[index] = items[i][j];
+				index++;
+			}
+		return output;
+	}
 	
 	/**
 	 * @return The typeIDs of the items in the inventory array
 	 */
-	public static int[] getItemIDs() { return itemIDs; }
+	public static int[] getItemIDs() {
+		int[] output = new int[capacity];
+		int index = 0;
+		for (int i = 0; i < slotDimensionX; i++)
+			for (int j = 0; j < slotDimensionY; j++) {
+				output[index] = itemIDs[i][j];
+				index++;
+			}
+		return output;
+	}
 	
 	/**
 	 * Clears the entire inventory by setting all Items in the inventory array to null.
 	 */
 	public static void clearitems() {
-		for (int i = 0; i < items.length; i++) {
-			items[i] = null;
-			itemIDs[i] = 0;
+		for (int i = 0; i < slotDimensionX; i++)
+			for (int j = 0; i < slotDimensionY; i++) {
+				items[i][j] = null;
+				itemIDs[i][j] = 0;
 		}
 	}
 	

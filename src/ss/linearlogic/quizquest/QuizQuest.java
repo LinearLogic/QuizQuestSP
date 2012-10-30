@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.player.Player;
 import ss.linearlogic.quizquest.question.Question;
 import ss.linearlogic.quizquest.question.QuestionManager;
@@ -87,6 +88,7 @@ public class QuizQuest {
 
 		Player.initialize(200, 200, "Pedobear.png");
 		
+		Inventory.initialize(380, 0, 100, 370, 10, 10, 35, 10, 2, 8);
 		Textbox.initializeWithSystemFont();
 		
 		QuestionManager.LoadQuestionsFile("questions.txt");
@@ -112,6 +114,7 @@ public class QuizQuest {
 			Player.update();
 			Player.render();
 			
+			
 			Textbox.update();
 			switch(Textbox.isAnswerCorrect()) {
 				case 0: // incorrect answer has been provided
@@ -123,12 +126,14 @@ public class QuizQuest {
 					Textbox.toggleActive();
 					Textbox.reset();
 					System.out.println("Answer is correct!!");
-					// additional handling here	
+					// additional handling here
 				default: // no answer has been provided
 					break;
 			}
 			Textbox.render();
 			
+			Inventory.update();
+
 			Display.update();
 			Display.sync(60); //The value n in sync(n) is the frame rate
 		}
