@@ -326,13 +326,11 @@ public class Map {
 			int maxHP = textReader.nextInt();
 			int damage = textReader.nextInt();
 			int itemNo = textReader.nextInt();
-			
 			int itemAttribute = textReader.nextInt();
 			
 			System.out.println(maxHP + ", " + damage + ", " + itemNo + ", " + itemAttribute);
 			
 			Item item = null;
-			
 			switch (itemNo) {
 				case 1:
 					item = new Key(itemAttribute, 1);
@@ -344,7 +342,6 @@ public class Map {
 					item = new Spell(itemAttribute, 1);
 					break;
 				default:
-					item = new Item(itemNo, 1);
 					break;
 			}
 			
@@ -355,7 +352,6 @@ public class Map {
 									
 			Enemy enemy = new Enemy(damage, maxHP, item, x, y, qID);
 			addEntity(enemy);
-			
 			enemies.add(enemy);
 		}
 		
