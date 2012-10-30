@@ -8,41 +8,85 @@ import org.newdawn.slick.TrueTypeFont;
 
 public class Textbox {
 	//The question string along with the font
+	/**
+	 * ArrayList containing the lines of the question to be displayed
+	 */
 	private static ArrayList<String>questionLines = new ArrayList<String>();
+	
+	/**
+	 * The maximum number of lines a question can have
+	 */
 	private static final int max_line_count = 4;
 	
+	/**
+	 * The font of the strings in the textbox
+	 */
 	private static TrueTypeFont font;
 	
-	//The position of the textbox
+	/**
+	 * The x-coordinate of the textbox, in pixels
+	 */
 	private static int x;
+	
+	/**
+	 * The y-coordinates of the textbox, in pixels
+	 */
 	private static int y;
 	
-	//The size of the textbox
+	/**
+	 * The width, in pixels, of the textbox
+	 */
 	private static int width;
+	
+	/**
+	 * The height, in pixels, of the textbox
+	 */
 	private static int height;
 	
-	//The flag holding whether this window is active or not
+	/**
+	 * Whether this textbox window is active
+	 */
 	private static boolean active = true;
 	
-	//Holds the answers to the question
+	/**
+	 * ArrayList containing the possible answers to the question
+	 */
 	private static ArrayList<String> answers = new ArrayList<String>();
 	
-	//Holds the letters for the answers along with the current selection
+	/**
+	 * The letters to use as the multiple choice options
+	 */
 	private final static String letters = "ABCD";
+	
+	/**
+	 * The integer ID of the answer that is currently selected (0-3)
+	 */
 	private static int current_selection = 0;
 	
-	//The correct answer index
+	/**
+	 * The index in the {@link #answers} ArrayList of the correct answer
+	 */
 	private static int correctIndex = -1;
 	
-	//A state variable determining whether the answer is correct or not
+	/**
+	 * Represents the question's state: -1 if unanswer, 0 if answered incorrectly, 1 if answered correctly.
+	 */
 	private static int answerCorrect = -1;
 	
-	//Check to make sure keyrepeat is not enabled
+	/**
+	 * Used to prevent repeat key events if a key is down
+	 */
 	private static boolean keyLifted = true;
 	
+	/**
+	 * Constructor. Not much happening here at the moment...
+	 */
 	public Textbox() {}
 	
-	//Initialize with using a custom font
+	/**
+	 * Initializes the textbox with the supplied custom font
+	 * @param fontFile The file from which to load the font
+	 */
 	public static void initialize(String fontFile) {
 		font = Renderer.loadFont(fontFile, 24);
 		
@@ -53,7 +97,9 @@ public class Textbox {
 		height = 100;
 	}
 	
-	//Initialize without using a custom font
+	/**
+	 * Initializes the textbox without a custom font
+	 */
 	public static void initializeWithSystemFont() {
 		font = Renderer.loadSystemFont("SansSerif", 10);
 		
@@ -66,7 +112,10 @@ public class Textbox {
 		height = 100;
 	}
 	
-	//Add an answer to the array
+	/**
+	 * Adds the supplied answer to the {@link #answers} ArrayList at the next available index
+	 * @param answer
+	 */
 	public static void addAnswer(String answer) {
 		if (answers.size() >= 4)
 			return;
@@ -74,22 +123,33 @@ public class Textbox {
 		answers.add(answer);
 	}
 	
-	//Remove an answer from the array (int)
+	/**
+	 * Removes the answer at the provided index from the {@link #answers} ArrayList
+	 * @param indx
+	 */
 	public static void removeAnswer(int indx) {
 		answers.remove(indx);
 	}
 	
-	//Remove an answer from the array (string)
+	/**
+	 * Removes provided answer string from the {@link #answers} ArrayList
+	 * @param ans
+	 */
 	public static void removeAnswer(String ans) {
 		answers.remove(ans);
 	}
 	
-	//Set the correct answer index
+	/**
+	 * Sets the index of the correct answer in the {@link #answers} ArrayList to the supplied value
+	 * @param indx
+	 */
 	public static void setCorrectIndex(int indx) {
 		correctIndex = indx;
 	}
 	
-	//Toggle whether the window is active or not
+	/**
+	 * Toggles whether the textbox window is open
+	 */
 	public static void toggleActive() {
 		active = !active;
 		
@@ -97,23 +157,36 @@ public class Textbox {
 		Keyboard.enableRepeatEvents(!active);
 	}
 	
-	//Check if the window is active
+	/**
+	 * Checks if the textbox window is in use
+	 * @return Whether the textbox window is in use
+	 */
 	public static boolean isActive() {
 		return active;
 	}
 	
-	//Checks the flag to see if the answer is correct
+	/**
+	 * Returns the value of the {@link #answerCorrect} flag. See the {@link #answerCorrect} Javadoc
+	 * for information about its possible states and what they mean
+	 * @return The value of {@link #answerCorrect}
+	 */
 	public static int isAnswerCorrect() {
 		return answerCorrect;
 	}
 	
-	//Sets the value of answerCorrect to the supplied variable.
-	//Used to reset the question's status to "unanswered" (by setting answerCorrect to an int value other than 1 or 0)
+	/**
+	 * Sets the value of the {@link #answerCorrect} flag to the supplied value
+	 * Used to reset the question's status to unanswered (by setting the answerCorrect flag to a value other than 0 or 1)
+	 * @param correct
+	 */
 	public static void setAnswerCorrect(int correct) {
 		answerCorrect = correct;
 	}
 	
-	//Set the current question
+	/**
+	 * Set the current question to the provided question string
+	 * @param question
+	 */
 	public static void setQuestion(String question) {
 		StringTokenizer tokenizer = new StringTokenizer(question, "\n");
 		int counter = 0;
@@ -128,16 +201,24 @@ public class Textbox {
 		}
 	}
 	
-	//Get the current selection of the cursor
+	/**
+	 * @return The answer that is currently selected by the cursor
+	 */
 	public static int getCurrentSelection() {
 		return current_selection;
 	}
 	
-	//Set the current selection of the cursor
+	/**
+	 * Set the current selection (and cursor) to the answer whose index is provided
+	 * @param sel The index of the answer to put the cursor on
+	 */
 	public static void setCurrentSelection(int sel) {
 		current_selection = sel;
 	}
 	
+	/**
+	 * Update the textbox window and its contents
+	 */
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
@@ -175,12 +256,16 @@ public class Textbox {
 		}
 	}
 	
-	//Checks to see if the current selection is equal to the correct index
+	/**
+	 * @return Whether the currently selected answer is the correct one (by comparing answer indexes)
+	 */
 	private static boolean checkIfCorrect() {
 		return current_selection == correctIndex;
 	}
 	
-	//Resets all the variables back to the original state
+	/**
+	 * Resets all of the variables back to their original states
+	 */
 	public static void reset() {
 		current_selection = 0;
 		correctIndex = -1;
@@ -191,7 +276,9 @@ public class Textbox {
 		questionLines.clear();
 	}
 	
-	//Render the text box
+	/**
+	 * Render the textbox (if it is active)
+	 */
 	public static void render() {
 		if (!active) return;
 			
