@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.opengl.*;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.Textbox;
-import ss.linearlogic.quizquest.item.*;
+import ss.linearlogic.quizquest.item.Item;
+import ss.linearlogic.quizquest.item.Key;
+import ss.linearlogic.quizquest.item.Potion;
+import ss.linearlogic.quizquest.item.Spell;
 
 /**
  * Represents the player's inventory, an array of Item subclass objects
@@ -190,31 +194,35 @@ public class Inventory {
 			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
 				keyLifted = false;
 				if (itemIDs[currentSelectionX][currentSelectionY] > 0) { //Current slot contains a valid item
-					switch(items[currentSelectionX][currentSelectionY].getTypeID()) {
-					case 1: //Key
-						//Use key on the door the player is currently trying to unlock
-						Inventory.removeItem(currentSelectionX * 2 + currentSelectionY);
-						break;
-					case 2: //Potion
-						((Potion) items[currentSelectionX][currentSelectionY]).use();
-						Inventory.removeItem(currentSelectionX * 2 + currentSelectionY);
-						break;
-					case 3: //Spell
-						if (Player.getBattleFoe() != null) {
-							System.out.println("!");
-							((Spell) items[currentSelectionX][currentSelectionY]).use(Player.getBattleFoe());
-							Inventory.addItem(Inventory.getItemCount(), Player.getBattleFoe().getItemToDrop());
-							Player.setBattleFoe(null);
-							Textbox.reset();
-							
-							Inventory.removeItem(currentSelectionX * 2 + currentSelectionY);
-							
+					Item item = items[currentSelectionX][currentSelectionY];
+					if (item.getCount() > 0) { //Item has not yet been used up, continue
+						switch(item.getTypeID()) {
+						case 1: //Key
+							//Use key on the door the player is currently trying to unlock
+							break;
+						case 2: //Potion
+							((Potion) item).use();
+							break;
+						case 3: //Spell
+							if (Player.getBattleFoe() != null) {
+								System.out.println("!");
+								((Spell) item).use(Player.getBattleFoe());
+								Inventory.addItem(Inventory.getItemCount(), Player.getBattleFoe().getItemToDrop());
+								Player.setBattleFoe(null);
+								Textbox.reset();
+								break;
+							}
+							System.out.println("Spells can only be used in battle.");
+							break;
+						default:
 							break;
 						}
-						System.out.println("Spells can only be used in battle.");
-						break;
-					default:
-						break;
+					}
+					if (item.getCount() <= 0) {
+						 //Item has been consumed - remove it from the inventory. Note that this cannot
+						 //be treated in an 'else' statement, or the item will not update until it is clicked again.
+						items[currentSelectionX][currentSelectionY] = null;
+						itemIDs[currentSelectionX][currentSelectionY] = 0;
 					}
 				}
 			}
