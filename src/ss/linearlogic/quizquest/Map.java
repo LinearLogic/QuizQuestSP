@@ -18,6 +18,9 @@ import ss.linearlogic.quizquest.entity.Floor;
 import ss.linearlogic.quizquest.entity.Grass;
 import ss.linearlogic.quizquest.entity.Wall;
 import ss.linearlogic.quizquest.item.Item;
+import ss.linearlogic.quizquest.item.Key;
+import ss.linearlogic.quizquest.item.Potion;
+import ss.linearlogic.quizquest.item.Spell;
 
 public class Map {
 	
@@ -324,9 +327,24 @@ public class Map {
 			int damage = textReader.nextInt();
 			int itemNo = textReader.nextInt();
 			
+			int itemAttribute = textReader.nextInt();
+			
 			Item item = null;
-			if (itemNo > 0)
-				item = new Item(itemNo, 1);
+			
+			switch (itemNo) {
+				case 1:
+					item = new Key(itemAttribute, 1);
+					break;
+				case 2:
+					item = new Potion(itemAttribute, 1);
+					break;
+				case 3:
+					item = new Spell(itemAttribute, 1);
+					break;
+				default:
+					item = new Item(itemNo, 1);
+					break;
+			}
 			
 			int x = textReader.nextInt();
 			int y = textReader.nextInt();

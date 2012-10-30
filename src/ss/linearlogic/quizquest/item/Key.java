@@ -62,4 +62,6 @@ public class Key extends Item {
 	 * @return lockID the key's lockID value ({@link #lockID})
 	 */
 	public int getlockID() { return this.lockID; }
+	
+	public void setLockID(int id) { lockID = id; }
 }

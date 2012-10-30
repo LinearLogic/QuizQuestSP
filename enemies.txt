@@ -1,8 +1,13 @@
-Enemy 1
-Max health: 20
-Damage: 4
-Item to drop on death - item ID (0 if no item; 1 if key; 2 if potion; 3 if spell): 1
-Item to drop on death - modifier value (for "no item", this will be skipped; for key, the lock ID; for potion, the health to restore; for spell, the damage to deal): 1
-Item to drop on death - item count (for "no item", this will be skipped): 1
-X-coordinate on map: 11
-Y-coordinate on map: 11
+2
+20
+10
+1
+11
+11
+0
+20
+10
+2
+20
+14
+1

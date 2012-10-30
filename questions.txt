@@ -1,8 +1,15 @@
-1
+2
+0
+2
+What is the square root of 64?
 1
 2
-What is the square root of 64.\nYou must answer this question to start.
-2
-4
 8
-3
+5
+1
+1
+What is the square root of 25?
+1
+5
+2
+8
