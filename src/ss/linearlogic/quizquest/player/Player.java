@@ -419,9 +419,12 @@ public class Player {
 		if ((currentDoor != null) || (battleFoe != null)) //A door or battle prompt is already open, as the player is already near a door
 			return;
 		currentDoor = door;
-		for (Item item : Inventory.getitems()) {
+		for (Item item : Inventory.getItems()) {
 			if (item instanceof Key) {
 				if (((Key) item).getlockID() == door.getLockID()) { //The player has the matching key and can open the door - open prompt
+					//Open the Y/N prompt window
+					//Remove this line (as all door handling beyond this point is done in the update() method):
+					((Key) item).use(door);
 					return;
 				}
 			}

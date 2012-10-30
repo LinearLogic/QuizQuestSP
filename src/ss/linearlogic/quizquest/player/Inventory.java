@@ -155,6 +155,13 @@ public class Inventory {
 	
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
+		for (Item item : getItems())
+			if ((item != null) && (item.getCount() <= 0)) {
+				 //Item has been consumed - remove it from the inventory. Note that this cannot
+				 //be treated in an 'else' statement, or the item will not update until it is clicked again.
+				items[currentSelectionX][currentSelectionY] = null;
+				itemIDs[currentSelectionX][currentSelectionY] = 0;
+			}
 		
 		if (active) { // make sure the inventory menu is currently in use
 			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
@@ -217,12 +224,6 @@ public class Inventory {
 						default:
 							break;
 						}
-					}
-					if (item.getCount() <= 0) {
-						 //Item has been consumed - remove it from the inventory. Note that this cannot
-						 //be treated in an 'else' statement, or the item will not update until it is clicked again.
-						items[currentSelectionX][currentSelectionY] = null;
-						itemIDs[currentSelectionX][currentSelectionY] = 0;
 					}
 				}
 			}
@@ -355,7 +356,7 @@ public class Inventory {
 	/**
 	 * @return The contents of the inventory as an array of Items
 	 */
-	public static Item[] getitems() {
+	public static Item[] getItems() {
 		Item[] output = new Item[capacity];
 		int index = 0;
 		for (int i = 0; i < slotDimensionX; i++)
@@ -383,7 +384,7 @@ public class Inventory {
 	/**
 	 * Clears the entire inventory by setting all Items in the inventory array to null.
 	 */
-	public static void clearitems() {
+	public static void clearItems() {
 		for (int i = 0; i < slotDimensionX; i++)
 			for (int j = 0; i < slotDimensionY; i++) {
 				items[i][j] = null;
