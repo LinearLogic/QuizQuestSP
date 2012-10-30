@@ -1,6 +1,11 @@
 package ss.linearlogic.quizquest.player;
 
+import org.lwjgl.input.Keyboard;
+
+import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.item.Item;
+import ss.linearlogic.quizquest.item.Key;
+import ss.linearlogic.quizquest.item.Potion;
 
 /**
  * Represents the player's inventory, an array of Item subclass objects
@@ -16,6 +21,11 @@ public class Inventory {
 	 * The items of the inventory (an Array of Items) - each element of the inventory is an Item subclass.
 	 */
 	private static Item[] items;
+	
+	/**
+	 * The number of items the inventory can hold (10 by default)
+	 */
+	private static int capacity = 10;
 	
 	/**
 	 * X-coordinate of the pixel location of the top lefthand corner of the inventory window within the game window (NOT the world pixel location)
@@ -69,6 +79,11 @@ public class Inventory {
 	private static int currentSelectionIndex;
 	
 	/**
+	 * Whether a key is currently depressed
+	 */
+	private static boolean keyLifted;
+	
+	/**
 	 * Loads the inventory window with the supplied specifications. Note: this method does not actually open
 	 * the inventory window after initializing it - this must be done with the {@link #toggleActive(boolean)} method.
 	 * 
@@ -79,7 +94,7 @@ public class Inventory {
 	 * @param tileWidth The {@link #itemTileWidth}, in pixels, of item tiles in the inventory window
 	 * @param tileSpacing The {@link #itemTileSpacing} of the inventory window
 	 */
-	public static void initialize(int x, int y, int width, int height, int bufferWidth, int bufferHeight, int tileWidth, int tileSpacing)
+	public static void initialize(int x, int y, int width, int height, int bufferWidth, int bufferHeight, int tileWidth, int tileSpacing, int inventoryCapacity)
 	{
 		pixelX = x;
 		pixelY = y;
@@ -89,26 +104,101 @@ public class Inventory {
 		pixelBufferHeight = bufferHeight;
 		itemTileWidth = tileWidth;
 		itemTileSpacing = tileSpacing;
+		capacity = inventoryCapacity;
 		currentSelectionIndex = 0;
 		if (active)
 			active = false;
 	}
 	
+	public static void update() {
+		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
+		
+		if (active) { // make sure the inventory menu is currently in use
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+				keyLifted = true;
+			if (Keyboard.isKeyDown(Keyboard.KEY_I) && keyLifted) { //Toggles the inventory window
+				active = !active;
+			}
+			
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+				keyLifted = true;
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP) && keyLifted) {
+				currentSelectionIndex -= 1;
+				keyLifted = false;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && keyLifted) {
+				currentSelectionIndex += 1;
+				keyLifted = false;
+			}
+			//If all keys have been released, set keyLifted to true to re-enable scrolling through selections
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+				keyLifted = true;
+			
+			//Checks to see if there is a valid item in the selected inventory slot, and if so, uses the item
+			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
+				keyLifted = false;
+				if (itemIDs[currentSelectionIndex] < 0) { //Current slot contains a valid item
+					switch(items[currentSelectionIndex].getTypeID()) {
+					case 1: //Key
+						//Use key on the door the player is currently trying to unlock
+						break;
+					case 2: //Potion
+						((Potion) items[currentSelectionIndex]).use();
+						break;
+					case 3: //Spell
+						//Use spell on the enemy the player is currently in combat with
+						break;
+					default:
+						break;
+					}
+				}
+			}
+					
+			//Provide wrap-around scrolling through the inventory slots
+			if (currentSelectionIndex > 10)
+				currentSelectionIndex = 0;
+			if (currentSelectionIndex < 0)
+				currentSelectionIndex = 10;
+		}
+		
+		render();
+	}
+	
+	public static void render() {
+		if (active) { //Double check whether the inventory menu is in use
+			Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.7, 0.7, 0.7);
+		}
+	}
+	
 	//---// Inventory contents handling //---//
 	/**
-	 * Retrieves the item at the provided index in the inventory.
+	 * Retrieves the item at the specified index in the inventory.
 	 * 
-	 * @param index The index of the item being retrieved from the inventory array
+	 * @param index Inventory array index
 	 * @return The item present at the provided index
 	 */
 	public static Item getItem(int index) {
-		if (index >= items.length) {
+		if (index >= capacity) {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return null;
 		}
 		return items[index];
 	}
 	
+	/**
+	 * Retrieves the typeID of the item at the specified index in the inventory.
+	 * @param index Inventory array index
+	 * @return Item typeID
+	 */
+	public static int getItemID(int index)
+	{
+		if (index >= capacity) {
+			System.err.println("Error retrieving inventory itemID - invalid slot index provided.");
+			return 0;
+		}
+		return itemIDs[index];
+	}
 	/**
 	 * Removes the Item at the given inventory index.
 	 * 
@@ -120,6 +210,7 @@ public class Inventory {
 			return;
 		}
 		items[index] = null;
+		itemIDs[index] = 0;
 	}
 	
 	/**
@@ -134,16 +225,18 @@ public class Inventory {
 			return;
 		}
 		items[index] = item;
+		itemIDs[index] = item.getTypeID();
 	}
 	
 	/**
-	 * Returns the contents of the inventory as an array of Items
-	 * 
-	 * @return inventory items as an array of Items
+	 * @return The contents of the inventory as an array of Items
 	 */
-	public static Item[] getitems() {
-		return items;
-	}
+	public static Item[] getitems() { return items; }
+	
+	/**
+	 * @return The typeIDs of the items in the inventory array
+	 */
+	public static int[] getItemIDs() { return itemIDs; }
 	
 	/**
 	 * Clears the entire inventory by setting all Items in the inventory array to null.
@@ -151,6 +244,12 @@ public class Inventory {
 	public static void clearitems() {
 		for (int i = 0; i < items.length; i++) {
 			items[i] = null;
+			itemIDs[i] = 0;
 		}
 	}
+	
+	/**
+	 * @return Whether the inventory window is in use
+	 */
+	public static boolean isActive() { return active; }
 }

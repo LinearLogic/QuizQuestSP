@@ -63,7 +63,7 @@ public class Player {
 		 * and then evaluating the resulting speeds. If there is a speed in both the x and y direction,
 		 * the speeds are divided by the square root of 2, to prevent a speed increase when moving diagonally.
 		 */
-		if (!Textbox.isActive()) {
+		if (!Textbox.isActive() && !Inventory.isActive()) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 				speed_y -= speed_constant;
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
