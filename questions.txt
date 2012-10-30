@@ -1,0 +1,8 @@
+1
+1
+2
+What is the square root of 64.\nYou must answer this question to start.
+2
+4
+8
+3

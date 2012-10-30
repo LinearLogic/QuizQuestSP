@@ -1,6 +1,12 @@
 package ss.linearlogic.quizquest.player;
 
+import java.io.IOException;
+import java.util.HashMap;
+
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
 import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.item.Item;
@@ -22,6 +28,10 @@ public class Inventory {
 	 */
 	private static Item[][] items;
 	
+	/**
+	 * HashMap containing corresponding pairs of item textures and IDs
+	 */
+	private static HashMap<Integer, Texture> itemTextures = new HashMap<Integer, Texture>();
 	/**
 	 * The width of the inventory 2D array in slots (tiles)
 	 */
@@ -194,7 +204,9 @@ public class Inventory {
 		}
 		render();
 	}
-	
+	/**
+	 * Render the inventory window and all its contents
+	 */
 	public static void render() {
 		if (active) { //Double check whether the inventory menu is in use
 			//Render the inventory window
@@ -214,11 +226,44 @@ public class Inventory {
 				startingY = pixelY + pixelBufferHeight; //reset the vertical displacement
 				for (int j = 0; j < slotDimensionY; j++) {
 					Renderer.renderColoredRectangle(startingX, startingY, itemTileWidth, itemTileWidth, 0.7, 0.7, 0.7);
+					//Render the item tiles where items are presented in the inventory array
+					switch(itemIDs[i][j]) {
+						case 1: //Key
+							Renderer.renderTexturedRectangle(startingX, startingY, itemTileWidth, itemTileWidth, itemTextures.get(1));
+							break;
+						case 2: //Potion
+							Renderer.renderTexturedRectangle(startingX, startingY, itemTileWidth, itemTileWidth, itemTextures.get(2));
+							break;
+						case 3: //Spell
+							Renderer.renderTexturedRectangle(startingX, startingY, itemTileWidth, itemTileWidth, itemTextures.get(3));
+							break;
+						default: //Invalid item
+							break;
+					}
 					startingY += itemTileWidth + itemTileSpacing;
 				}
 				startingX += itemTileWidth + itemTileSpacing;
 			}
 		}
+	}
+	
+	/**
+	 * Add a corresponding Texture object and ID to the {@link #itemTextures} HashMap
+	 * 
+	 * @param filename
+	 * @param ID
+	 */
+	public static void addTexture(String filename, int ID) {
+		Texture texture = null;
+		//Read the texture object from the string
+		try {
+			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(filename));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//Put the tile into the textures HashMap
+		if (texture != null) itemTextures.put(ID, texture);
+		else System.out.println("Texture is null, unable to add to array");
 	}
 	
 	//---// Inventory contents handling //---//
@@ -233,7 +278,7 @@ public class Inventory {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return null;
 		}
-		return items[index/slotDimensionX][index%slotDimensionY];
+		return items[index/slotDimensionY][index%slotDimensionY];
 	}
 	
 	/**
@@ -247,7 +292,7 @@ public class Inventory {
 			System.err.println("Error retrieving inventory itemID - invalid slot index provided.");
 			return 0;
 		}
-		return itemIDs[index/slotDimensionX][index%slotDimensionY];
+		return itemIDs[index/slotDimensionY][index%slotDimensionY];
 	}
 	/**
 	 * Removes the Item at the given inventory index.
@@ -255,12 +300,12 @@ public class Inventory {
 	 * @param index The index of the item being removed from the inventory array
 	 */
 	public static void removeItem(int index) {
-		if (index >= items.length) {
+		if (index >= slotDimensionX * slotDimensionY) {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return;
 		}
-		items[index/slotDimensionX][index%slotDimensionY] = null;
-		itemIDs[index/slotDimensionX][index%slotDimensionY] = 0;
+		items[index/slotDimensionY][index%slotDimensionY] = null;
+		itemIDs[index/slotDimensionY][index%slotDimensionY] = 0;
 	}
 	
 	/**
@@ -270,12 +315,12 @@ public class Inventory {
 	 * @param item The Item itself (an Item subclass, really, as Item is abstract)
 	 */
 	public static void addItem(int index, Item item) {
-		if (index >= items.length) {
+		if (index >= slotDimensionX * slotDimensionY) {
 			System.err.println("Error retrieving inventory item - invalid slot index provided.");
 			return;
 		}
-		items[index/slotDimensionX][index%slotDimensionY] = item;
-		itemIDs[index/slotDimensionX][index%slotDimensionY] = item.getTypeID();
+		items[index/slotDimensionY][index%slotDimensionY] = item;
+		itemIDs[index/slotDimensionY][index%slotDimensionY] = item.getTypeID();
 	}
 	
 	/**

@@ -5,6 +5,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import ss.linearlogic.quizquest.item.Key;
+import ss.linearlogic.quizquest.item.Potion;
+import ss.linearlogic.quizquest.item.Spell;
 import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.player.Player;
 import ss.linearlogic.quizquest.question.Question;
@@ -89,6 +92,14 @@ public class QuizQuest {
 		Player.initialize(200, 200, "Pedobear.png");
 		
 		Inventory.initialize(380, 0, 100, 370, 10, 10, 35, 10, 2, 8);
+		Inventory.addTexture("Key.png", 1);
+		Inventory.addTexture("Potion.png", 2);
+		Inventory.addTexture("Spell.png", 3);
+		
+		Inventory.addItem(0, new Key(1));
+		Inventory.addItem(1, new Potion(20));
+		Inventory.addItem(2, new Spell(10));
+		
 		Textbox.initializeWithSystemFont();
 		
 		QuestionManager.LoadQuestionsFile("questions.txt");
