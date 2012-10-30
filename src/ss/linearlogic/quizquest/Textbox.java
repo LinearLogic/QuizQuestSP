@@ -6,6 +6,8 @@ import java.util.StringTokenizer;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.TrueTypeFont;
 
+import ss.linearlogic.quizquest.question.Question;
+
 public class Textbox {
 	
 	/**
@@ -110,6 +112,25 @@ public class Textbox {
 		
 		width = 480; // dimensions of the textbox
 		height = 100;
+	}
+	
+	/**
+	 * Loads the question from the parameters and creates a question box
+	 * @param Question
+	 */
+	public static void loadQuestion(Question question) {
+		//Get the question attributes and add them to the textbox
+		setCorrectIndex(question.getCorrectAnswerIndex());
+		setQuestion(question.getQuestionString());
+		
+		for (int i = 0; i < 4; ++i) {
+			addAnswer(question.getAnswerString(i));
+		}
+		
+		current_selection = 0;
+		
+		
+		toggleActive();
 	}
 	
 	/**

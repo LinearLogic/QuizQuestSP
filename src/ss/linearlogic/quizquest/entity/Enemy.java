@@ -1,7 +1,10 @@
 package ss.linearlogic.quizquest.entity;
 
+import ss.linearlogic.quizquest.Textbox;
 import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.item.Item;
+import ss.linearlogic.quizquest.question.Question;
+import ss.linearlogic.quizquest.question.QuestionManager;
 
 /**
  * Represents an enemy entity. The player engages in question-based combat with the enemy upon coming into contact with the enemy.
@@ -29,6 +32,16 @@ public class Enemy extends Entity {
 	private Item itemToDrop;
 	
 	/**
+	 * The identitfication number which corresponds for the question which the enemy is set to ask
+	 */
+	private int questionID;
+	
+	/**
+	 * A flag which determines if this character is currently asking a question
+	 */
+	private boolean isAsking;
+	
+	/**
 	 * Simple constructor: calls the complete constructor using the supplied damage and maxHealth, and with a null Item subclass.
 	 * @param damage The enemy's {@link #damage} value
 	 * @param maxHealth The enemy's {@link #maxHealth} value
@@ -36,7 +49,7 @@ public class Enemy extends Entity {
 	 * @param y The y-coord of the entity
 	 */
 	public Enemy(int damage, int maxHealth, int x, int y) {
-		this(damage, maxHealth, null, x, y);
+		this(damage, maxHealth, null, x, y, 0);
 	}
 	
 	/**
@@ -49,13 +62,28 @@ public class Enemy extends Entity {
 	 * @param x The x-coord of the entity
 	 * @param y The y-coord of the entity
 	 */
-	public Enemy(int damage, int maxHealth, Item itemToDrop, int x, int y) {
+	public Enemy(int damage, int maxHealth, Item itemToDrop, int x, int y, int qID) {
 		super(4, x, y);
 		this.damage = damage;
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;
 		this.itemToDrop = itemToDrop;
+		this.questionID = qID;
 	}
+		
+	/**
+	 * Triggers the enemy to ask a question
+	 */
+	public void triggerQuestion() {
+		Question question = QuestionManager.getQuestionForQID(this.questionID);
+		Textbox.loadQuestion(question);
+		
+		isAsking = true;
+	}
+	
+	/**
+	 * Update method which updates the logic of the enemy
+	 */
 	
 	//Getters and setters
 	/**

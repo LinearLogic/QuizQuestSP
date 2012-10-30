@@ -52,7 +52,7 @@ public class QuestionManager {
 		return questions.get(qid).isAnswerCorrect(answerIndx);
 	}
 	
-	public Question getQuestionForQID(int qid) {
+	public static Question getQuestionForQID(int qid) {
 		return questions.get(qid);
 	}
 }
