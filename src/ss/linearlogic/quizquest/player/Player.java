@@ -75,14 +75,16 @@ public class Player {
 		HUDActive = true;
 	}
 	
-	public static void update() {
-		if (getHealth() <= 0) respawn();
-		
+	public static void update() {		
 		if (battleFoe != null) {
 			switch (Textbox.isAnswerCorrect()) {
 			case 0: //Not correct
 				//Respond appropriately
 				setHealth(getHealth() - battleFoe.getDamage());
+				Textbox.setAnswerCorrect(-1);
+				
+				if (getHealth() <= 0)
+					respawn();
 				
 				break;
 			case 1:
@@ -378,12 +380,12 @@ public class Player {
 			double r = 1.0;
 			double g = 1.0;
 		
-			if (getHealth()/getMaxHealth() > 0.5)
+			if ((double)getHealth()/(double)getMaxHealth() > 0.5)
 				r = 0.0;
 			else
 				g = 0.0;
-			
-			Renderer.renderColoredRectangle(20, 5, 100 * (getHealth()/getMaxHealth()), 10, r, g, 0.0);
+						
+			Renderer.renderColoredRectangle(20, 5, 100 * ((double)getHealth()/(double)getMaxHealth()), 10, r, g, 0.0);
 			Renderer.renderLinedRectangle(20, 5, 100, 10, 0.0, 0.0, 0.0);
 			
 			for (int i = 0; i < hearts.size(); ++i) 
@@ -399,9 +401,10 @@ public class Player {
 	 */
 	public static void respawn() {
 		// Dispatch message to player's HUD
-		lives--;
-		if (lives == 0) {
+		if (getLives() > 1) setLives(getLives() - 1);
+		else if (lives == 1) {
 			// Game Over sequence here...
+			System.exit(0);
 		}
 		setHealth(maxHealth);
 	}
@@ -463,6 +466,9 @@ public class Player {
 	public static void setLives(int newLives) {
 		if (newLives < 1) {
 			System.err.println("Error while setting player's remaining life count: count must be greater than zero.");
+			return;
+		} else if (newLives > 10) {
+			System.err.println("Error while setting player's remainging life count: count must be less than 11.");
 			return;
 		}
 		
