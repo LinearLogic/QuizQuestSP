@@ -246,10 +246,11 @@ public class Textbox {
 	 * Update the textbox window and its contents
 	 */
 	public static void update() {
-		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
-		keyLifted = false;
+		if (Keyboard.areRepeatEventsEnabled())
+			Keyboard.enableRepeatEvents(false);
+		
 		if (active && !Inventory.isActive() && !YNPrompt.arePromptsActive()) {
-			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+			if (!Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 				keyLifted = true;
 			
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) {
@@ -284,7 +285,7 @@ public class Textbox {
 					answerCorrect = 1;
 				else answerCorrect = 0;
 			}
-					
+
 			//Provide wrap around
 			if (current_selection > 3) current_selection = 0;
 			if (current_selection < 0) current_selection = 3;
@@ -332,5 +333,13 @@ public class Textbox {
 		for (int i = 0; i < answers.size(); ++i) {
 			Renderer.renderString(letters.charAt(i) + ": " + answers.get(i), x + 20 + (i * 100), y + 70, font);
 		}
+	}
+	
+	/**
+	 * Sets the value of {@link #keyLifted} to the supplied boolean (very rarely used)
+	 * @param lifted The boolean state of the {@link #keyLifted} flag
+	 */
+	public static void setKeyLifted(boolean lifted) {
+		keyLifted = lifted;
 	}
 }

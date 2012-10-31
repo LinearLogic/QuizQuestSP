@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.TrueTypeFont;
 
 import ss.linearlogic.quizquest.Renderer;
+import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.player.Player;
 
 /**
@@ -180,6 +181,8 @@ public class YNPrompt {
 		this.currentSelection = 1;
 		this.question = "";
 		prompts.remove(this);
+		Textbox.setKeyLifted(false);
+		Inventory.setKeyLifted(false);
 	}
 	
 	/**

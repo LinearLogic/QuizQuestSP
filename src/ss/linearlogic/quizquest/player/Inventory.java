@@ -435,4 +435,11 @@ public class Inventory {
 				return index;
 		return -1;
 	}
+	
+	 /** Sets the value of {@link #keyLifted} to the supplied boolean (very rarely used)
+	 * @param lifted The boolean state of the {@link #keyLifted} flag
+	 */
+	public static void setKeyLifted(boolean lifted) {
+		keyLifted = lifted;
+	}
 }
