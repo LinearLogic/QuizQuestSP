@@ -141,7 +141,7 @@ public class YNPrompt {
 		//Handle answer selection
 		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
 			keyLifted = false;
-			answerStatus = currentSelection%1;
+			answerStatus = (currentSelection+1)%2;
 		}
 
 		
