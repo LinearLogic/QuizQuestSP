@@ -1,9 +1,12 @@
 package ss.linearlogic.quizquest.player;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -12,6 +15,7 @@ import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.item.Item;
 import ss.linearlogic.quizquest.item.Potion;
 import ss.linearlogic.quizquest.item.Spell;
+import ss.linearlogic.quizquest.item.Key;
 import ss.linearlogic.quizquest.textbox.Textbox;
 
 /**
@@ -115,6 +119,11 @@ public class Inventory {
 	private static boolean keyLifted = true;
 	
 	/**
+	 * Stores the font for the inventory count/id strings
+	 */
+	private static TrueTypeFont font;
+	
+	/**
 	 * Loads the inventory window with the supplied specifications. Note: this method does not actually open
 	 * the inventory window after initializing it - this must be done with the {@link #toggleActive(boolean)} method.
 	 * 
@@ -150,6 +159,8 @@ public class Inventory {
 			active = false;
 		
 		inventoryCount = 0;
+		
+		font = Renderer.loadSystemFont("Times New Roman", 12);
 	}
 	
 	public static void update() {
@@ -254,12 +265,18 @@ public class Inventory {
 					switch(itemIDs[i][j]) {
 						case 1: //Key
 							Renderer.renderTexturedRectangle(startingX, startingY, itemTileWidth, itemTileWidth, itemTextures.get(1));
+							Renderer.renderString(((Key)items[i][j]).getlockID()+"", startingX, startingY + (itemTileWidth - font.getHeight()), font, Color.white);
+							Renderer.renderString(items[i][j].getCount()+"", startingX + (itemTileWidth - font.getWidth(items[i][j].getCount()+"")), startingY + (itemTileWidth - font.getHeight()), font, Color.white);
 							break;
 						case 2: //Potion
 							Renderer.renderTexturedRectangle(startingX, startingY, itemTileWidth, itemTileWidth, itemTextures.get(2));
+							Renderer.renderString(((Potion)items[i][j]).getHealthToRestore()+"", startingX, startingY + (itemTileWidth - font.getHeight()), font, Color.white);
+							Renderer.renderString(items[i][j].getCount()+"", startingX + (itemTileWidth - font.getWidth(items[i][j].getCount()+"")), startingY + (itemTileWidth - font.getHeight()), font, Color.white);
 							break;
 						case 3: //Spell
 							Renderer.renderTexturedRectangle(startingX, startingY, itemTileWidth, itemTileWidth, itemTextures.get(3));
+							Renderer.renderString(((Spell)items[i][j]).getDamage()+"", startingX, startingY + (itemTileWidth - font.getHeight()), font, Color.white);
+							Renderer.renderString(items[i][j].getCount()+"", startingX + (itemTileWidth - font.getWidth(items[i][j].getCount()+"")), startingY + (itemTileWidth - font.getHeight()), font, Color.white);
 							break;
 						default: //Invalid item
 							break;

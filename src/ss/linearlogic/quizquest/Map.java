@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -75,6 +77,11 @@ public class Map {
 	private static int tileSize = 32;
 	
 	/**
+	 * TrueTypeFont which holds the font for rendering the string on the doors
+	 */
+	private static TrueTypeFont font;
+	
+	/**
 	 * Unused for the time being (stub of a constructor that enables multiple maps)
 	 * 
 	 * @param filename The .txt file from which to load Map specifications and entities
@@ -88,6 +95,8 @@ public class Map {
 	public static void initialize(String filename, String entityFilename) {
  		loadMapFile(filename);
  		loadEnemyEntityFile(entityFilename);
+ 		
+ 		font = Renderer.loadSystemFont("Times New Roman", 12);
 	}
 
 	
@@ -113,6 +122,10 @@ public class Map {
 				
 				//Render the top layer such as walls and doors
 				Renderer.renderTexturedRectangle((x * tileSize) - coordinate_shift_x, (y * tileSize) - coordinate_shift_y, tileSize, tileSize, textures.get(map[x][y]));
+				
+				if (entityMap[x][y].getType() == "Door") {
+					Renderer.renderString(((Door)entityMap[x][y]).getLockID()+"", ((x * tileSize) - coordinate_shift_x) + 16, ((y * tileSize) - coordinate_shift_y) + 16, font, Color.white);
+				}
 			}
 		}
 		
