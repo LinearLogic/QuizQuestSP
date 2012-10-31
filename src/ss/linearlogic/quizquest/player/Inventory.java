@@ -154,13 +154,6 @@ public class Inventory {
 	
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
-		for (Item item : getItems())
-			if ((item != null) && (item.getCount() <= 0)) {
-				 //Item has been consumed - remove it from the inventory. Note that this cannot
-				 //be treated in an 'else' statement, or the item will not update until it is clicked again.
-				items[currentSelectionX][currentSelectionY] = null;
-				itemIDs[currentSelectionX][currentSelectionY] = 0;
-			}
 		
 		if (active) { // make sure the inventory menu is currently in use
 			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
@@ -252,6 +245,11 @@ public class Inventory {
 				startingY = pixelY + pixelBufferHeight; //reset the vertical displacement
 				for (int j = 0; j < slotDimensionY; j++) {
 					Renderer.renderColoredRectangle(startingX, startingY, itemTileWidth, itemTileWidth, 0.7, 0.7, 0.7);
+					Item item = items[i][j];
+					if ((item != null) && (item.getCount() <= 0)) { //Item has been consumed - remove it from the inventory.
+						items[i][j] = null;
+						itemIDs[i][j] = 0;
+					}
 					//Render the item tiles where items are presented in the inventory array
 					switch(itemIDs[i][j]) {
 						case 1: //Key
