@@ -11,6 +11,7 @@ import ss.linearlogic.quizquest.item.Spell;
 import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.player.Player;
 import ss.linearlogic.quizquest.textbox.Textbox;
+import ss.linearlogic.quizquest.textbox.YNPrompt;
 import ss.linearlogic.quizquest.textbox.question.Question;
 import ss.linearlogic.quizquest.textbox.question.QuestionManager;
 
@@ -103,6 +104,9 @@ public class QuizQuest {
 		Inventory.addTexture("Potion.png", 2);
 		Inventory.addTexture("Spell.png", 3);
 		
+		YNPrompt.initialize(163, 180, 153, 65); //Do NOT change these values
+		YNPrompt.toggleActive();
+		
 		Textbox.initializeWithSystemFont();
 		QuestionManager.LoadQuestionsFile("questions.txt");
 		
@@ -130,7 +134,9 @@ public class QuizQuest {
 			Textbox.render();
 			
 			Inventory.update();
-
+			
+			YNPrompt.update();
+			
 			Display.update();
 			Display.sync(60); //The value n in sync(n) is the frame rate
 		}
