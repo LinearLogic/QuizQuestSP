@@ -25,7 +25,7 @@ public class Door extends Entity {
 	}
 
 	/**
-	 * Attempts to open the door given a lockID. The door will be opened if the given lockID matches that of the door.
+	 * Attempts to open the door given a lockID. The door (and all those adjacent to it) will be opened if the given lockID matches that of the door.
 	 * 
 	 * @param lockID The lockID of the key with which the Player is attempting to open the door
 	 * @return The result of the attempt - true if successful, otherwise false.
@@ -45,6 +45,19 @@ public class Door extends Entity {
 	 */
 	public void forceOpen() {
 		Map.addEntity(new Floor(this.getX(), this.getY()));
+		//Handle adjacent door entities
+		if (getX() < Map.getWidth() - 1)
+			if (Map.getEntity(getX() + 1, getY()).getTypeID() == 3) //Entity to the right is a door
+				((Door) Map.getEntity(getX() + 1, getY())).forceOpen();
+		if (getX() > 0)
+			if (Map.getEntity(getX() - 1, getY()).getTypeID() == 3) //Entity to the left is a door
+				((Door) Map.getEntity(getX() - 1, getY())).forceOpen();
+		if (getY() < Map.getHeight() - 1)
+			if ((Map.getEntity(getX(), getY() + 1)).getTypeID() == 3) // Entity above is a door
+				((Door) Map.getEntity(getX(), getY() + 1)).forceOpen();
+		if (getY() > 0)
+			if ((Map.getEntity(getX(), getY() - 1)).getTypeID() == 3) // Entity below is a door
+				((Door) Map.getEntity(getX(), getY() - 1)).forceOpen();
 	}
 	
 	/**
