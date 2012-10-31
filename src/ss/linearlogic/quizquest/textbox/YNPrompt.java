@@ -144,8 +144,6 @@ public class YNPrompt {
 			answerStatus = (currentSelection+1)%2;
 		}
 
-		
-		// ...
 		render();
 	}
 	
@@ -171,7 +169,9 @@ public class YNPrompt {
 		Renderer.renderString("No", pixelX + 200, pixelY + 40, font); //Render the "No" option
 	}
 		
-	
+	/**
+	 * Clears the YNPrompt specifications (such as {@link #answerStatus} and {@link #question} , and closes the prompt window.
+	 */
 	public static void reset() {
 		if (active) //Make sure the window is closed
 			active = false;

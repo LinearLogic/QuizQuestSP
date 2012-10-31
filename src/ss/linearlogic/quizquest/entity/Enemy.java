@@ -78,7 +78,7 @@ public class Enemy extends Entity {
 	 * Update method which updates the logic of the enemy
 	 */
 	
-	//Getters and setters
+	// --- // Getters and setters // --- //
 	/**
 	 * @return The enemy's {@link #damage} value
 	 */

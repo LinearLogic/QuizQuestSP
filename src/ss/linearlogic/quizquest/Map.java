@@ -355,7 +355,11 @@ public class Map {
 		return entityMap[x][y];
 	}
 	
-	//Do not touch this for the time being
+	/**
+	 * Loads Enemy objects into the map according to the data in the provided .txt file
+	 * 
+	 * @param filename The name of the file from which to load the enemies (eg. "enemies.txt")
+	 */
 	private static void loadEnemyEntityFile(String filename) {
 		Scanner textReader = null;
 		
@@ -373,16 +377,16 @@ public class Map {
 			int maxHP = 0, damage = 0, itemNo = 0, itemAttribute = 0;
 			
 			if (textReader.hasNextInt()) maxHP = textReader.nextInt();
-			else System.out.println("Unable to parse Max HP Line, here is the actually line: " + textReader.nextLine());
+			else System.out.println("Unable to parse Max HP Line, here is the actual line: " + textReader.nextLine());
 			
 			if (textReader.hasNextInt()) damage = textReader.nextInt();
-			else System.out.println("Unable to parse Damage Line, here is the actually line: " + textReader.nextLine());
+			else System.out.println("Unable to parse Damage Line, here is the actual line: " + textReader.nextLine());
 			
 			if (textReader.hasNextInt()) itemNo = textReader.nextInt();
-			else System.out.println("Unable to parse Item Number line, here is the actually line: " + textReader.nextLine());
+			else System.out.println("Unable to parse Item Number line, here is the actual line: " + textReader.nextLine());
 			
 			if (textReader.hasNextInt()) itemAttribute = textReader.nextInt();
-			else System.out.println("Unable to parse Item Attribute Line, here is the actually line: " + textReader.nextLine());
+			else System.out.println("Unable to parse Item Attribute Line, here is the actual line: " + textReader.nextLine());
 						
 			Item item = null;
 			switch (itemNo) {

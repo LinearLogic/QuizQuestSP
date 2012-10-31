@@ -58,7 +58,9 @@ public class Entity {
 		this.y = y;
 	}
 	
-		
+	/**
+	 * Removes the entity from the Map, setting the entity at its location to grass
+	 */
 	public void removeEntity() {
 		Map.removeEntity(this.x, this.y);
 	}
@@ -106,7 +108,13 @@ public class Entity {
 	 */
 	public int getWorldY() { return this.y * Map.getTileSize(); }
 	
+	/**
+	 * @return The x-coordinate of the top lefthand corner of the entity within the rendering window
+	 */
 	public int getRenderingX() { return (int) (getWorldX() - (Math.floor(getWorldX()/480) * 480)); }
 	
+	/**
+	 * @return 
+	 */
 	public int getRenderingY() { return (int) (getWorldY() - (Math.floor(getWorldY()/480) * 480)); }
 }

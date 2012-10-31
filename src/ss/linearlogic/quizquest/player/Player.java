@@ -446,7 +446,6 @@ public class Player {
 					YNPrompt.setQuestion("Would you like to use your key to open this door?");
 					if (!YNPrompt.isActive())
 						YNPrompt.toggleActive();
-					//Remove this line (as all door handling beyond this point is done in the update() method):
 					return;
 				}
 			}

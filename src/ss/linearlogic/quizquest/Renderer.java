@@ -16,14 +16,25 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public class Renderer {
 	
+	/**
+	 * Red component of window color
+	 */
 	public static double default_window_r = 0.4;
+	
+	/**
+	 * Green component of window color
+	 */
 	public static double default_window_g = 0.4;
+	
+	/**
+	 * Blue component of window color
+	 */
 	public static double default_window_b = 0.4;
 	
 	/**
 	 * Render a white rectangle of the supplied dimensions at the supplied location
-	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
-	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
 	 * @param w Width of the rectangle, in pixels
 	 * @param h Height of the rectangle, in pixels
 	 */
@@ -32,6 +43,16 @@ public class Renderer {
 		renderColoredRectangle(x, y, w, h, 1.0, 1.0, 1.0);
 	}
 	
+	/**
+	 * Render a rectangular outline with the provided specifications
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
+	 * @param w Width of the rectangle, in pixels
+	 * @param h Height of the rectangle, in pixels
+	 * @param r Red intensity (must be between 0.0 and 1.0, inclusive)
+	 * @param g Green intensity (must be between 0.0 and 1.0, inclusive)
+	 * @param b Blue intensity (must be between 0.0 and 1.0, inclusive)
+	 */
 	public static void renderLinedRectangle(double x, double y, double w, double h, double r, double g, double b) {
 		glDisable(GL_TEXTURE_2D);
 		
@@ -49,8 +70,8 @@ public class Renderer {
 	
 	/**
 	 * Render a transparent rectangle of the supplied dimensions at the supplied location
-	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
-	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
 	 * @param w Width of the rectangle, in pixels
 	 * @param h Height of the rectangle, in pixels
 	 */
@@ -72,13 +93,13 @@ public class Renderer {
 	
 	/**
 	 * Render a colored rectangle of the supplied dimensions and color at the supplied location
-	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
-	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
 	 * @param w Width of the rectangle, in pixels
 	 * @param h Height of the rectangle, in pixels
-	 * @param r Red intensity
-	 * @param g Green intensity
-	 * @param b Blue intensity
+	 * @param r Red intensity (must be between 0.0 and 1.0, inclusive)
+	 * @param g Green intensity (must be between 0.0 and 1.0, inclusive)
+	 * @param b Blue intensity (must be between 0.0 and 1.0, inclusive)
 	 */
 	public static void renderColoredRectangle(double x, double y, 
 			double w, double h, 
@@ -100,8 +121,8 @@ public class Renderer {
 	
 	/**
 	 * Render a rectangle with a texture object
-	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
-	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
 	 * @param w Width of the rectangle, in pixels
 	 * @param h Height of the rectangle, in pixels
 	 * @param texture The texture object with which to fill the rectangle
@@ -114,13 +135,13 @@ public class Renderer {
 	
 	/**
 	 * Render a rectangle with a texture object and the location and dimensions of the texture
-	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
-	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location)
+	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the rectangle (pixel location within the rendering window)
 	 * @param w Width of the rectangle, in pixels
 	 * @param h Height of the rectangle, in pixels
 	 * @param texture The texture object with which to fill the rectangle
-	 * @param texX X-coordinate of the top lefthand corner of the texture (pixel location)
-	 * @param texY Y-coordinate of the top lefthand corner of the texture (pixel location)
+	 * @param texX X-coordinate of the top lefthand corner of the texture (pixel location within the rendering window)
+	 * @param texY Y-coordinate of the top lefthand corner of the texture (pixel location within the rendering window)
 	 * @param texW Width of the texture, in pixels
 	 * @param texH Height of the texture, in pixels
 	 */
@@ -152,8 +173,8 @@ public class Renderer {
 	/**
 	 * Render a string in black
 	 * @param string The contents of the string
-	 * @param x X-coordinate of the top lefthand corner of the string (pixel location)
-	 * @param y Y-coordinate of the top lefthand corner of the string (pixel location)
+	 * @param x X-coordinate of the top lefthand corner of the string (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the string (pixel location within the rendering window)
 	 * @param font Font type of the string
 	 */
 	public static void renderString(String string, double x, double y, TrueTypeFont font) {		
@@ -163,8 +184,8 @@ public class Renderer {
 	/**
 	 * Render a string in the color supplied
 	 * @param string The contents of the string
-	 * @param x X-coordinate of the top lefthand corner of the string (pixel location)
-	 * @param y Y-coordinate of the top lefthand corner of the string (pixel location)
+	 * @param x X-coordinate of the top lefthand corner of the string (pixel location within the rendering window)
+	 * @param y Y-coordinate of the top lefthand corner of the string (pixel location within the rendering window)
 	 * @param font Font type of the string
 	 * @param color The color in which to display the string
 	 */

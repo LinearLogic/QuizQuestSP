@@ -37,6 +37,7 @@ public class Inventory {
 	 * HashMap containing corresponding pairs of item textures and IDs
 	 */
 	private static HashMap<Integer, Texture> itemTextures = new HashMap<Integer, Texture>();
+	
 	/**
 	 * Integer which contains the current count of items in the inventory
 	 */
@@ -163,6 +164,9 @@ public class Inventory {
 		font = Renderer.loadSystemFont("Times New Roman", 12);
 	}
 	
+	/**
+	 * Handles keyboard input that occurs while the inventory is active, and then calls the {@link #render()} method.
+	 */
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
@@ -233,6 +237,7 @@ public class Inventory {
 		}
 		render();
 	}
+	
 	/**
 	 * Render the inventory window and all its contents
 	 */
@@ -347,7 +352,6 @@ public class Inventory {
 		}
 		items[index/slotDimensionY][index%slotDimensionY] = null;
 		itemIDs[index/slotDimensionY][index%slotDimensionY] = 0;
-		
 		inventoryCount--;
 	}
 	
@@ -364,6 +368,7 @@ public class Inventory {
 		}
 		items[index/slotDimensionY][index%slotDimensionY] = item;
 		itemIDs[index/slotDimensionY][index%slotDimensionY] = item.getTypeID();
+		inventoryCount++;
 	}
 	
 	/**
@@ -415,8 +420,14 @@ public class Inventory {
 	 */
 	public static void toggleActive() { active = !active; }
 	
+	/**
+	 * @return The number of items currently in the inventory
+	 */
 	public static int getItemCount() { return inventoryCount; }
 	
+	/**
+	 * @return The index of the first available slot (starts at the top left of the slot array)
+	 */
 	public static int getFirstEmptySlotIndex() {
 		for (int index = 0; index < slotDimensionX * slotDimensionY; index++)
 			if (itemIDs[index/slotDimensionY][index%slotDimensionY] == 0) //Slot is available
