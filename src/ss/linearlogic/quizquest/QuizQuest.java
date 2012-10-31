@@ -98,7 +98,7 @@ public class QuizQuest {
 		Player.setHealth(100);
 		Player.setLives(5);
 		
-		Inventory.initialize(380, 20, 100, 370, 10, 10, 35, 10, 2, 8);
+		Inventory.initialize(380, 25, 100, 370, 10, 10, 35, 10, 2, 8);
 		Inventory.addTexture("Key.png", 1);
 		Inventory.addTexture("Potion.png", 2);
 		Inventory.addTexture("Spell.png", 3);

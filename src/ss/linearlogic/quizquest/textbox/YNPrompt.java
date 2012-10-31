@@ -1,5 +1,7 @@
 package ss.linearlogic.quizquest.textbox;
 
+import ss.linearlogic.quizquest.Renderer;
+
 /**
  * A window containing a yes/no prompt and the two choices (which can be scrolled between)
  */
@@ -16,6 +18,8 @@ public class YNPrompt {
 	private static String question = "";
 	
 	private static int currentSelection;
+	
+	private static boolean active;
 	
 	public static void initialize(int x, int y, int w, int h) { //TODO: decide whether to hardcode the dimensions and/or location of the prompt window
 		pixelX = x;
@@ -35,6 +39,8 @@ public class YNPrompt {
 	}
 	
 	private static void render() {
+		if (!active) return;
 		
+		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.0, 0.0, 1.0);
 	}
 }

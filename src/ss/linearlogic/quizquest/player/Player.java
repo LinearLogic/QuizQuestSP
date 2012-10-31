@@ -481,7 +481,8 @@ public class Player {
 	 */
 	public static void render() { 
 		if (HUDActive) {
-			Renderer.renderColoredRectangle(0, 0, 480, 20, 0.7, 0.7, 0.7);
+			Renderer.renderColoredRectangle(0, 0, 480, 20, Renderer.default_window_r, Renderer.default_window_g, Renderer.defailt_window_b);
+			Renderer.renderLinedRectangle(0, 0, 480, 20, 1.0, 1.0, 1.0);
 			double r = 1.0;
 			double g = 1.0;
 		
@@ -507,8 +508,8 @@ public class Player {
 				g = 0.0;
 	
 			
-			Renderer.renderColoredRectangle(battleFoe.getRenderingX() - 34, battleFoe.getRenderingY() - 15, 100, 10, 1.0, 1.0, 0.0);
-			Renderer.renderColoredRectangle(battleFoe.getRenderingX() - 34, battleFoe.getRenderingY() - 15, 100 * ((double)battleFoe.getHealth()/(double)battleFoe.getMaxHealth()), 10, r, g, 1.0);
+			Renderer.renderColoredRectangle(battleFoe.getRenderingX() - 34, battleFoe.getRenderingY() - 15, 100, 10, 1.0, 1.0, 1.0);
+			Renderer.renderColoredRectangle(battleFoe.getRenderingX() - 34, battleFoe.getRenderingY() - 15, 100 * ((double)battleFoe.getHealth()/(double)battleFoe.getMaxHealth()), 10, r, g, 0.0);
 		}
 		
 		sprite.draw(); 

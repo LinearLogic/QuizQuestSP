@@ -37,6 +37,7 @@ public class QuestionManager {
 		 */
 		
 		int questionCount = scanner.nextInt();
+		System.out.println("Number of questions: " + questionCount);
 				
 		for (int i = 0; i < questionCount; ++i) {
 			int questionID = -1;
@@ -51,13 +52,18 @@ public class QuestionManager {
 			Question question = new Question(questionID, correctIndex);
 			scanner.nextLine();
 			
-			String questionString = scanner.nextLine();			
+			String questionString = "";
+			
+			if (scanner.hasNext()) questionString = scanner.nextLine();
+			else System.out.println("Unable to load question string: " + scanner.nextLine());
 			question.setQuestionString(questionString);
 			
 			for (int j = 0; j < 4; ++j) {
 				String answer = scanner.nextLine();
 				question.addAnswer(answer);
 			}
+			
+			System.out.println("Success in loading question with attributes: (" + questionID + ", " + correctIndex + ", " + "'" + questionString + "', '" + question.getAnswerString(0) + "', '" + question.getAnswerString(1) + "', '" + question.getAnswerString(2) + "', '" + question.getAnswerString(3) + "')");
 			
 			questions.add(question);
 		}

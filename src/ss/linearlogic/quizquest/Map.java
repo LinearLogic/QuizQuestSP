@@ -322,11 +322,22 @@ public class Map {
 		
 		int enemyEntityCount = textReader.nextInt();
 		
+		System.out.println("Number of entities: " + enemyEntityCount);
+		
 		for (int i = 0; i < enemyEntityCount; ++i) {
-			int maxHP = textReader.nextInt();
-			int damage = textReader.nextInt();
-			int itemNo = textReader.nextInt();
-			int itemAttribute = textReader.nextInt();
+			int maxHP = 0, damage = 0, itemNo = 0, itemAttribute = 0;
+			
+			if (textReader.hasNextInt()) maxHP = textReader.nextInt();
+			else System.out.println("Unable to parse Max HP Line, here is the actually line: " + textReader.nextLine());
+			
+			if (textReader.hasNextInt()) damage = textReader.nextInt();
+			else System.out.println("Unable to parse Damage Line, here is the actually line: " + textReader.nextLine());
+			
+			if (textReader.hasNextInt()) itemNo = textReader.nextInt();
+			else System.out.println("Unable to parse Item Number line, here is the actually line: " + textReader.nextLine());
+			
+			if (textReader.hasNextInt()) itemAttribute = textReader.nextInt();
+			else System.out.println("Unable to parse Item Attribute Line, here is the actually line: " + textReader.nextLine());
 						
 			Item item = null;
 			switch (itemNo) {
@@ -343,11 +354,20 @@ public class Map {
 					break;
 			}
 			
-			int x = textReader.nextInt();
-			int y = textReader.nextInt();
+			int x = 0, y = 0;
 			
-			int qID = textReader.nextInt();
+			if (textReader.hasNextInt()) x = textReader.nextInt();
+			else System.out.println("Unable to parse X Coordinate Line, here is the actually line: " + textReader.nextLine());
+			
+			if (textReader.hasNextInt()) y = textReader.nextInt();
+			else System.out.println("Unable to parse Y Coordinate Line, here is the actually line: " + textReader.nextLine());
+			
+			int qID = 0;
+			if (textReader.hasNextInt()) qID = textReader.nextInt();
+			else System.out.println("Unable to parse Question ID line, here is the actually line: " + textReader.nextLine());
 									
+			System.out.println("Success in loading entity with attributes: (" + maxHP + ", " + damage + ", " + itemNo + ", " + itemAttribute + ", " + x + ", " + y + ", " + qID + ")");
+			
 			Enemy enemy = new Enemy(damage, maxHP, item, x, y, qID);
 			addEntity(enemy);
 			enemies.add(enemy);

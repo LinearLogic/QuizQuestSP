@@ -306,7 +306,8 @@ public class Textbox {
 		if (!active) return;
 			
 		//Render the rectangle with the question
-		Renderer.renderColoredRectangle(x, y, width, height, 0.0f, 0.0f, 0.7f);		
+		Renderer.renderColoredRectangle(x, y, width, height, Renderer.default_window_r, Renderer.default_window_g, Renderer.defailt_window_b);
+		Renderer.renderLinedRectangle(x, y, width, height, 1.0, 1.0, 1.0);
 		
 		for (int i = 0; i < questionLines.size(); ++i) {
 			Renderer.renderString(questionLines.get(i), x + 10, y + (font.getHeight() * i), font);

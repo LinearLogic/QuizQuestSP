@@ -13,6 +13,10 @@ import org.newdawn.slick.util.ResourceLoader;
 
 public class Renderer {
 	
+	public static double default_window_r = 0.4;
+	public static double default_window_g = 0.4;
+	public static double defailt_window_b = 0.4;
+	
 	/**
 	 * Render a white rectangle of the supplied dimensions at the supplied location
 	 * @param x X-coordinate of the top lefthand corner of the rectangle (pixel location)
@@ -150,7 +154,7 @@ public class Renderer {
 	 * @param font Font type of the string
 	 */
 	public static void renderString(String string, double x, double y, TrueTypeFont font) {		
-		renderString(string, x, y, font, Color.black);
+		renderString(string, x, y, font, Color.white);
 	}
 	
 	/**
@@ -163,7 +167,7 @@ public class Renderer {
 	 */
 	public static void renderString(String string, double x, double y, TrueTypeFont font, Color color) {
 		TextureImpl.bindNone();
-		font.drawString((int)x, (int)y, string, Color.yellow);
+		font.drawString((int)x, (int)y, string, color);
 	}
 	
 	/**
