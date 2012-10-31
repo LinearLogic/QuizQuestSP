@@ -85,10 +85,13 @@ def openQuestionsFileEdit():
     
     f = open("enemies.txt", "w")
     
-    f.write(str(enemy_count) + "\n")
-            
     print "How many enemies would you like to add?"
     new_count = int(raw_input())
+    
+    f.write(str(enemy_count + new_count) + "\n")
+    
+    for i in range(len(enemies)):
+        f.write(str(enemies[i])+"\n")
     
     for i in range(enemy_count):    
         print "Enter max HP of enemy " + str(i)
@@ -99,7 +102,6 @@ def openQuestionsFileEdit():
     
         print "Enter the item number of enemy " + str(i)
         f.write(raw_input()+ "\n")
-        enemies.append(int(raw_input()))
     
         print "Enter the item attribute(damage for spell, lock id for key, etc.) " + str(i)
         f.write(raw_input()+ "\n")

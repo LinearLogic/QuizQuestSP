@@ -156,8 +156,9 @@ public class YNPrompt {
 		if (!active) //Double check that the prompt window is in use
 			return;
 		//Rectangle rendering
-		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.2, 0.4, 0.6); //Render the main window 
-		Renderer.renderLinedRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.5, 0.0, 0.0); //Render the outline
+		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, Renderer.default_window_r, Renderer.default_window_g, Renderer.defailt_window_b); //Render the main window 
+		Renderer.renderLinedRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 1.0, 1.0, 1.0); //Render the outline
+
 		//Render the rectangle highlighting the currently selected option
 		if (currentSelection == 0) //"Yes" option is selected
 			Renderer.renderTransparentRectangle(pixelX + 37, pixelY + 40, font.getWidth("Yes") + 6, font.getHeight() + 2);

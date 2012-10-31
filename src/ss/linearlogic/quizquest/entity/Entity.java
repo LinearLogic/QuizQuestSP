@@ -28,18 +28,6 @@ public class Entity {
 	private int y;
 	
 	/**
-	 * Represents distance in pixels from the x-coordinate of the top lefthand corner of the world
-	 * to the x-coordinate of the top lefthand corner of the Entity tile
-	 */
-	private int world_coordinates_x = (Map.getTileSize() * x);
-	
-	/**
-	 * Represents distance in pixels from the y-coordinate of the top lefthand corner of the world
-	 * to the y-coordinate of the top lefthand corner of the Entity tile
-	 */
-	private int world_coordinates_y = (Map.getTileSize() * y);
-	
-	/**
 	 * Constructs the Entity object with the given subclass typeID and x and y world coordinates
 	 * @param typeID
 	 * @param x
@@ -109,12 +97,12 @@ public class Entity {
 	public void setY(int y) { this.y = y; }
 	
 	/**
-	 * @return The {@link #world_coordinates_x} value of the entity
+	 * @return The x-coordinate of the pixel location of the entity in the world as a whole
 	 */
 	public int getWorldX() { return this.x * Map.getTileSize(); }
 	
 	/**
-	 * @return The {@link #world_coordinates_y} value of the entity
+	 * @return The y-coordinate of the pixel location of the entity in the world as a whole
 	 */
 	public int getWorldY() { return this.y * Map.getTileSize(); }
 	

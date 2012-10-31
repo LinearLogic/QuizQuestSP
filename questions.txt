@@ -1,4 +1,4 @@
-10
+13
 0
 2
 What is the square root of 64?
@@ -69,3 +69,24 @@ What is the value of 3+i * 3-i?
 i
 -1
 2
+10
+1
+What is the exponential evaluated expression of e^ln3?
+e
+3
+2
+0
+11
+0
+What is the natural log function?
+ln x
+log x
+x
+e^x
+12
+2
+What is 4^3 = 64 in logarithmic form?
+log(3) 4 = 64
+log(4) 3 = 64
+log(4) 64 = 3
+log(64) 4 = 3

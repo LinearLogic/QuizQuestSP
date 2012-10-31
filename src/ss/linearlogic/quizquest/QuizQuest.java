@@ -5,14 +5,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import ss.linearlogic.quizquest.item.Key;
-import ss.linearlogic.quizquest.item.Potion;
-import ss.linearlogic.quizquest.item.Spell;
 import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.player.Player;
 import ss.linearlogic.quizquest.textbox.Textbox;
 import ss.linearlogic.quizquest.textbox.YNPrompt;
-import ss.linearlogic.quizquest.textbox.question.Question;
 import ss.linearlogic.quizquest.textbox.question.QuestionManager;
 
 import static org.lwjgl.opengl.GL11.*;
