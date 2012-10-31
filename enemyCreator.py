@@ -25,7 +25,7 @@ def createQuestionsFile():
         enemies.append(int(raw_input()))
         
         print "Enter the question id of enemy" + str(i)
-        enemies.append(int(raw_input))
+        enemies.append(int(raw_input()))
     
     f = open("enemies.txt", "w")
 
@@ -37,15 +37,15 @@ def createQuestionsFile():
     f.close()
         
 def openQuestionsFileEdit():
-    f = open("enemies.txt", "r+")
+    f = open("enemies.txt", "r")
     enemy_count = int(f.readline())
     enemies = []
         
-    for i in range(enemy_count): 
-        questions.append(f.readline())
+    for line in f: 
+        enemies.append(line.rstrip())
         
     f.close()
-        
+            
     print "How many enemies would you like to add?"
     new_count = int(raw_input())
     
@@ -69,7 +69,7 @@ def openQuestionsFileEdit():
         enemies.append(int(raw_input()))
         
         print "Enter the question id of enemy" + str(i)
-        enemies.append(int(raw_input))
+        enemies.append(int(raw_input()))
         
     enemy_count += new_count
     

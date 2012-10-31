@@ -40,8 +40,8 @@ def openQuestionsFileEdit():
     question_count = int(f.readline())
     questions = []
         
-    for i in range(question_count): 
-        questions.append(f.readline())
+    for line in f: 
+        questions.append(line.rstrip())
         
     f.close()
         
@@ -50,6 +50,9 @@ def openQuestionsFileEdit():
     
     for i in range(new_count):
         questions.append(i + question_count)
+        
+        print "Enter the correct answer index for question " + str(i)
+        questions.append(int(raw_input()) - 1)
     
         print "Enter the question string for question " + str(i)
         questions.append(raw_input())
@@ -65,9 +68,6 @@ def openQuestionsFileEdit():
     
         print "Enter answer 4 for question " + str(i)
         questions.append(raw_input())
-    
-        print "Enter the correct answer index for question " + str(i)
-        questions.append(int(raw_input()) - 1)
         
     question_count += new_count
     

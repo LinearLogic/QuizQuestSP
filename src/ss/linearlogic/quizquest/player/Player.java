@@ -434,7 +434,7 @@ public class Player {
 			}
 		}
 		//Only reached if the player does not have the key needed to unlock the door - dispatch notification to console
-		System.out.println("You don't have the right key to unlock this door. Keep exploring!");
+		System.out.println("You don't have the right key to unlock this door. Keep exploring! You need lock ID: " + door.getLockID());
 	}
 	
 	/**

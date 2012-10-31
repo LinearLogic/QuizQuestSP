@@ -246,6 +246,8 @@ public class Map {
 		map = new int[width][height];
 		entityMap = new Entity[width][height];
 		
+		int counter = 0;
+		
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
 				int typeID = textReader.nextInt();
@@ -261,7 +263,9 @@ public class Map {
 						addEntity(new Wall(x, y));
 						break;
 					case 3: //Door
-						addEntity(new Door(1, x, y));
+						addEntity(new Door(counter, x, y));
+						
+						counter++;
 						break;
 					case 4: //Enemy
 						addEntity(new Enemy(4, 20, x, y));
@@ -269,6 +273,31 @@ public class Map {
 				}
 			}
 		}
+		
+		for (int x = 0; x < width; ++x) {
+			for (int y = 0; y < height; ++y) {
+				if (map[x][y] == 3) {
+					int lockID = (int)((Door) entityMap[x][y]).getLockID();
+					
+					if (map[x + 1][y] == 3) {
+						((Door)entityMap[x + 1][y]).setLockID(lockID);
+					} else if (map[x - 1][y] == 3) {
+						((Door)entityMap[x - 1][y]).setLockID(lockID);
+					} else if (map[x][y + 1] == 3) {
+						((Door)entityMap[x][y + 1]).setLockID(lockID);
+					} else if (map[x][y - 1] == 3) {
+						((Door)entityMap[x][y - 1]).setLockID(lockID);
+					}
+				}
+			}
+		}
+		
+		for (int x = 0; x < width; ++x) {
+			for (int y = 0; y < height; ++y) {
+				if (map[x][y] == 3) System.out.println((int)((Door) entityMap[x][y]).getLockID());
+			}
+		}
+		
 		textReader.close();
 	}
 	

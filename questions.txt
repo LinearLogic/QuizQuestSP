@@ -1,4 +1,4 @@
-2
+10
 0
 2
 What is the square root of 64?
@@ -13,3 +13,59 @@ What is the square root of 25?
 5
 2
 8
+2
+1
+What is the square root of 4?
+-1
+2
+3
+4
+3
+2
+What is the square root of 100?
+1
+2
+10
+20
+4
+1
+What is the square root of 225?
+10
+15
+5
+25
+5
+2
+What is 3 squared?
+3
+2
+9
+10
+6
+3
+What are the zeroes of the function y=x^2+4x+4?
+1, 4
+-1, -4
+-2, -2
+2
+7
+2
+What is the factored form of y=x^2+5x+4
+y=(x+4)(x+5)
+y=(x+1)(x+5)
+y=(x+1)(x+4)
+y=x
+8
+3
+What is the value of an imaginary number squared?
+i
+2
+sqrt(i)
+-1
+9
+0
+What is the value of 3+i * 3-i?
+10
+i
+-1
+2
