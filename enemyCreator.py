@@ -1,9 +1,32 @@
 ## A script which will help with the creation of question files
+def loadMapFile(filename):
+    f = open(filename, "r")
+    
+    width = int(f.readline())
+    height = int(f.readline())
+    
+    f.readline()
+    f.readline()
+    f.readline()
+
+    matrix = [[0 for i in range(height)] for j in range(width)]
+    
+    for x in range(width):
+        for y in range(height):
+            matrix[x][y] = int(f.readline())
+            
+    f.close()
+            
+    return matrix
+            
+
 def createQuestionsFile():
     print "Enter the number of entities to be created"
 
     enemy_count = int(raw_input())
     enemies = []
+    
+    map = loadMapFile("map.txt")
 
     for i in range(enemy_count):    
         print "Enter max HP of enemy " + str(i)
@@ -18,11 +41,19 @@ def createQuestionsFile():
         print "Enter the item attribute(damage for spell, lock id for key, etc.) " + str(i)
         enemies.append(int(raw_input()))
     
-        print "Enter x coordinate of enemy " + str(i)
-        enemies.append(int(raw_input()))
+        while (1):
+            print "Enter x coordinate of enemy " + str(i)
+            x = int(raw_input())
     
-        print "Enter y coordinate of enemy " + str(i)
-        enemies.append(int(raw_input()))
+            print "Enter y coordinate of enemy " + str(i)
+            y = int(raw_input())
+            
+            if (map[x][y] == 0):
+                enemies.append(x)
+                enemies.append(y)
+                break
+            else:
+                print "Invalid Location for enemy!, Please place the enemy on grass"
         
         print "Enter the question id of enemy" + str(i)
         enemies.append(int(raw_input()))
@@ -45,6 +76,8 @@ def openQuestionsFileEdit():
         enemies.append(line.rstrip())
         
     f.close()
+    
+    map = loadMapFile("map.txt")
             
     print "How many enemies would you like to add?"
     new_count = int(raw_input())
@@ -62,11 +95,20 @@ def openQuestionsFileEdit():
         print "Enter the item attribute(damage for spell, lock id for key, etc.) " + str(i)
         enemies.append(int(raw_input()))
     
-        print "Enter x coordinate of enemy " + str(i)
-        enemies.append(int(raw_input()))
+        while (1):
+            print "Enter x coordinate of enemy " + str(i)
+            x = int(raw_input())
     
-        print "Enter y coordinate of enemy " + str(i)
-        enemies.append(int(raw_input()))
+            print "Enter y coordinate of enemy " + str(i)
+            y = int(raw_input())
+            
+            if (map[x][y] == 0):
+                enemies.append(x)
+                enemies.append(y)
+                break
+            else:
+                print "Invalid Location for enemy!, Please place the enemy on grass"
+        
         
         print "Enter the question id of enemy" + str(i)
         enemies.append(int(raw_input()))
