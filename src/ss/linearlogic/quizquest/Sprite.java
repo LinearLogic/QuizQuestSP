@@ -6,6 +6,10 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+/**
+ * Contains rendering information and method for a sprite
+ */
+
 public class Sprite {
 	
 	/**

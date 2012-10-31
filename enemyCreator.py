@@ -93,7 +93,7 @@ def openQuestionsFileEdit():
     for i in range(len(enemies)):
         f.write(str(enemies[i])+"\n")
     
-    for i in range(enemy_count):    
+    for i in range(new_count):    
         print "Enter max HP of enemy " + str(i)
         f.write(raw_input() + "\n")
     

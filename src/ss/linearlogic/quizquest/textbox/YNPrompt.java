@@ -156,7 +156,7 @@ public class YNPrompt {
 		if (!active) //Double check that the prompt window is in use
 			return;
 		//Rectangle rendering
-		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, Renderer.default_window_r, Renderer.default_window_g, Renderer.defailt_window_b); //Render the main window 
+		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, Renderer.default_window_r, Renderer.default_window_g, Renderer.default_window_b); //Render the main window 
 		Renderer.renderLinedRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 1.0, 1.0, 1.0); //Render the outline
 
 		//Render the rectangle highlighting the currently selected option

@@ -24,6 +24,9 @@ import ss.linearlogic.quizquest.item.Key;
 import ss.linearlogic.quizquest.item.Potion;
 import ss.linearlogic.quizquest.item.Spell;
 
+/**
+ * Represents the map of the world and provides handling of the entities (and associated graphics) in the world
+ */
 public class Map {
 	
 	/**

@@ -13,6 +13,14 @@ import ss.linearlogic.quizquest.textbox.question.QuestionManager;
 
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * Main class - contains the launcher method and the game object constructor
+ * 
+ * @author Jared Heath (LinearLogic)
+ * @author John Abeel
+ * @version Beta 1.0.1
+ * @since 10/25/2012
+ */
 public class QuizQuest {
 	
 	/**

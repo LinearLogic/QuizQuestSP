@@ -239,7 +239,7 @@ public class Inventory {
 	public static void render() {
 		if (active) { //Double check whether the inventory menu is in use
 			//Render the inventory window
-			Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, Renderer.default_window_r, Renderer.default_window_g, Renderer.defailt_window_b);
+			Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, Renderer.default_window_r, Renderer.default_window_g, Renderer.default_window_b);
 			Renderer.renderLinedRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 1.0, 1.0, 1.0);
 			
 			//Render the box around the corrently selected slot (must be rendered before the slot rectangles or it cover them)

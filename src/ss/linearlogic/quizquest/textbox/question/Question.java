@@ -1,5 +1,8 @@
 package ss.linearlogic.quizquest.textbox.question;
 
+/**
+ * Represents a multiple choice trivia question to present to the player in a Textbox.
+ */
 public class Question {
 	private int questionID;
 	private int correctIndex;

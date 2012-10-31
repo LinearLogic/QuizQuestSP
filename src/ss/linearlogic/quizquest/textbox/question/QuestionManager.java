@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Contains methods for loading and handling Question objects
+ */
 public class QuestionManager {
 	/**
 	 * Holds the array of questions which are to be asked

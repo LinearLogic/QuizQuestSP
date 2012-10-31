@@ -6,7 +6,8 @@ import ss.linearlogic.quizquest.entity.Grass;
 
 /**
  * Represents a spell item.
- * When used, spells deal damage to the entity specified (typically the entity the player is in combat with).
+ * Currently: When used, kills the enemy the player is currently in battle with
+ * Eventually: When used, spells deal damage to the entity specified (typically the entity the player is in combat with).
  */
 public class Spell extends Item {
 

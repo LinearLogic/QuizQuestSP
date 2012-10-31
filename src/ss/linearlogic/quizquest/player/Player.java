@@ -499,7 +499,7 @@ public class Player {
 	 */
 	public static void render() { 
 		if (HUDActive) {
-			Renderer.renderColoredRectangle(0, 0, 480, 20, Renderer.default_window_r, Renderer.default_window_g, Renderer.defailt_window_b);
+			Renderer.renderColoredRectangle(0, 0, 480, 20, Renderer.default_window_r, Renderer.default_window_g, Renderer.default_window_b);
 			Renderer.renderLinedRectangle(0, 0, 480, 20, 1.0, 1.0, 1.0);
 			double r = 1.0;
 			double g = 1.0;

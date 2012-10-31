@@ -10,6 +10,9 @@ import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.player.Inventory;
 import ss.linearlogic.quizquest.textbox.question.Question;
 
+/**
+ * Contains specifications (graphical and otherwise) and rendering methods of a textbox window.
+ */
 public class Textbox {
 	
 	/**
@@ -306,7 +309,7 @@ public class Textbox {
 		if (!active) return;
 			
 		//Render the rectangle with the question
-		Renderer.renderColoredRectangle(x, y, width, height, Renderer.default_window_r, Renderer.default_window_g, Renderer.defailt_window_b);
+		Renderer.renderColoredRectangle(x, y, width, height, Renderer.default_window_r, Renderer.default_window_g, Renderer.default_window_b);
 		Renderer.renderLinedRectangle(x, y, width, height, 1.0, 1.0, 1.0);
 		
 		for (int i = 0; i < questionLines.size(); ++i) {

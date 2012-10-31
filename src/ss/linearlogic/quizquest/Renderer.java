@@ -11,11 +11,14 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.util.ResourceLoader;
 
+/**
+ * Gateway to OpenGL - provides various rendering utilities
+ */
 public class Renderer {
 	
 	public static double default_window_r = 0.4;
 	public static double default_window_g = 0.4;
-	public static double defailt_window_b = 0.4;
+	public static double default_window_b = 0.4;
 	
 	/**
 	 * Render a white rectangle of the supplied dimensions at the supplied location
