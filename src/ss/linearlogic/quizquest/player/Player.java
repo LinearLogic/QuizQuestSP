@@ -146,7 +146,7 @@ public class Player {
 				Map.removeEnemy(battleFoe);
 				Map.addEntity(new Grass(battleFoe.getX(), battleFoe.getY()));
 				
-				Inventory.addItem(Inventory.getItemCount(), battleFoe.getItemToDrop());
+				Inventory.addItem(battleFoe.getItemToDrop());
 				battleFoe = null;
 				Textbox.reset();
 			default: // No answer yet

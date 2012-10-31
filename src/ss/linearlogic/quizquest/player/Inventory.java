@@ -206,7 +206,7 @@ public class Inventory {
 							if (Player.getBattleFoe() != null) {
 								System.out.println("!");
 								((Spell) item).use(Player.getBattleFoe());
-								Inventory.addItem(Inventory.getItemCount(), Player.getBattleFoe().getItemToDrop());
+								Inventory.addItem(Player.getBattleFoe().getItemToDrop());
 								Player.setBattleFoe(null);
 								Textbox.reset();
 								break;
@@ -335,16 +335,14 @@ public class Inventory {
 	}
 	
 	/**
-	 * Adds the specified item to the inventory array at the specified index.
+	 * Adds the specified item to the inventory array in the first available slot
 	 * 
-	 * @param index The indix at which to put the Item
 	 * @param item The Item itself (an Item subclass, really, as Item is abstract)
 	 */
-	public static void addItem(int index, Item item) {
-		if (itemIDs[index/slotDimensionY][index%slotDimensionY] == 0)
-			inventoryCount++;
-		if (index >= slotDimensionX * slotDimensionY) {
-			System.err.println("Error retrieving inventory item - invalid slot index provided.");
+	public static void addItem(Item item) {
+		int index = getFirstEmptySlotIndex();
+		if (index < 0) { //There are no available slots
+			System.err.println("Error adding item to inventory - there are no available inventory slots.");
 			return;
 		}
 		items[index/slotDimensionY][index%slotDimensionY] = item;
@@ -401,4 +399,11 @@ public class Inventory {
 	public static void toggleActive() { active = !active; }
 	
 	public static int getItemCount() { return inventoryCount; }
+	
+	public static int getFirstEmptySlotIndex() {
+		for (int index = 0; index < slotDimensionX * slotDimensionY; index++)
+			if (itemIDs[index/slotDimensionY][index%slotDimensionY] == 0) //Slot is available
+				return index;
+		return -1;
+	}
 }
