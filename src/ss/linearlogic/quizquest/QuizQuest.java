@@ -18,8 +18,8 @@ import static org.lwjgl.opengl.GL11.*;
  * 
  * @author Jared Heath (LinearLogic)
  * @author John Abeel
- * @version Beta 1.0.1
- * @since 10/25/2012
+ * @version Beta 1.0.2
+ * @since 10/17/2012
  */
 public class QuizQuest {
 	
@@ -99,7 +99,7 @@ public class QuizQuest {
 		Map.addTexture("Door.png", 3);
 		Map.addTexture("enemy.png", 4);
 
-		Player.initialize(200, 200, "Pedobear.png");
+		Player.initialize(200, 200, "Player.png");
 		Player.setMaxHealth(100);
 		Player.setHealth(100);
 		Player.setLives(5);

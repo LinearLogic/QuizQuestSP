@@ -1,5 +1,6 @@
 package ss.linearlogic.quizquest;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.newdawn.slick.opengl.Texture;
@@ -67,7 +68,7 @@ public class Sprite {
 	 */
 	public Sprite(String filename, int x, int y) {
 		try {
-			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(filename));
+			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("images\\" + filename));
 			
 			this.x = x;
 			this.y = y;

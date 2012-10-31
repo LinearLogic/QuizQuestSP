@@ -1,5 +1,6 @@
 package ss.linearlogic.quizquest.player;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -304,7 +305,7 @@ public class Inventory {
 		Texture texture = null;
 		//Read the texture object from the string
 		try {
-			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(filename));
+			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("images\\" + filename));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

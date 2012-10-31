@@ -226,7 +226,7 @@ public class Map {
 		
 		//Read the texture object from the string
 		try {
-			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(filename));
+			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("images\\" + filename));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
