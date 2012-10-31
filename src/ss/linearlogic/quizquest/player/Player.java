@@ -13,8 +13,11 @@ import ss.linearlogic.quizquest.entity.Entity;
 import ss.linearlogic.quizquest.entity.Grass;
 import ss.linearlogic.quizquest.item.Item;
 import ss.linearlogic.quizquest.item.Key;
+<<<<<<< HEAD
 import ss.linearlogic.quizquest.textbox.Textbox;
 import ss.linearlogic.quizquest.textbox.question.Question;
+=======
+>>>>>>> + added support for enemy health bars
 
 /**
  * Represents the Player and includes handling of the player sprite, HUD, and movement/collision
@@ -240,6 +243,33 @@ public class Player {
 		if (world_coordinates_y < (480 * Map.getCurrentQuadrantY())) Map.setCurrentQuadrantY(Map.getCurrentQuadrantY() - 1);
 	}
 	
+<<<<<<< HEAD
+=======
+	private static void fightFoe(Enemy foe) {
+		battleFoe = foe;
+		foe.triggerQuestion();
+	}
+	
+	private static void openDoor(Door door) {
+		for (int i = 0; i < Inventory.getItemCount(); ++i) {
+			Item item = Inventory.getItem(i);
+			
+			if (item.getType() == "Key" && item != null) {
+				Key key = (Key)Inventory.getItem(i);
+				
+				if (door.open(key.getlockID())) {
+					System.out.println("Door has been unlocked and key has been used.");
+					Inventory.removeItem(i);
+					
+					return;
+				}
+			}
+		}
+		
+		System.out.println("The door seems to be locked, do you have the right key?");
+	}
+	
+>>>>>>> + added support for enemy health bars
 	/**
 	 * Makes sure the player cannot move into barrier entities (walls, doors, enemies).
 	 * To sum up what's going on in this method, a virtual rectangle is constructed around the player and the vertices of that
@@ -258,10 +288,15 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x < 0)
 					speed_x = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					doorsEncountered++;
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door)e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					//Handle combat
@@ -276,10 +311,15 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y < 0)
 					speed_y = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					doorsEncountered++;
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door)e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
@@ -298,10 +338,15 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x > 0)
 					speed_x = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					doorsEncountered++;
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door) e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
@@ -315,10 +360,15 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y < 0)
 					speed_y = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					doorsEncountered++;
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door) e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
@@ -338,9 +388,14 @@ public class Player {
 				doorsEncountered++;
 				if (speed_x < 0)
 					speed_x = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door) e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
@@ -354,10 +409,15 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y > 0)
 					speed_y = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					doorsEncountered++;
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door) e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
@@ -376,10 +436,15 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_x > 0)
 					speed_x = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					doorsEncountered++;
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door) e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
@@ -393,10 +458,15 @@ public class Player {
 			if (e.getTypeID() > 1) { //Entity is a barrier entity
 				if (speed_y > 0)
 					speed_y = 0;
+<<<<<<< HEAD
 				if (e.getTypeID() == 3) { //Door - handle opening
 					doorsEncountered++;
 					Door d = (Door) e;
 					openDoorPrompt(d);
+=======
+				if (e.getTypeID() == 3) { //Door
+					openDoor((Door) e);
+>>>>>>> + added support for enemy health bars
 				}
 				else if (e.getTypeID() == 4) { //Enemy - handle combat
 					Enemy enemy = (Enemy) e;
@@ -491,6 +561,23 @@ public class Player {
 			
 			for (int i = 0; i < hearts.size(); ++i) 
 				hearts.get(i).draw();
+		}
+		
+		if (battleFoe != null) {
+			double r = 1.0;
+			double g = 1.0;
+		
+			if ((double)battleFoe.getHealth()/(double)battleFoe.getMaxHealth() > 0.5)
+				r = 0.0;
+			else
+				g = 0.0;
+			
+			System.out.println((battleFoe.getRenderingX() - 34) + ", " + (battleFoe.getRenderingY() - 15));
+			System.out.println(battleFoe.getWorldX() + ", " + battleFoe.getWorldY());
+			System.out.println(battleFoe.getX() + ", " + battleFoe.getY());
+			
+			Renderer.renderColoredRectangle(battleFoe.getRenderingX() - 34, battleFoe.getRenderingY() - 15, 100, 10, 1.0, 1.0, 1.0);
+			Renderer.renderColoredRectangle(battleFoe.getRenderingX() - 34, battleFoe.getRenderingY() - 15, 100 * ((double)battleFoe.getHealth()/(double)battleFoe.getMaxHealth()), 10, r, g, 1.0);
 		}
 		
 		sprite.draw(); 

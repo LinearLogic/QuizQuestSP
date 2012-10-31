@@ -10,7 +10,6 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.item.Item;
-import ss.linearlogic.quizquest.item.Key;
 import ss.linearlogic.quizquest.item.Potion;
 import ss.linearlogic.quizquest.item.Spell;
 import ss.linearlogic.quizquest.textbox.Textbox;

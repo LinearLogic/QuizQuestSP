@@ -72,7 +72,7 @@ public class Map {
 	/**
 	 * Size, in pixels, of a map tile
 	 */
-	private static int tileSize;
+	private static int tileSize = 32;
 	
 	/**
 	 * Unused for the time being (stub of a constructor that enables multiple maps)
