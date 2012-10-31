@@ -126,10 +126,8 @@ public class YNPrompt {
 			this.question = "Would you like to quit the current game session?";
 		else if (typeID == 1) //Door prompt
 			this.question = "Would you like to use your key to open this door?";
-		for (YNPrompt prompt : prompts) //Hide (but do not close entirely) all other active prompt windows
-			if (prompt.isActive())
-				prompt.setActive(false);
 		prompts.add(this);
+		this.setActive(true);
 	}
 	
 	/**
@@ -159,11 +157,15 @@ public class YNPrompt {
 	public boolean isActive() { return this.active; }
 	
 	/**
-	 * Toggle whether the prompt window is open and in use
+	 * Toggles whether the prompt window is open and in use (activating the window minimizes all other prompt windows)
 	 * 
 	 * @param active The boolean value representing the desired state of the prompt window (true for active, otherwise false)
 	 */
 	public void setActive(boolean active) {
+		if (active)
+			for (YNPrompt prompt : prompts)
+				if (prompt.isActive())
+					prompt.setActive(false);
 		this.active = active;
 	}
 	

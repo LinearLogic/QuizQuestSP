@@ -247,15 +247,23 @@ public class Textbox {
 	 */
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
-		
+		keyLifted = false;
 		if (active && !Inventory.isActive() && !YNPrompt.arePromptsActive()) {
-			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) keyLifted = true;
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+				keyLifted = true;
 			
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) { current_selection -= 1; keyLifted = false; }
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && keyLifted) { current_selection += 1; keyLifted = false; }
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) {
+				current_selection -= 1;
+				keyLifted = false;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && keyLifted) {
+				current_selection += 1;
+				keyLifted = false;
+			}
 			
 			// if all keys have been released, set keyLifted to true to re-enable scrolling through selections
-			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) keyLifted = true;
+			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+				keyLifted = true;
 			
 			//Use the numbers to correspond for answers
 			if (Keyboard.isKeyDown(Keyboard.KEY_1)) current_selection = 0;
@@ -272,7 +280,8 @@ public class Textbox {
 			//When user pressed the enter key, checks to see if the user is correct
 			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
 				keyLifted = false;
-				if (checkIfCorrect()) answerCorrect = 1;
+				if (checkIfCorrect())
+					answerCorrect = 1;
 				else answerCorrect = 0;
 			}
 					

@@ -131,7 +131,7 @@ public class Player {
 		if ((currentYNPrompt != null) && (currentYNPrompt.getTypeID() == 0)) { //Active prompt window is asking whether the player wants to exit (or reload) the game
 			if (currentYNPrompt.getAnswerStatus() >= 0) { //Player has made a decision
 				if (currentYNPrompt.getAnswerStatus() == 1) { //Player has chosen to quit the current game session
-					currentYNPrompt = null; //This line is crucial to error-free restarts, DO NOT REMOVE.
+					currentYNPrompt = null; //This line is crucial for error-free restarts, DO NOT REMOVE.
 					YNPrompt.closeAll();
 					QuizQuest.exitGameLoop();
 					return;
