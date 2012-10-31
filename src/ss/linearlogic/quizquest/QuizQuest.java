@@ -104,8 +104,7 @@ public class QuizQuest {
 		Inventory.addTexture("Potion.png", 2);
 		Inventory.addTexture("Spell.png", 3);
 		
-		YNPrompt.initialize(163, 180, 153, 65); //Do NOT change these values
-		YNPrompt.toggleActive();
+		YNPrompt.initialize(113, 180, 253, 65); //Do NOT change these values
 		
 		Textbox.initializeWithSystemFont();
 		QuestionManager.LoadQuestionsFile("questions.txt");

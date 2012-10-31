@@ -167,14 +167,14 @@ public class Player {
 		 */
 		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_E) && !Keyboard.isKeyDown(Keyboard.KEY_H))
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_E)) { //Toggles the inventory window
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_E) && !YNPrompt.isActive()) { //Toggles the inventory window
 			Inventory.toggleActive();
 			keyLifted = false;
 		}
 		
 		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)  && !Keyboard.isKeyDown(Keyboard.KEY_E)) 
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H)) {
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H) && !YNPrompt.isActive()) {
 			HUDActive = !HUDActive;
 			keyLifted = false;
 		}
@@ -443,7 +443,7 @@ public class Player {
 			if (item instanceof Key) {
 				if (((Key) item).getlockID() == door.getLockID()) { //The player has the matching key and can open the door - open prompt
 					currentKey = (Key) item;
-					YNPrompt.setQuestion("Would you like to unlock this door?"); //Load relevant question
+					YNPrompt.setQuestion("Would you like to use your key to open this door?");
 					if (!YNPrompt.isActive())
 						YNPrompt.toggleActive();
 					//Remove this line (as all door handling beyond this point is done in the update() method):

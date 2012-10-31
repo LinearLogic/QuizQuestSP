@@ -153,23 +153,21 @@ public class YNPrompt {
 	 * Renders the prompt window and its contents
 	 */
 	public static void render() {
-		System.out.println(font.getWidth("No"));
-		System.out.println(font.getHeight());
 		if (!active) //Double check that the prompt window is in use
 			return;
 		//Rectangle rendering
-		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.0, 0.0, 0.7); //Render the main window 
-		Renderer.renderLinedRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.1, 0.0, 1.0); //Render the outline
+		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.2, 0.4, 0.6); //Render the main window 
+		Renderer.renderLinedRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.5, 0.0, 0.0); //Render the outline
 		//Render the rectangle highlighting the currently selected option
 		if (currentSelection == 0) //"Yes" option is selected
-			Renderer.renderTransparentRectangle(pixelX + 17, pixelY + 40, font.getWidth("Yes") + 6, font.getHeight() + 2);
+			Renderer.renderTransparentRectangle(pixelX + 37, pixelY + 40, font.getWidth("Yes") + 6, font.getHeight() + 2);
 		else //"No" option is selected
-			Renderer.renderTransparentRectangle(pixelX + 117, pixelY + 40, font.getWidth("No") + 6, font.getHeight() + 2);
+			Renderer.renderTransparentRectangle(pixelX + 197, pixelY + 40, font.getWidth("No") + 6, font.getHeight() + 2);
 		
 		//String rendering
 		Renderer.renderString(question, pixelX + 10, pixelY + 10, font); //Render the question
-		Renderer.renderString("Yes", pixelX + 20, pixelY + 40, font); //Render the "Yes" option
-		Renderer.renderString("No", pixelX + 120, pixelY + 40, font); //Render the "No" option
+		Renderer.renderString("Yes", pixelX + 40, pixelY + 40, font); //Render the "Yes" option
+		Renderer.renderString("No", pixelX + 200, pixelY + 40, font); //Render the "No" option
 	}
 		
 	
