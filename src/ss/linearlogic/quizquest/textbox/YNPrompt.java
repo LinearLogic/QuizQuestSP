@@ -48,20 +48,12 @@ public class YNPrompt {
 	/**
 	 * Represents the status of the question (-1 if unanswered, 0 if answered "no", 1 if answered "yes")
 	 */
-	private static int answerCorrectValue = -1;
+	private static int answerStatus = -1;
 	
 	/**
 	 * Whether a relevant key is depressed (used to prevent repeat key event spam)
 	 */
 	private static boolean keyLifted = true;
-	
-	public static void initialize(int x, int y, int w, int h) { //TODO: decide whether to hardcode the dimensions and/or location of the prompt window
-		pixelX = x;
-		pixelY = y;
-		pixelWidth = w;
-		pixelHeight = h;
-		currentSelection = 1; //1 is the index of the 'NO' option
-	}
 	
 	/**
 	 * Sets the {@link #question} of the prompt window to the provided string
@@ -86,14 +78,30 @@ public class YNPrompt {
 	/**
 	 * @return The status of the question (see {@link #answerValue}
 	 */
-	public static int getAnswerCorrectValue() { return answerCorrectValue; }
+	public static int getAnswerStatus() { return answerStatus; }
 	
 	/**
 	 * Sets the value of the {@link #answerCorrect} flag to the supplied value
 	 * Used to reset the question's status to unanswered (by setting the answerCorrect flag to a value other than 0 or 1)
 	 * @param correct
 	 */
-	public static void setAnswerCorrectValue(int correct) { answerCorrectValue = correct; }
+	public static void setAnswerStatus(int correct) { answerStatus = correct; }
+	
+	/**
+	 * Load (but do not display) the prompt window with the supplied location, width, and height
+	 * @param x The {@link #pixelX} coordinate of the prompt window
+	 * @param y The {@link #pixelY} coordinate of the prompt window
+	 * @param width The width of the prompt window, in pixels
+	 * @param height The height of the prompt window, in pixels
+	 */
+	public static void initialize(int x, int y, int width, int height) {
+		pixelX = x;
+		pixelY = y;
+		pixelWidth = width;
+		pixelHeight = height;
+		currentSelection = 1; //1 is the index of the 'NO' option
+		answerStatus = -1;
+	}
 	
 	/**
 	 * Update the prompt window and its contents, and then render them
@@ -101,7 +109,7 @@ public class YNPrompt {
 	public static void update() {
 		if (!active) //Make sure the prompt window is actually in use
 			return;
-		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 			keyLifted = true;
 		
 		//Handle keyboard input
@@ -120,6 +128,13 @@ public class YNPrompt {
 		if (currentSelection < 0)
 			currentSelection = 1;
 		
+		//Handle answer selection
+		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && keyLifted) {
+			keyLifted = false;
+			answerStatus = currentSelection%1;
+		}
+
+		
 		// ...
 		render();
 	}
@@ -127,10 +142,18 @@ public class YNPrompt {
 	/**
 	 * Renders the prompt window and its contents
 	 */
-	private static void render() {
+	public static void render() {
 		if (!active) //Double check that the prompt window is in use
 			return;
 		
 		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.0, 0.0, 1.0);
+	}
+	
+	public static void reset() {
+		if (active) //Make sure the window is closed
+			active = false;
+		answerStatus = -1;
+		currentSelection = 1;
+		question = "";
 	}
 }

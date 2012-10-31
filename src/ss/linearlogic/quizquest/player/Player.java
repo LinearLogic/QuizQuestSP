@@ -14,6 +14,7 @@ import ss.linearlogic.quizquest.entity.Grass;
 import ss.linearlogic.quizquest.item.Item;
 import ss.linearlogic.quizquest.item.Key;
 import ss.linearlogic.quizquest.textbox.Textbox;
+import ss.linearlogic.quizquest.textbox.YNPrompt;
 
 
 /**
@@ -47,6 +48,10 @@ public class Player {
 	 */
 	private static Door currentDoor;
 	
+	/**
+	 * The key with which the player can open the {@link #currentDoor}, if they so choose
+	 */
+	private static Key currentKey;
 	/**
 	 * The enemy the player is currently fighting (null if the player is not battling at the moment)
 	 */
@@ -115,9 +120,17 @@ public class Player {
 	/**
 	 * Updates the player, checking for various conditions such as battle or typed keys. Notably handles movement.
 	 */
-	public static void update() {	
-		if (currentDoor != null) { //Player is at a door - handle the player's response (if any) to the door opening prompt
-			
+	public static void update() {
+		if (YNPrompt.isActive()) { //A prompt window is open - check if player has
+			if (currentDoor != null) { //Player is at a door - handle the player's response (if any) to the door opening prompt
+				if (YNPrompt.getAnswerStatus() >= 0) { //Player has made a decision
+					if (YNPrompt.getAnswerStatus() == 1) //Player has chosen to open the door
+						currentKey.use(currentDoor);
+					YNPrompt.toggleActive();
+					YNPrompt.reset();
+					currentKey = null;
+				}
+			}
 		}
 		if (battleFoe != null) { //Player is in battle - handle the combat quiz answer
 			switch (Textbox.isAnswerCorrect()) {
@@ -166,7 +179,8 @@ public class Player {
 			keyLifted = false;
 		}
 			
-		if (Textbox.isActive() || Inventory.isActive()) return;
+		if (Textbox.isActive() || Inventory.isActive() || YNPrompt.isActive()) //Keyboard input is already being used in a temporary window
+			return;
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 			speed_y -= speed_constant;
@@ -409,8 +423,10 @@ public class Player {
 				}
 			}
 		}
-		if (doorsEncountered <= 0) //The player is not standing by any doors
+		if (doorsEncountered <= 0) {//The player is not standing by any doors
 			currentDoor = null;
+			currentKey = null;
+		}
 	}
 	
 	/**
@@ -426,9 +442,11 @@ public class Player {
 		for (Item item : Inventory.getItems()) {
 			if (item instanceof Key) {
 				if (((Key) item).getlockID() == door.getLockID()) { //The player has the matching key and can open the door - open prompt
-					//Open the Y/N prompt window
+					currentKey = (Key) item;
+					YNPrompt.setQuestion("Would you like to unlock this door?"); //Load relevant question
+					if (!YNPrompt.isActive())
+						YNPrompt.toggleActive();
 					//Remove this line (as all door handling beyond this point is done in the update() method):
-					((Key) item).use(door);
 					return;
 				}
 			}
