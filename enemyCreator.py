@@ -27,19 +27,23 @@ def createQuestionsFile():
     enemies = []
     
     map = loadMapFile("map.txt")
+    
+    f = open("enemies.txt", "w")
+
+    f.write(str(enemy_count) + "\n")
 
     for i in range(enemy_count):    
         print "Enter max HP of enemy " + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input()+ "\n")
     
         print "Enter the damager of enemy " + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input()+ "\n")
     
         print "Enter the item number of enemy " + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input()+ "\n")
     
         print "Enter the item attribute(damage for spell, lock id for key, etc.) " + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input()+ "\n")
     
         while (1):
             print "Enter x coordinate of enemy " + str(i)
@@ -49,6 +53,8 @@ def createQuestionsFile():
             y = int(raw_input())
             
             if (map[x][y] == 0):
+                f.write(str(x)+ "\n")
+                f.write(str(y)+ "\n")
                 enemies.append(x)
                 enemies.append(y)
                 break
@@ -56,14 +62,10 @@ def createQuestionsFile():
                 print "Invalid Location for enemy!, Please place the enemy on grass"
         
         print "Enter the question id of enemy" + str(i)
-        enemies.append(int(raw_input()))
-    
-    f = open("enemies.txt", "w")
+        f.write(raw_input()+ "\n")
 
-    f.write(str(enemy_count) + "\n")
-
-    for i in range(len(enemies)):
-        f.write(str(enemies[i]) + "\n")
+    ##for i in range(len(enemies)):
+        ##f.write(str(enemies[i]) + "\n")
         
     f.close()
         
@@ -77,23 +79,30 @@ def openQuestionsFileEdit():
         
     f.close()
     
+    
+    
     map = loadMapFile("map.txt")
+    
+    f = open("enemies.txt", "w")
+    
+    f.write(str(enemy_count) + "\n")
             
     print "How many enemies would you like to add?"
     new_count = int(raw_input())
     
     for i in range(enemy_count):    
         print "Enter max HP of enemy " + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input() + "\n")
     
         print "Enter the damager of enemy " + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input()+ "\n")
     
         print "Enter the item number of enemy " + str(i)
+        f.write(raw_input()+ "\n")
         enemies.append(int(raw_input()))
     
         print "Enter the item attribute(damage for spell, lock id for key, etc.) " + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input()+ "\n")
     
         while (1):
             print "Enter x coordinate of enemy " + str(i)
@@ -103,24 +112,25 @@ def openQuestionsFileEdit():
             y = int(raw_input())
             
             if (map[x][y] == 0):
+                f.write(str(x)+ "\n")
+                f.write(str(y)+ "\n")
+                
                 enemies.append(x)
                 enemies.append(y)
                 break
             else:
                 print "Invalid Location for enemy!, Please place the enemy on grass"
         
-        
         print "Enter the question id of enemy" + str(i)
-        enemies.append(int(raw_input()))
+        f.write(raw_input()+ "\n")
+    
         
     enemy_count += new_count
     
-    f = open("enemies.txt", "w")
     
-    f.write(str(enemy_count) + "\n")
 
-    for i in range(len(enemies)):
-        f.write(str(enemies[i]) + "\n")
+    ##for i in range(len(enemies)):
+       ## f.write(str(enemies[i]) + "\n")
         
     f.close()
     
