@@ -87,7 +87,7 @@ public class YNPrompt {
 	/**
 	 * Whether a relevant key is depressed (used to prevent repeat key event spam)
 	 */
-	private boolean keyLifted = true;
+	private boolean keyLifted = false;
 	
 	/**
 	 * Static ArrayList containing all the active YNPrompt objects
@@ -270,12 +270,13 @@ public class YNPrompt {
 			temp.add(prompt);
 		for (YNPrompt prompt : temp)
 			prompts.remove(prompt);
+		prompts.clear();
 	}
 	
 	/**
 	 * @return Whether there are any active prompt windows
 	 */
-	public static boolean anyPromptsActive() {
+	public static boolean arePromptsActive() {
 		for (YNPrompt prompt : prompts)
 			if (prompt.isActive())
 				return true;

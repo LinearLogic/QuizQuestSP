@@ -17,6 +17,7 @@ import ss.linearlogic.quizquest.item.Potion;
 import ss.linearlogic.quizquest.item.Spell;
 import ss.linearlogic.quizquest.item.Key;
 import ss.linearlogic.quizquest.textbox.Textbox;
+import ss.linearlogic.quizquest.textbox.YNPrompt;
 
 /**
  * Represents the player's inventory, an array of Item subclass objects
@@ -170,7 +171,7 @@ public class Inventory {
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
-		if (active) { // make sure the inventory menu is currently in use
+		if (active && !YNPrompt.arePromptsActive()) { // make sure the inventory menu is currently in use and there are no open prompt windows
 			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 				keyLifted = true;
 			

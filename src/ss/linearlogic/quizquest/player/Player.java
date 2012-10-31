@@ -131,6 +131,7 @@ public class Player {
 		if ((currentYNPrompt != null) && (currentYNPrompt.getTypeID() == 0)) { //Active prompt window is asking whether the player wants to exit (or reload) the game
 			if (currentYNPrompt.getAnswerStatus() >= 0) { //Player has made a decision
 				if (currentYNPrompt.getAnswerStatus() == 1) { //Player has chosen to quit the current game session
+					currentYNPrompt = null; //This line is crucial to error-free restarts, DO NOT REMOVE.
 					YNPrompt.closeAll();
 					QuizQuest.exitGameLoop();
 					return;
@@ -139,7 +140,7 @@ public class Player {
 				currentYNPrompt = null;
 			}
 		}
-		if (!YNPrompt.anyPromptsActive())
+		if (!YNPrompt.arePromptsActive())
 			YNPrompt.loadNextPrompt();
 			
 		if ((currentYNPrompt != null) && (currentYNPrompt.getTypeID() == 1)) { //Active prompt window is asking whether the player wants to open a certain door	
@@ -153,7 +154,7 @@ public class Player {
 				}
 			}
 		}
-		if (!YNPrompt.anyPromptsActive())
+		if (!YNPrompt.arePromptsActive())
 			YNPrompt.loadNextPrompt();
 		
 		if (battleFoe != null) { //Player is in battle - handle the combat quiz answer
@@ -191,19 +192,19 @@ public class Player {
 		 */
 		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_E) && !Keyboard.isKeyDown(Keyboard.KEY_H))
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_E) && !YNPrompt.anyPromptsActive()) { //Toggles the inventory window
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_E) && !YNPrompt.arePromptsActive()) { //Toggles the inventory window
 			Inventory.toggleActive();
 			keyLifted = false;
 		}
 		
 		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)  && !Keyboard.isKeyDown(Keyboard.KEY_E)) 
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H) && !YNPrompt.anyPromptsActive()) {
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H) && !YNPrompt.arePromptsActive()) {
 			HUDActive = !HUDActive;
 			keyLifted = false;
 		}
 			
-		if (Textbox.isActive() || Inventory.isActive() || YNPrompt.anyPromptsActive()) //Keyboard input is already being used in a temporary window
+		if (Textbox.isActive() || Inventory.isActive() || YNPrompt.arePromptsActive()) //Keyboard input is already being used in a temporary window
 			return;
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))

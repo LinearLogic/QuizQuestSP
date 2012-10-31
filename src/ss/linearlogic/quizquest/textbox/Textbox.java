@@ -248,7 +248,7 @@ public class Textbox {
 	public static void update() {
 		if (Keyboard.areRepeatEventsEnabled()) Keyboard.enableRepeatEvents(false);
 		
-		if (active && !Inventory.isActive()) {
+		if (active && !Inventory.isActive() && !YNPrompt.arePromptsActive()) {
 			if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) keyLifted = true;
 			
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && keyLifted) { current_selection -= 1; keyLifted = false; }

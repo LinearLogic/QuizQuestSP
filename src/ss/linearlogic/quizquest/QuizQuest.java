@@ -48,6 +48,7 @@ public class QuizQuest {
 	 * and then destroys the OpenGL context on exit (necessary for a game reset to be possible).
 	 */
 	public QuizQuest() {
+		running = true;
 		initializeOpenGL(screen_width, screen_height);
 		mainLoop();
 		Textbox.reset();
