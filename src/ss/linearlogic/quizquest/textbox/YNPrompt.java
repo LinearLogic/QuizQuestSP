@@ -1,6 +1,7 @@
 package ss.linearlogic.quizquest.textbox;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.TrueTypeFont;
 
 import ss.linearlogic.quizquest.Renderer;
 
@@ -33,6 +34,11 @@ public class YNPrompt {
 	 * The question to be displayed in the prompt window
 	 */
 	private static String question = "";
+	
+	/**
+	 * The font of the question string in the prompt window
+	 */
+	private static TrueTypeFont font;
 	
 	/**
 	 * Currently selected answer choice (0 --> Yes, 1 --> No. This seems counterintuitive, but the selections
@@ -101,6 +107,10 @@ public class YNPrompt {
 		pixelHeight = height;
 		currentSelection = 1; //1 is the index of the 'NO' option
 		answerStatus = -1;
+		//Attempt to load the system font and dispatch an error on failure
+		font = Renderer.loadSystemFont("SansSerif", 10);
+		if (font == null)
+			System.err.println("Font is null");
 	}
 	
 	/**
@@ -145,9 +155,20 @@ public class YNPrompt {
 	public static void render() {
 		if (!active) //Double check that the prompt window is in use
 			return;
+		//Rectangle rendering
+		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.0, 0.0, 0.7); //Render the main window 
+		Renderer.renderLinedRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.1, 0.0, 1.0); //Render the outline
+		if (currentSelection == 0) //"Yes" option is selected
+			Renderer.renderTransparentRectangle(pixelX + 20, pixelY + 60, font.getWidth("Yes"), font.getHeight() + 10);
+		else //"No" option is selected
+			Renderer.renderTransparentRectangle(pixelX + 120, pixelY + 60, font.getWidth("No"), font.getHeight() + 10);
 		
-		Renderer.renderColoredRectangle(pixelX, pixelY, pixelWidth, pixelHeight, 0.0, 0.0, 1.0);
+		//String rendering
+		Renderer.renderString(question, 10, 10, font); //Render the question
+		Renderer.renderString("Yes", pixelX + 20, pixelY + 65, font); //Render the "Yes" option
+		Renderer.renderString("No", pixelX + 120, pixelY + 65, font); //Render the "No" option
 	}
+		
 	
 	public static void reset() {
 		if (active) //Make sure the window is closed
