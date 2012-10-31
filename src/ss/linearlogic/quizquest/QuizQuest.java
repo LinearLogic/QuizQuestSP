@@ -108,21 +108,21 @@ public class QuizQuest {
 		Inventory.addTexture("Potion.png", 2);
 		Inventory.addTexture("Spell.png", 3);
 		
-		YNPrompt.initialize(113, 180, 253, 65); //Do NOT change these values
+		YNPrompt.setDefaultValues(113, 180, 253, 65); //Do NOT change these values
 		
 		Textbox.initializeWithSystemFont();
 		QuestionManager.LoadQuestionsFile("questions.txt");
 		
 		while (running) {
-			if (Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && (Player.getCurrentYNPromptTypeID() != 0)) { //Parameter check to prevent simultaneous events
 				if (reset)
 					reset = false;
-				break;
+				Player.setCurrentYNPrompt(new YNPrompt(0)); //Create a quit-game prompt
 			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_F5)) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_F5) && (Player.getCurrentYNPromptTypeID() != 0)) { //Another parameter check
 				if (!reset)
 					reset = true;
-				break;
+				Player.setCurrentYNPrompt(new YNPrompt(0));
 			}
 							
 			//Game rendering/logic area
@@ -138,7 +138,7 @@ public class QuizQuest {
 			
 			Inventory.update();
 			
-			YNPrompt.update();
+			YNPrompt.updateAll();
 			
 			Display.update();
 			Display.sync(60); //The value n in sync(n) is the frame rate
@@ -158,5 +158,12 @@ public class QuizQuest {
 	 */
 	public static void main(String[] args) {
 		new QuizQuest();
+	}
+	
+	/**
+	 * Exits the game loop without a reset
+	 */
+	public static void exitGameLoop() {
+		running = false;
 	}
 }

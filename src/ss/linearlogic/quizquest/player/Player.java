@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 
 import ss.linearlogic.quizquest.Map;
+import ss.linearlogic.quizquest.QuizQuest;
 import ss.linearlogic.quizquest.Renderer;
 import ss.linearlogic.quizquest.Sprite;
 import ss.linearlogic.quizquest.entity.Door;
@@ -44,6 +45,11 @@ public class Player {
 	private static int lives;
 	
 	/**
+	 * The YNPrompt window currently in use by the player (if any)
+	 */
+	private static YNPrompt currentYNPrompt;
+	
+	/**
 	 * The door the player is currently trying to open (null if the player is not at a door at the moment)
 	 */
 	private static Door currentDoor;
@@ -52,6 +58,7 @@ public class Player {
 	 * The key with which the player can open the {@link #currentDoor}, if they so choose
 	 */
 	private static Key currentKey;
+	
 	/**
 	 * The enemy the player is currently fighting (null if the player is not battling at the moment)
 	 */
@@ -121,17 +128,34 @@ public class Player {
 	 * Updates the player, checking for various conditions such as battle or typed keys. Notably handles movement.
 	 */
 	public static void update() {
-		if (YNPrompt.isActive()) { //A prompt window is open - check if player has
+		if ((currentYNPrompt != null) && (currentYNPrompt.getTypeID() == 0)) { //Active prompt window is asking whether the player wants to exit (or reload) the game
+			if (currentYNPrompt.getAnswerStatus() >= 0) { //Player has made a decision
+				if (currentYNPrompt.getAnswerStatus() == 1) { //Player has chosen to quit the current game session
+					YNPrompt.closeAll();
+					QuizQuest.exitGameLoop();
+					return;
+				}
+				currentYNPrompt.close();
+				currentYNPrompt = null;
+			}
+		}
+		if (!YNPrompt.anyPromptsActive())
+			YNPrompt.loadNextPrompt();
+			
+		if ((currentYNPrompt != null) && (currentYNPrompt.getTypeID() == 1)) { //Active prompt window is asking whether the player wants to open a certain door	
 			if (currentDoor != null) { //Player is at a door - handle the player's response (if any) to the door opening prompt
-				if (YNPrompt.getAnswerStatus() >= 0) { //Player has made a decision
-					if (YNPrompt.getAnswerStatus() == 1) //Player has chosen to open the door
+				if (currentYNPrompt.getAnswerStatus() >= 0) { //Player has made a decision
+					if (currentYNPrompt.getAnswerStatus() == 1) //Player has chosen to open the door
 						currentKey.use(currentDoor);
-					YNPrompt.toggleActive();
-					YNPrompt.reset();
+					currentYNPrompt.close();
+					currentYNPrompt = null;
 					currentKey = null;
 				}
 			}
 		}
+		if (!YNPrompt.anyPromptsActive())
+			YNPrompt.loadNextPrompt();
+		
 		if (battleFoe != null) { //Player is in battle - handle the combat quiz answer
 			switch (Textbox.isAnswerCorrect()) {
 			case 0: //Not correct - damage player
@@ -167,19 +191,19 @@ public class Player {
 		 */
 		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_E) && !Keyboard.isKeyDown(Keyboard.KEY_H))
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_E) && !YNPrompt.isActive()) { //Toggles the inventory window
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_E) && !YNPrompt.anyPromptsActive()) { //Toggles the inventory window
 			Inventory.toggleActive();
 			keyLifted = false;
 		}
 		
 		if (!keyLifted && !Keyboard.isKeyDown(Keyboard.KEY_H)  && !Keyboard.isKeyDown(Keyboard.KEY_E)) 
 			keyLifted = true;
-		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H) && !YNPrompt.isActive()) {
+		if (keyLifted && Keyboard.isKeyDown(Keyboard.KEY_H) && !YNPrompt.anyPromptsActive()) {
 			HUDActive = !HUDActive;
 			keyLifted = false;
 		}
 			
-		if (Textbox.isActive() || Inventory.isActive() || YNPrompt.isActive()) //Keyboard input is already being used in a temporary window
+		if (Textbox.isActive() || Inventory.isActive() || YNPrompt.anyPromptsActive()) //Keyboard input is already being used in a temporary window
 			return;
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
@@ -436,16 +460,14 @@ public class Player {
 	 * @param The door the player is currently in contact with
 	 */
 	private static void openDoorPrompt(Door door) {
-		if ((currentDoor != null) || (battleFoe != null)) //A door or battle prompt is already open, as the player is already near a door
+		if ((currentDoor != null) || (battleFoe != null) || (currentYNPrompt != null)) //A door, quit-game, or battle prompt is already open, as the player is already near a door
 			return;
 		currentDoor = door;
 		for (Item item : Inventory.getItems()) {
 			if (item instanceof Key) {
 				if (((Key) item).getlockID() == door.getLockID()) { //The player has the matching key and can open the door - open prompt
 					currentKey = (Key) item;
-					YNPrompt.setQuestion("Would you like to use your key to open this door?");
-					if (!YNPrompt.isActive())
-						YNPrompt.toggleActive();
+					currentYNPrompt = new YNPrompt(1);
 					return;
 				}
 			}
@@ -632,5 +654,18 @@ public class Player {
 	 */
 	public static void setBattleFoe(Enemy enemy) {
 		battleFoe = enemy;
+	}
+	
+	/**
+	 * @return The {@link #currentYNPrompt} the player is interacting with
+	 */
+	public static int getCurrentYNPromptTypeID() {
+		if (currentYNPrompt == null)
+			return -1;
+		return currentYNPrompt.getTypeID();
+	}
+	
+	public static void setCurrentYNPrompt(YNPrompt prompt) {
+		currentYNPrompt = prompt;
 	}
 }
